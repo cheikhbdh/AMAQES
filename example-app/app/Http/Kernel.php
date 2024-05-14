@@ -22,6 +22,11 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
+    protected $routeMiddleware = [
+        // Autres middlewares...
+        'redirectIfAdmin' => \App\Http\Middleware\RedirectIfAdmin::class,
+        'redirectIfnotEVL_I' => \App\Http\Middleware\RedirectIfnotEVL_I::class,
+    ];
 
     /**
      * The application's route middleware groups.

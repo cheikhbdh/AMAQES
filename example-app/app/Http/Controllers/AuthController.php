@@ -14,6 +14,10 @@ use function Laravel\Prompts\password;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['login', 'register']);
+    }
     /**
      * Handle user login.
      *
@@ -36,7 +40,6 @@ class AuthController extends Controller
         if ($user->role === 'admin') {
             return redirect()->intended(route('dashadmin'));
         } elseif ($user->role === 'evaluateur_i') {
-            // Redirection pour l'évaluateur_i
             return redirect()->intended(route('dash'));
         } else {
             return redirect()->intended(route('register'));
@@ -93,5 +96,15 @@ public function delete(Request $request, $userId)
     $user->delete();
 
     return response()->json(['message' => 'User deleted successfully'], 200);
+}
+public function logout(Request $request)
+{
+    Auth::logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return redirect(route('login'));
 }
 }
