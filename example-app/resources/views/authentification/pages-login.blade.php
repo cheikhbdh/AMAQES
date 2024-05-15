@@ -65,7 +65,7 @@
                   </div>
 
                   <form class="row g-3 needs-validation" action="{{ route('login') }}" method="POST" >
-
+                    @csrf
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
@@ -99,13 +99,13 @@
                 </div>
               </div>
 
-              <div class="credits">
+              {{-- <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-              </div>
+              </div> --}}
 
             </div>
           </div>
@@ -129,7 +129,7 @@
   <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="{{asset('assets/js/main.js')}}"></script>
 
 </body>
 

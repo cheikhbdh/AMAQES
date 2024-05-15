@@ -18,11 +18,11 @@ use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 */
 
 Route::get('/', function(){
-    return view('authentification.login');
+    return view('authentification.pages-login');
 })->name('login');
 
 Route::post('/', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', function(){
     return view('authentification.register');
 })->name('register');

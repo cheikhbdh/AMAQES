@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 use function Laravel\Prompts\password;
@@ -97,13 +98,11 @@ public function delete(Request $request, $userId)
 
     return response()->json(['message' => 'User deleted successfully'], 200);
 }
-public function logout(Request $request)
+public function logout()
 {
+    Session::flush();
     Auth::logout();
 
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
 
     return redirect(route('login'));
 }
