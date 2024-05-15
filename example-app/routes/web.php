@@ -36,6 +36,7 @@ Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
     })->name('dash');
     
 });
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
     Route::get('/dashbord',function(){
         return view('dashadmin.dashboard');

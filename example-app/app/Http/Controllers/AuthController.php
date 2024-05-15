@@ -97,14 +97,20 @@ public function delete(Request $request, $userId)
 
     return response()->json(['message' => 'User deleted successfully'], 200);
 }
-public function logout(Request $request)
-{
-    Auth::logout();
+/**
+     * Handle user logout.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
 
-    $request->session()->invalidate();
+        $request->session()->invalidate();
 
-    $request->session()->regenerateToken();
+        $request->session()->regenerateToken();
 
-    return redirect(route('login'));
-}
+        return redirect(route('login'));
+    }
 }
