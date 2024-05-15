@@ -38,6 +38,21 @@ Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
 });
 Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
     Route::get('/dashbord',function(){
-        return view('dashadmin.home');
+        return view('dashadmin.dashboard');
     })->name('dashadmin');
+});
+Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
+Route::get('/users',function(){
+    return view('dashadmin.users');
+})->name('user');
+});
+Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
+Route::get('/admins',function(){
+    return view('dashadmin.admin');
+})->name('admin');
+});
+Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
+Route::get('/profile',function(){
+    return view('dashadmin.profile');
+})->name('profile');
 });
