@@ -270,6 +270,7 @@
 
             <li>
               
+<<<<<<< HEAD
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <a class="dropdown-item d-flex align-items-center">
@@ -283,15 +284,21 @@
   
               
               
+=======
+              <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+>>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
             </li>
 
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+          </ul>
+        </li>
 
       </ul>
-    </nav><!-- End Icons Navigation -->
+    </nav>
 
-  </header><!-- End Header -->
+  </header>
 
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
@@ -325,7 +332,37 @@
         </ul>
       </li><!-- End Components Nav -->
 
+<<<<<<< HEAD
       
+=======
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Gestion de l'éducation</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{route('institutions.index')}}">
+              <i class="bi bi-circle"></i><span>les institutions</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>les Établissements</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-editors.html">
+              <i class="bi bi-circle"></i><span>les Départements</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-validation.html">
+              <i class="bi bi-circle"></i><span>les Filières</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+>>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -497,12 +534,20 @@
   <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
   <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+<<<<<<< HEAD
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 
+=======
+>>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
 </body>
 
 </html>
