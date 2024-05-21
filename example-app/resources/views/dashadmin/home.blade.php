@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -44,9 +46,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/images/amaqes.png') }}" alt="Logo" width="20%">
+        <span class="d-none d-lg-block" style="font-size: 12px;">Autorité Mauritanienne d'Assurance <br>Qualité L'enseignemt Superieur</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -66,6 +68,18 @@
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
+        <div class="row">
+          <div class="col-md-2 col-md-offset-6 text-right">
+              <strong>Select Language: </strong>
+          </div>
+          <div class="col-md-4">
+              <select class="form-control changeLang" name="languge" id="languge">
+                  <option value="en">English</option>
+                  <option value="fr">France</option>
+                  <option value="ar">Arabic</option>
+              </select>
+          </div>
+      </div>
 
         <li class="nav-item dropdown">
 
@@ -174,7 +188,7 @@
 
             <li class="message-item">
               <a href="#">
-                <img src="{{ asset('assets/img/messages-2.jpg') }}" alt="" class="rounded-circle">
+                <img src="{{ asset('assets/img/persone.png') }}" alt="" class="rounded-circle">
                 <div>
                   <h4>Anna Nelson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -341,8 +355,28 @@
             </a>
           </li>
           <li>
+            <a href="{{ route('admin.utilisateurs') }}">
+              <i class="bi bi-circle"></i><span>Users_Admins</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('evaluateur_in.utilisateurs') }}">
+              <i class="bi bi-circle"></i><span>Users_In</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('evaluateur_ex.utilisateurs') }}">
+              <i class="bi bi-circle"></i><span>Users_Ex</span>
+            </a>
+          </li>
+          <li>
             <a href="{{ route('admin') }}">
               <i class="bi bi-circle"></i><span>Admins</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('champ') }}">
+              <i class="bi bi-circle"></i><span>Champs</span>
             </a>
           </li>
         </ul>
@@ -488,9 +522,6 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 </body>
 
 </html>
