@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -44,9 +46,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="{{ asset('assets/images/amaqes.png') }}" alt="Logo" width="20%">
+        <span class="d-none d-lg-block" style="font-size: 12px;">Autorité Mauritanienne d'Assurance <br>Qualité L'enseignemt Superieur</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -66,6 +68,18 @@
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
+        <div class="row">
+          <div class="col-md-2 col-md-offset-6 text-right">
+              <strong>Select Language: </strong>
+          </div>
+          <div class="col-md-4">
+              <select class="form-control changeLang" name="languge" id="languge">
+                  <option value="en">English</option>
+                  <option value="fr">France</option>
+                  <option value="ar">Arabic</option>
+              </select>
+          </div>
+      </div>
 
         <li class="nav-item dropdown">
 
@@ -256,10 +270,19 @@
 
             <li>
               
-              <a class="dropdown-item d-flex align-items-center" href="/">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="dropdown-item d-flex align-items-center">
+                      <i class="bi bi-box-arrow-right"></i>
+                    <span><button type="submit" style="border: none; background: none; padding: 0; font: inherit; cursor: pointer;">Déconnexion</button></span>
+                   
+                  </a>
+                </form>   
+            
+  
+  
+              
+              
             </li>
 
           </ul><!-- End Profile Dropdown Items -->
@@ -302,33 +325,7 @@
         </ul>
       </li><!-- End Components Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Form Elements</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-layouts.html">
-              <i class="bi bi-circle"></i><span>Form Layouts</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-editors.html">
-              <i class="bi bi-circle"></i><span>Form Editors</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-validation.html">
-              <i class="bi bi-circle"></i><span>Form Validation</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Forms Nav -->
+      
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -341,8 +338,28 @@
             </a>
           </li>
           <li>
+            <a href="{{ route('admin.utilisateurs') }}">
+              <i class="bi bi-circle"></i><span>Users_Admins</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('evaluateur_in.utilisateurs') }}">
+              <i class="bi bi-circle"></i><span>Users_In</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('evaluateur_ex.utilisateurs') }}">
+              <i class="bi bi-circle"></i><span>Users_Ex</span>
+            </a>
+          </li>
+          <li>
             <a href="{{ route('admin') }}">
               <i class="bi bi-circle"></i><span>Admins</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('champ') }}">
+              <i class="bi bi-circle"></i><span>Champs</span>
             </a>
           </li>
         </ul>
@@ -483,6 +500,8 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
 
 </body>
 
