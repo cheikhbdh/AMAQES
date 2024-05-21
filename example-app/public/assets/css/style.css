@@ -83,7 +83,18 @@ h6 {
   border-radius: 4px;
   transition: all 0.4s;
 }
+.transparent-button {
+  background-color: transparent;
+  border: none;
+  color: inherit; /* This will inherit the color property from parent element */
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+.transparent-button:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Change this color as needed */
+}
 .back-to-top i {
   font-size: 24px;
   color: #fff;

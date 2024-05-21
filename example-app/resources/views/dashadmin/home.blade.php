@@ -313,17 +313,17 @@
             </a>
           </li>
           <li>
-            <a href="forms-layouts.html">
+            <a href="{{route('etablissement.index')}}">
               <i class="bi bi-circle"></i><span>les Établissements</span>
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="{{route('departement.index')}}">
               <i class="bi bi-circle"></i><span>les Départements</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{{route('filiere.index')}}">
               <i class="bi bi-circle"></i><span>les Filières</span>
             </a>
           </li>
@@ -488,6 +488,9 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>

@@ -52,4 +52,16 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
 Route::post('/institutions', [EducationController::class, 'storeInstitution'])->name('institutions.store');
 Route::put('/institutions/{id}', [EducationController::class, 'updateInstitution'])->name('institutions.update');
 Route::delete('/institutions/{id}', [EducationController::class, 'destroyInstitution'])->name('institutions.destroy');
+Route::get('/etablissement', [EducationController::class, 'indexEtablissement'])->name('etablissement.index');
+Route::put('/etablissement/{id}', [EducationController::class, 'updateEtablissement'])->name('etablissement.update');
+Route::delete('/etablissement/{id}', [EducationController::class, 'destroyEtablissement'])->name('etablissement.destroy');
+Route::post('/etablissement', [EducationController::class, 'storeEtablissement'])->name('etablissement.store');
+Route::get('/departement', [EducationController::class, 'indexDepartement'])->name('departement.index');
+Route::put('/departement/{id}', [EducationController::class, 'updateDepartement'])->name('departement.update');
+Route::delete('/departement/{id}', [EducationController::class, 'destroyDepartement'])->name('departement.destroy');
+Route::post('/departement', [EducationController::class, 'storeDepartement'])->name('departement.store');
+Route::get('/filiere', [EducationController::class, 'indexFiliere'])->name('filiere.index');
+Route::put('/filiere/{id}', [EducationController::class, 'updateFiliere'])->name('filiere.update');
+Route::delete('/filiere/{id}', [EducationController::class, 'destroyFiliere'])->name('filiere.destroy');
+Route::post('/filiere', [EducationController::class, 'storeFiliere'])->name('filiere.store');
 });
