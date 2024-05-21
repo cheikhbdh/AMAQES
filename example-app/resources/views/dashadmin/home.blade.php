@@ -285,14 +285,9 @@
               
               
 =======
-              <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
->>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
-            </li>
+              
 
-          </ul>
+          
         </li>
 
       </ul>
@@ -331,10 +326,7 @@
           </li>
         </ul>
       </li><!-- End Components Nav -->
-
-<<<<<<< HEAD
-      
-=======
+  
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Gestion de l'éducation</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -362,7 +354,6 @@
           </li>
         </ul>
       </li><!-- End Forms Nav -->
->>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">

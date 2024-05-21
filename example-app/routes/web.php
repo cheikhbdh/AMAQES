@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-<<<<<<< HEAD
-
-Route::get('/', function () {
-    return view('authentification.login');
-})->name('login');
-
-Route::post('/', [AuthController::class, 'login'])->name('login');
-#Route::get('/dashboard', [LangController::class, 'index']);
-
-Route::get('/register', function () {
-=======
 use App\Http\Controllers\EducationController;
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +21,6 @@ Route::get('/', function(){
 Route::post('/', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', function(){
->>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
     return view('authentification.register');
 })->name('register');
 
@@ -50,7 +38,6 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashadmin.dashboard');
     })->name('dashadmin');
-<<<<<<< HEAD
     
     Route::get('/users', function () {
         return view('dashadmin.users');
@@ -66,7 +53,9 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
     Route::get('/profile', function () {
         return view('dashadmin.profile');
     })->name('profile');
-Route::post('/utilisateur/ajouter', [AuthController::class, 'ajouter_user'])->name('utilisateur.ajouter');
+
+
+    Route::post('/utilisateur/ajouter', [AuthController::class, 'ajouter_user'])->name('utilisateur.ajouter');
 #Route::get('/utilisateur/{id}/modifier', [AuthController::class, 'modifierForm'])->name('utilisateur.modifierForm');
 Route::put('/utilisateur/{id}/modifier', [AuthController::class, 'modifier_user'])->name('utilisateur.modifier');
 Route::delete('/utilisateur/{id}/supprimer', [AuthController::class, 'supprimer_user'])->name('utilisateur.supprimer');
@@ -82,20 +71,18 @@ Route::post('/critere/ajouter/{champ_id}', [AuthController::class, 'ajouter_crit
 Route::put('/critere/{id}/modifier', [AuthController::class, 'modifier_critere'])->name('critere.modifier');
 Route::delete('/critere/{id}/supprimer', [AuthController::class, 'supprimer_critere'])->name('critere.supprimer');
 
-
 Route::post('/utilisateur/ajouter', [AuthController::class, 'store_admin'])->name('useradmin.ajouter');
 Route::put('/utilisateur/{id}/modifier', [AuthController::class, 'update_admin'])->name('useradmin.modifier');
 Route::delete('/utilisateur/{id}/supprimer', [AuthController::class, 'destroy_admin'])->name('useradmin.supprimer');
 
-
-
 Route::get('/admin/utilisateurs', [AuthController::class, 'adminIndex'])->name('admin.utilisateurs');
-// routes/web.php
+// routes/web.php*
+Route::get('/institutions', [EducationController::class, 'indexInstitutions'])->name('institutions.index');
+Route::post('/institutions', [EducationController::class, 'storeInstitution'])->name('institutions.store');
+Route::put('/institutions/{id}', [EducationController::class, 'updateInstitution'])->name('institutions.update');
+Route::delete('/institutions/{id}', [EducationController::class, 'destroyInstitution'])->name('institutions.destroy');
+
 });
-
-
-   
-    
 
 Route::middleware(['auth', 'role:evaluateur_in'])->group(function () {
     Route::get('/evaluateur_in/utilisateurs', [AuthController::class, 'userInIndex'])->name('evaluateur_in.utilisateurs');
@@ -105,20 +92,4 @@ Route::middleware(['auth', 'role:evaluateur_ex'])->group(function () {
     Route::get('/evaluateur_ex/utilisateurs', [AuthController::class, 'userExIndex'])->name('evaluateur_ex.utilisateurs');
 });
 
-=======
-    Route::get('/users',function(){
-        return view('dashadmin.users');
-    })->name('user');
-    Route::get('/profile',function(){
-        return view('dashadmin.profile');
-    })->name('profile');
-    Route::get('/admins',function(){
-        return view('dashadmin.admin');
-    })->name('admin');
    
-    Route::get('/institutions', [EducationController::class, 'indexInstitutions'])->name('institutions.index');
-Route::post('/institutions', [EducationController::class, 'storeInstitution'])->name('institutions.store');
-Route::put('/institutions/{id}', [EducationController::class, 'updateInstitution'])->name('institutions.update');
-Route::delete('/institutions/{id}', [EducationController::class, 'destroyInstitution'])->name('institutions.destroy');
-});
->>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
