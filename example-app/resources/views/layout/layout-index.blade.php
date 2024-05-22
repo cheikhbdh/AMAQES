@@ -35,7 +35,6 @@
         </div>
         <div class="profile-dropdown">
             <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-<<<<<<< HEAD
             <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

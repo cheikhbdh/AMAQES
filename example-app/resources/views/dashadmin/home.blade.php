@@ -188,7 +188,7 @@
 
             <li class="message-item">
               <a href="#">
-                <img src="{{ asset('assets/img/messages-2.jpg') }}" alt="" class="rounded-circle">
+                <img src="{{ asset('assets/img/persone.png') }}" alt="" class="rounded-circle">
                 <div>
                   <h4>Anna Nelson</h4>
                   <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -269,8 +269,6 @@
             </li>
 
             <li>
-              
-<<<<<<< HEAD
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <a class="dropdown-item d-flex align-items-center">
@@ -278,16 +276,7 @@
                     <span><button type="submit" style="border: none; background: none; padding: 0; font: inherit; cursor: pointer;">Déconnexion</button></span>
                    
                   </a>
-                </form>   
-            
-  
-  
-              
-              
-=======
-              
-
-          
+                </form>  
         </li>
 
       </ul>
@@ -326,7 +315,6 @@
           </li>
         </ul>
       </li><!-- End Components Nav -->
-  
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Gestion de l'éducation</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -338,17 +326,17 @@
             </a>
           </li>
           <li>
-            <a href="forms-layouts.html">
+            <a href="{{route('etablissement.index')}}">
               <i class="bi bi-circle"></i><span>les Établissements</span>
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="{{route('departement.index')}}">
               <i class="bi bi-circle"></i><span>les Départements</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{{route('filiere.index')}}">
               <i class="bi bi-circle"></i><span>les Filières</span>
             </a>
           </li>
@@ -375,16 +363,19 @@
               <i class="bi bi-circle"></i><span>Users_In</span>
             </a>
           </li>
-          <li>
-            <a href="{{ route('evaluateur_ex.utilisateurs') }}">
-              <i class="bi bi-circle"></i><span>Users_Ex</span>
-            </a>
-          </li>
+        </li>
+        <li>
+          <a href="{{ route('evaluateur_ex.utilisateurs') }}">
+            <i class="bi bi-circle"></i><span>Users_Ex</span>
+          </a>
+        </li>
+        <!-- 
           <li>
             <a href="{{ route('admin') }}">
               <i class="bi bi-circle"></i><span>Admins</span>
             </a>
           </li>
+          -->
           <li>
             <a href="{{ route('champ') }}">
               <i class="bi bi-circle"></i><span>Champs</span>
@@ -533,12 +524,6 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
-<<<<<<< HEAD
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-
-=======
->>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
 </body>
 
 </html>
