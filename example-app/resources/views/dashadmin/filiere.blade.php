@@ -24,7 +24,7 @@
                           <i class="bi bi-plus-lg">ajouter</i>
                       </button>
                     </div>
-                    <table class="table datatable">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -182,7 +182,7 @@
         Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "{{ session('success') }}", // Encadrez la session('success') dans des guillemets
+            title: "{{ session('success') }}",
             showConfirmButton: false,
             timer: 3000,
         });
@@ -194,7 +194,7 @@
         Swal.fire({
             position: "top-end",
             icon: "error",
-            title: "{{ session('error') }}", // Encadrez la session('error') dans des guillemets
+            title: "{{ session('error') }}", 
             showConfirmButton: false,
             timer: 70000
         });

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\Homecontroller;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,9 +37,7 @@ Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
 });
 
 Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashadmin.dashboard');
-    })->name('dashadmin');
+    Route::get('/dashboard',  [Homecontroller::class, 'index'])->name('dashadmin');
     
     Route::get('/users', function () {
         return view('dashadmin.users');
@@ -106,17 +106,12 @@ Route::get('/filiere', [EducationController::class, 'indexFiliere'])->name('fili
 Route::put('/filiere/{id}', [EducationController::class, 'updateFiliere'])->name('filiere.update');
 Route::delete('/filiere/{id}', [EducationController::class, 'destroyFiliere'])->name('filiere.destroy');
 Route::post('/filiere', [EducationController::class, 'storeFiliere'])->name('filiere.store');
+Route::get('/evaluateur_in/utilisateurs', [AuthController::class, 'userInIndex'])->name('evaluateur_in.utilisateurs');
+Route::get('/evaluateur_ex/utilisateurs', [AuthController::class, 'userExIndex'])->name('evaluateur_ex.utilisateurs');
 });
 
 
    
     
 
-Route::middleware(['auth', 'role:evaluateur_in'])->group(function () {
-    Route::get('/evaluateur_in/utilisateurs', [AuthController::class, 'userInIndex'])->name('evaluateur_in.utilisateurs');
-});
-
-Route::middleware(['auth', 'role:evaluateur_ex'])->group(function () {
-    Route::get('/evaluateur_ex/utilisateurs', [AuthController::class, 'userExIndex'])->name('evaluateur_ex.utilisateurs');
-});
 

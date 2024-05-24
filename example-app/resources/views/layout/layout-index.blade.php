@@ -35,18 +35,8 @@
         </div>
         <div class="profile-dropdown">
             <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-<<<<<<< HEAD
-            <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit">Déconnexion</button>
-            </form>            
-            
-            {{-- <a href="{{route('logout')}}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Déconnexion</a> --}}
-=======
             <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>          
             <a href="{{route('logout')}}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
->>>>>>> 26398054e83410de69ee7472df3c3fe1ed9f21a1
         </div>
     </div>
 </nav>
