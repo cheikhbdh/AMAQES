@@ -6,8 +6,14 @@
   <link rel="stylesheet" href="{{ asset('assets/css/edit.css') }}">
 </head>
 <main id="main" class="main">
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('champ') }}">Les champs</a></li>
+        <li class="breadcrumb-item">les critères</li>
+    </ol>
+  </nav>
   <h1>Critères pour le champ : {{ $champ->name }}</h1>
-  <a href="{{ route('champ') }}">Retour à la liste des champs</a>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">

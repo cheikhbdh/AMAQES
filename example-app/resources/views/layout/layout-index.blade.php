@@ -41,12 +41,18 @@
     </div>
 </nav>
 @yield('content')
-<footer class="footer">
-    <div class="container">
-        <p>Restraunt &copy; all rights reserved</p>
-        <p>Developed by Dr/Abououbeidette</p>
+<footer id="footer" class="footer">
+    <div class="copyright">
+      Tous Droit Réservés &copy; 2024 <a href="https://amaqes.mr//"><strong><span>AMAQES</span></strong></a>. 
     </div>
-</footer>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Developper par <a href="http://supnum.mr/"><strong><span>SupNum</span></strong></a>
+    </div>
+  </footer><!-- End Footer -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

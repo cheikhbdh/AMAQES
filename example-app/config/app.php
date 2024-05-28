@@ -15,6 +15,15 @@ return [
     |
     */
 
+    'locale' => 'fr',
+    'fallback_locale' => 'en',
+
+    'locales' => [
+       'fr' => 'French',
+       'ar' => 'Arabic',
+],
+
+
     'name' => env('APP_NAME', 'Laravel'),
 
     /*

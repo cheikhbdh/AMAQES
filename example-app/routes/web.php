@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
-use App\Http\Controllers\Homecontroller;
+use App\Http\Controllers\InvitationController;
+
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,19 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
         return view('dashadmin.dashboard');
     })->name('dashadmin');
 
+    // routes/web.php
+Route::put('/profil/update', [AuthController::class, 'update_profil'])->name('profil.update');
+// web.php
+Route::put('/profile/update-password', [AuthController::class, 'updatePassword'])->name('profile.update-password');
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['fr', 'ar'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('setlocale');
+
+
     Route::get('/users', [AuthController::class, 'user'])->name('user');
 
     Route::get('/champs', function () {
@@ -62,6 +77,7 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
     })->name('profile');
 
 // web.php
+
 
 
 
@@ -86,6 +102,13 @@ Route::delete('/useradmin/{id}/supprimer', [AuthController::class, 'destroy_admi
 
 Route::get('/admin/utilisateurs', [AuthController::class, 'adminIndex'])->name('admin.utilisateurs');
 // routes/web.php
+Route::get('/invitation', [InvitationController::class, 'index'])->name('invitations.index');
+Route::post('/invitations', [InvitationController::class, 'store'])->name('invitations.store');
+Route::put('/invitations/{invitation}', [InvitationController::class, 'update'])->name('invitations.update');
+
+Route::get('invitations/{invitation}/invite', [InvitationController::class, 'invite'])->name('invitations.invite');
+Route::post('invitations/{invitation}/send', [InvitationController::class, 'sendInvitations'])->name('invitations.sendInvitations');
+
 
 
 Route::get('/institutions', [EducationController::class, 'indexInstitutions'])->name('institutions.index');

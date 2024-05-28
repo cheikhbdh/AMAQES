@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <main id="main" class="main">
-
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+        <li class="breadcrumb-item">les admins</li>
+    </ol>
+</nav>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -22,8 +27,17 @@
           @if(session('success'))
           <div class="alert alert-success">{{ session('success') }}</div>
           @endif
+          @if ($errors->any())
+          <div class="alert alert-danger">
+              <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+      @endif
           
-              <h5 class="card-title">Gestion des utilisateurs</h5>
+              <h5 class="card-title">Gestion des admins</h5>
               <!-- Button to open the modal -->
               <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 
@@ -31,15 +45,6 @@
               <div id="formModal" class="modal">
                   <div class="modal-content">
                       <span class="close">&times;</span>
-                      @if ($errors->any())
-                          <div class="alert alert-danger">
-                              <ul>
-                                  @foreach ($errors->all() as $error)
-                                      <li>{{ $error }}</li>
-                                  @endforeach
-                              </ul>
-                          </div>
-                      @endif
                       <form id="ajouterForm" action="{{ route('useradmin.ajouter') }}" method="POST">
                           @csrf
                           <label for="name">Nom:</label>
