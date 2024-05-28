@@ -1,12 +1,13 @@
 @extends('dashadmin.home')
 @section('content')
+
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>{{ __('messages.Dashboard') }}</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{route('dashadmin')}}">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{{route('dashadmin')}}">{{ __('messages.Dashboard') }}</a></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

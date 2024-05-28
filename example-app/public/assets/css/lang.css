@@ -1,0 +1,44 @@
+/* Styles généraux pour le mode RTL */
+body[dir="rtl"] {
+    direction: rtl;
+}
+
+/* Déplacer la sidebar à droite */
+body[dir="rtl"] .sidebar {
+    left: auto;
+    right: 0;
+}
+
+/* Ajuster le margin de .main pour le mode RTL */
+body[dir="rtl"] .main {
+    margin-left: 0;
+    margin-right: var(--sidebar-width);
+}
+
+/* Déplacer le header à gauche pour le mode RTL */
+body[dir="rtl"] .header {
+    left: 0;
+    right: auto;
+}
+
+/* Autres ajustements pour le header en mode RTL */
+body[dir="rtl"] .header .logo {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+body[dir="rtl"] .header .search-bar {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+body[dir="rtl"] .header .nav-item {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+/* .divider styles */
+.divider {
+    width: 10px; /* Réglez la largeur de l'espace selon vos besoins */
+    display: inline-block; /* Permet à l'élément de prendre seulement autant d'espace que nécessaire */
+}

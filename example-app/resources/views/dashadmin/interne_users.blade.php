@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <main id="main" class="main">
-
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+        <li class="breadcrumb-item">les évaluateur_interne</li>
+    </ol>
+</nav>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -23,7 +28,7 @@
           <div class="alert alert-success">{{ session('success') }}</div>
           @endif
           
-              <h5 class="card-title">Gestion des utilisateurs ytgh</h5>
+              <h5 class="card-title">Gestion des évaluateur_interne</h5>
               <!-- Button to open the modal -->
               <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 

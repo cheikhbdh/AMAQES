@@ -28,19 +28,23 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Requestlogin $request)
+    public function login(Request $request)
     {
         // Valider les données du formulaire
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-    
+
         // Vérifier l'authentification de l'utilisateur
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             $user = Auth::user();
-    
+
+            // Stocker le nom et l'email dans la session
+            $request->session()->put('user_name', $user->name);
+            $request->session()->put('user_email', $user->email);
+
             if ($user->role === 'admin') {
                 return redirect()->intended(route('dashadmin'));
             } elseif ($user->role === 'evaluateur_i') {
@@ -71,8 +75,57 @@ class AuthController extends Controller
 
     return redirect(route('login'));
 }
+
+
+public function updatePassword(Request $request)
+    {
+        // Validation des données
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // Vérifier que le mot de passe actuel est correct
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Le mot de passe actuel est incorrect.']);
+        }
+
+        // Mettre à jour le mot de passe
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        return redirect()->back()->with('success', 'Mot de passe mis à jour avec succès.');
+    }
     
-    
+public function update_profil(Request $request)
+    {
+        $user = Auth::user();
+        
+        // Validation des données
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|string|in:admin,evaluateur_i,evaluateur_e',
+        ]);
+
+        // Mise à jour des informations
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->role = $request->input('role');
+        $user->save();
+
+        // Mettre à jour les données de session
+        session([
+            'user_name' => $user->name,
+            'user_email' => $user->email,
+            'user_role' => $user->role,
+        ]);
+
+        return redirect()->back()->with('success', 'Profil mis à jour avec succès.');
+    }
+
     public function updateRole(Request $request, $userId)
     {
         $request->validate([
@@ -355,14 +408,28 @@ class AuthController extends Controller
 
     public function adminIndex()
     {
-        $users = User::where('role', 'admin')->get();
-        return view('dashadmin.admin_users', compact('users'));
+
+   $currentUserId = Auth::id();
+    
+    // Récupérer les utilisateurs en excluant l'utilisateur connecté et en filtrant par rôle 'admin'
+    $users = User::where('id', '!=', $currentUserId)
+                      ->where('role', 'admin')
+                      ->get();
+
+    return view('dashadmin.admin_users', compact('users'));
+
     }
 
     public function user()
     {
-        $utilisateurs = User::all();
-        return view('dashadmin.users', compact('utilisateurs'));
+         // Récupérer l'ID de l'utilisateur connecté
+    $currentUserId = Auth::id();
+    
+    // Récupérer les utilisateurs en excluant l'utilisateur connecté
+    $utilisateurs = User::where('id', '!=', $currentUserId)->get();
+
+    return view('dashadmin.users', compact('utilisateurs'));
+
     }
 
     public function userInIndex()
@@ -499,11 +566,14 @@ class AuthController extends Controller
             }
         }
 
-
-
-
-
-
+        public function handle($request, Closure $next)
+        {
+            if (Session::has('locale')) {
+                App::setLocale(Session::get('locale'));
+            }
+    
+            return $next($request);
+        }
 
 
 }

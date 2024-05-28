@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <link rel="stylesheet" href="{{ asset('assets/css/lang.css') }}">
+  <title>{{ __('messages.Home') }}</title>  
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  @stack('styles')
 
   <!-- Favicons -->
   <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
@@ -47,8 +48,8 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="#" class="logo d-flex align-items-center">
-        <img src="{{ asset('assets/images/amaqes.png') }}" alt="Logo" width="20%">
-        <span class="d-none d-lg-block" style="font-size: 12px;">Autorité Mauritanienne d'Assurance <br>Qualité L'enseignemt Superieur</span>
+        <img src="{{ asset('assets/img/amaqes2.png') }}" alt="Logo" width="20%">
+        <span class="d-none d-lg-block" style="font-size: 12px;">{{ __('messages.logo1') }}<br>{{ __('messages.logo2') }}</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -68,26 +69,23 @@
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
-        <div class="row">
-          <div class="col-md-2 col-md-offset-6 text-right">
-              <strong>Select Language: </strong>
-          </div>
-          <div class="col-md-4">
-              <select class="form-control changeLang" name="languge" id="languge">
-                  <option value="en">English</option>
-                  <option value="fr">France</option>
-                  <option value="ar">Arabic</option>
-              </select>
-          </div>
-      </div>
-
         <li class="nav-item dropdown">
-
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ __('messages.Langue') }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'fr']) }}">Français</a></li>
+              <li><a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'ar']) }}">العربية</a></li>
+          </ul>
+      </li>
+      <!-- Insérer un espace ici -->
+      <div class="divider"></div>
+      <li class="nav-item dropdown">
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
+              <i class="bi bi-bell"></i>
+              <span class="badge bg-primary badge-number">4</span>
           </a><!-- End Notification Icon -->
-
+      </li>
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
               You have 4 new notifications
@@ -225,23 +223,27 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            @if(session('user_email')=='Mhaless@hotmail.com')
+              <img src="assets/img/amaqes.jpg" alt="Profile" class="rounded-circle">
+@else
+<img src="assets/img/amaqes2.png" alt="Profile" class="rounded-circle">
+@endif
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ session('user_name') }}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>{{ session('user_name') }}</h6>
+              <span>Admin</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('profile') }}">
                 <i class="bi bi-person"></i>
-                <span>My Profile</span>
+                <span>Mon Profile</span>
               </a>
             </li>
             <li>
@@ -292,93 +294,92 @@
       <li class="nav-item">
         <a class="nav-link " href="{{ route('dashadmin') }}">
           <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span>{{ __('messages.Dashboard') }}</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-menu-button-wide"></i><span>{{ __('messages.Components') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
             <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>Alerts</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Alerts') }}</span>
             </a>
           </li>
           
          
           <li>
-            <a href="components-tooltips.html">
-              <i class="bi bi-circle"></i><span>Tooltips</span>
+            <a href="{{route('invitations.index')}}">
+              <i class="bi bi-circle"></i><span>{{ __('messages.invitations') }}</span>
             </a>
           </li>
         </ul>
       </li><!-- End Components Nav -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Gestion de l'éducation</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-journal-text"></i><span>{{ __('messages.Gestions EES') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
             <a href="{{route('institutions.index')}}">
-              <i class="bi bi-circle"></i><span>les institutions</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les institutions') }}</span>
             </a>
           </li>
           <li>
             <a href="{{route('etablissement.index')}}">
-              <i class="bi bi-circle"></i><span>les Établissements</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les Établissements') }}</span>
             </a>
           </li>
           <li>
             <a href="{{route('departement.index')}}">
-              <i class="bi bi-circle"></i><span>les Départements</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les Départements') }}</span>
             </a>
           </li>
           <li>
             <a href="{{route('filiere.index')}}">
-              <i class="bi bi-circle"></i><span>les Filières</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les Filières') }}</span>
             </a>
           </li>
         </ul>
       </li><!-- End Forms Nav -->
-
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Gestions</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-layout-text-window-reverse"></i><span>{{ __('messages.Gestions') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
             <a href="{{ route('user') }}">
-              <i class="bi bi-circle"></i><span>Users</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les utilisateurs') }}</span>
             </a>
           </li>
           <li>
             <a href="{{ route('admin.utilisateurs') }}">
-              <i class="bi bi-circle"></i><span>Users_Admins</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les admins') }}</span>
             </a>
           </li>
           <li>
             <a href="{{ route('evaluateur_in.utilisateurs') }}">
-              <i class="bi bi-circle"></i><span>Users_In</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Les évaluateur_interne') }}</span>
             </a>
           </li>
         </li>
         <li>
           <a href="{{ route('evaluateur_ex.utilisateurs') }}">
-            <i class="bi bi-circle"></i><span>Users_Ex</span>
+            <i class="bi bi-circle"></i><span>{{ __('messages.Les évaluateur_externe') }}</span>
           </a>
         </li>
         <!-- 
           <li>
-            <a href="{{ route('admin') }}">
+            <a href="">
               <i class="bi bi-circle"></i><span>Admins</span>
             </a>
           </li>
           -->
           <li>
             <a href="{{ route('champ') }}">
-              <i class="bi bi-circle"></i><span>Champs</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.Champs') }}</span>
             </a>
           </li>
         </ul>
@@ -430,54 +431,54 @@
         </ul>
       </li><!-- End Icons Nav -->
 
-      <li class="nav-heading">Pages</li>
+      <li class="nav-heading">{{ __('messages.Pages') }}</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ route('profile') }}">
           <i class="bi bi-person"></i>
-          <span>Profile</span>
+          <span>{{ __('messages.Profile') }}</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
+          <span>{{ __('messages.F.A.Q') }}</span>
         </a>
       </li><!-- End F.A.Q Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-envelope"></i>
-          <span>Contact</span>
+          <span>{{ __('messages.Contact') }}</span>
         </a>
       </li><!-- End Contact Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-card-list"></i>
-          <span>Register</span>
+          <span>{{ __('messages.Register') }}</span>
         </a>
       </li><!-- End Register Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
+          <span>{{ __('messages.Login') }}</span>
         </a>
       </li><!-- End Login Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
+          <span>{{ __('messages.Error 404') }}</span>
         </a>
       </li><!-- End Error 404 Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
+          <span>{{ __('messages.Blank') }}</span>
         </a>
       </li><!-- End Blank Page Nav -->
 
@@ -494,14 +495,14 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      Tous Droit Réservés &copy; 2024 <a href="https://amaqes.mr//"><strong><span>AMAQES</span></strong></a>. 
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      Developper par <a href="http://supnum.mr/"><strong><span>SupNum</span></strong></a>
     </div>
   </footer><!-- End Footer -->
 

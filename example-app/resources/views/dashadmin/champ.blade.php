@@ -7,7 +7,12 @@
 
 </head>
 <main id="main" class="main">
-
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+        <li class="breadcrumb-item">les champs</li>
+    </ol>
+</nav>
 
   <section class="section">
     <div class="row">

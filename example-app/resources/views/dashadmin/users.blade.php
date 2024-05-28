@@ -7,7 +7,12 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <main id="main" class="main">
-
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+        <li class="breadcrumb-item">les utilisateurs</li>
+    </ol>
+</nav>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">

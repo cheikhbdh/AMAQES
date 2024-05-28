@@ -126,6 +126,9 @@
     </div>
 </div>
 
+    
+@endsection
+
 <script>
     var addInstitutionBtn = document.getElementById('addInstitutionBtn');
     var addInstitutionModal = document.getElementById('addInstitutionModal');
