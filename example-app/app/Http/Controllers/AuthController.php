@@ -574,8 +574,27 @@ public function update_profil(Request $request)
     
             return $next($request);
         }
+    
+        public function getInvitations()
+    {
+        // Récupérer les invitations dont la date de fin est inférieure à la date actuelle
+        $invitations = Invitation::where('date_fin', '<', Carbon::now())->get();
 
+        // Initialiser un tableau pour stocker les notifications
+        $notifications = [];
 
+        // Parcourir les invitations et créer des notifications
+        foreach ($invitations as $invitation) {
+            $timeAgo = Carbon::parse($invitation->date_fin)->diffForHumans();
+            $notifications[] = [
+                'nom_de_campagne' => $invitation->nom,
+                'time_ago' => $timeAgo
+            ];
+        }
+
+        // Renvoyer la vue home avec les données de notification
+        return view('dashadmin.home', ['notifications' => $notifications]);
+    }
 }
 
 

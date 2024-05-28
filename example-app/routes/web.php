@@ -110,6 +110,9 @@ Route::get('invitations/{invitation}/invite', [InvitationController::class, 'inv
 Route::post('invitations/{invitation}/send', [InvitationController::class, 'sendInvitations'])->name('invitations.sendInvitations');
 
 
+Route::get('/notifications/invitations', [AuthController::class, 'getInvitations'])->name('notifications.invitations');
+
+
 
 Route::get('/institutions', [EducationController::class, 'indexInstitutions'])->name('institutions.index');
 Route::post('/institutions', [EducationController::class, 'storeInstitution'])->name('institutions.store');
