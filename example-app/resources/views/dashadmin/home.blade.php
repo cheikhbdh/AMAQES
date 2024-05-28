@@ -279,14 +279,31 @@
           </li>
           <li>
             <a href="{{route('departement.index')}}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.Les Départements') }}</span>
+              <i class="bi bi-circle"></i><span> Départements</span>
             </a>
           </li>
-          <li>
-            <a href="{{route('filiere.index')}}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.Les Filières') }}</span>
-            </a>
-          </li>
+            <li class="nav-item1">
+              <a href="#" data-bs-target="#filiere-nav" data-bs-toggle="collapse">
+                <i class="bi bi-circle"></i><span>Filières</span><i class="bi bi-chevron-down ms-auto"></i>
+              </a>
+              <ul id="filiere-nav" class="nav-content collapse" data-bs-parent="#components-nav"style="padding-left: 15px;">
+                <li>
+                  <a href="{{route('filiere.index')}}">
+                    <i class="bi bi-circle"></i><span>Licence</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{route('filiere.indexM')}}">
+                    <i class="bi bi-circle"></i><span>Master</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{route('filiere.indexD')}}">
+                    <i class="bi bi-circle"></i><span>Doctorat</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
         </ul>
       </li><!-- End Forms Nav -->
       <li class="nav-item">

@@ -180,51 +180,141 @@ public function destroyDepartement($id)
     }
     public function updateFiliere(Request $request, $id)
     {
-        // Validation des données du formulaire
         $request->validate([
             'nom' => 'required|string|max:255',
-            'departements' => 'nullable|exists:départements,id', // Permettre institution d'être null et vérifier qu'elle existe
+            'departements' => 'nullable|exists:départements,id', 
+            'date_habilitation' => 'nullable|date',
+            'date_accreditation' => 'nullable|date',
+            'date_fin_accreditation' => 'nullable|date',
         ]);
     
         try {
-            // Récupérer l'établissement à mettre à jour
             $filiere = Filière::findOrFail($id);
-            
-            // Mettre à jour les champs de l'établissement
             $filiere->nom = $request->nom;
-            $filiere->départements_id  = $request->departements; // Permettre null ici
+            $filiere->départements_id = $request->departements; // Permettre null ici
+            $filiere->date_habilitation = $request->date_habilitation;
+            $filiere->date_accreditation = $request->date_accreditation;
+            $filiere->date_fin_accreditation = $request->date_fin_accreditation;
     
             // Sauvegarder les modifications
             $filiere->save();
     
             // Redirection avec un message de succès
-            return redirect()->route('filiere.index')->with('success', 'la Filière mis à jour avec succès!');
+            return redirect()->route('filiere.index')->with('success', 'La filière a été mise à jour avec succès!');
         } catch (\Exception $e) {
             // Redirection avec un message d'erreur en cas d'échec
             return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la mise à jour de la Filière. '.$e->getMessage());
         }
     }
+    
     public function storeFiliere(Request $request)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'departements' => 'nullable|exists:départements,id',
+            'date_habilitation' => 'nullable|date',
+            'date_accreditation' => 'nullable|date',
+            'date_fin_accreditation' => 'nullable|date|after_or_equal:date_accreditation',
         ]);
+    
+        // Ensure date_fin_accreditation is 4 years after date_accreditation
+        if ($request->date_accreditation) {
+            $date_accreditation = new \DateTime($request->date_accreditation);
+            $date_fin_accreditation = new \DateTime($request->date_fin_accreditation);
+            $date_accreditation->modify('+4 years');
+            if ($date_fin_accreditation < $date_accreditation) {
+                return redirect()->back()->withErrors(['date_fin_accreditation' => 'La date de fin d\'accréditation doit être supérieure à la date d\'accréditation de 4 ans']);
+            }
+        }
+    
         $filiere = new Filière();
         $filiere->nom = $validated['nom'];
-        $filiere->départements_id = $validated['departements']; 
+        $filiere->départements_id = $validated['departements'];
+        $filiere->date_habilitation = $validated['date_habilitation'];
+        $filiere->date_accreditation = $validated['date_accreditation'];
+        $filiere->date_fin_accreditation = $validated['date_fin_accreditation'];
         $filiere->save();
-
-        return redirect()->route('filiere.index')->with('success', 'la Filière ajouté avec succès');
+    
+        return redirect()->route('filiere.index')->with('success', 'La filière a été ajoutée avec succès');
     }
-public function destroyFiliere($id)
+    
+    public function destroyFiliere($id)
     {
         try {
             $departement = Filière::findOrFail($id);
             $departement->delete();
-            return redirect()->route('filiere.index')->with('success', 'La Filièrea été supprimée avec succès.');
+            return redirect()->route('filiere.index')->with('success', 'La filière a été supprimée avec succès.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de la Filière. Veuillez réessayer.'.$id);
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de la filière. Veuillez réessayer.'.$id);
+        }
+    }
+    public function indexFiliereD()
+    {
+        $filieres = Filière::with('departement.etablissement.institution')
+                            ->where('doctorat', 1)  
+                            ->get();
+        $filieresChoix = Filière::where('master', 1)
+                            ->where('doctorat', 0)
+                            ->get();
+        return view('dashadmin.doctora', compact('filieres', 'filieresChoix'));
+    }
+    public function indexFiliereM()
+    {
+        $filieres = Filière::with('departement.etablissement.institution') ->where('master', 1)->get();
+        $filieresChoix = Filière::with('departement.etablissement.institution') ->where('master', 0)->get();
+        return view('dashadmin.master', compact('filieres','filieresChoix'));
+    }
+    public function storeFiliereD(Request $request)
+    {
+        $request->validate([
+            'filiere' => 'exists:filières,id', // Permettre institution d'être null et vérifier qu'elle existe
+        ]);
+        try {
+            $filiere = Filière::findOrFail($request->filiere);
+            $filiere->doctorat = 1;
+            $filiere->save();
+            return redirect()->route('filiere.indexD')->with('success', 'La filière a été ajoutée aux filières de doctorat.');
+        } catch (\Exception $e) {
+            // Redirection avec un message d'erreur en cas d'échec
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de l\'ajout de la filière aux filières de doctorat.');
+        }
+    }
+    public function storeFiliereM(Request $request)
+    {
+        $request->validate([
+            'filiere' => 'exists:filières,id', // Permettre institution d'être null et vérifier qu'elle existe
+        ]);
+        try {
+            $filiere = Filière::findOrFail($request->filiere);
+            $filiere->master = 1;
+            $filiere->save();
+            return redirect()->route('filiere.indexM')->with('success', 'La filière a été ajoutée aux filières de master.');
+        } catch (\Exception $e) {
+            // Redirection avec un message d'erreur en cas d'échec
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de l\'ajout de la filière aux filières de master.'.$e->getMessage());
+        }
+    }
+    public function destroyFiliereD($id)
+    {
+        try {
+            $filiere = Filière::findOrFail($id);
+            $filiere->doctorat=0;
+            $filiere->save();
+            return redirect()->route('filiere.indexD')->with('success', 'La filière a été supprimée avec succès des filières de doctorat.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de la filière. Veuillez réessayer.'.$id);
+        }
+    }
+    public function destroyFiliereM($id)
+    {
+        try {
+            $filiere = Filière::findOrFail($id);
+            $filiere->master=0;
+            $filiere->doctorat=0;
+            $filiere->save();
+            return redirect()->route('filiere.indexM')->with('success', 'La filière a été supprimée avec succès des filières de master.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de la filière. Veuillez réessayer.'.$id);
         }
     }
 }

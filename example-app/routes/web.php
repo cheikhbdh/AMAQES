@@ -131,6 +131,12 @@ Route::get('/filiere', [EducationController::class, 'indexFiliere'])->name('fili
 Route::put('/filiere/{id}', [EducationController::class, 'updateFiliere'])->name('filiere.update');
 Route::delete('/filiere/{id}', [EducationController::class, 'destroyFiliere'])->name('filiere.destroy');
 Route::post('/filiere', [EducationController::class, 'storeFiliere'])->name('filiere.store');
+Route::get('/filiereD', [EducationController::class, 'indexFiliereD'])->name('filiere.indexD');
+Route::delete('/filiereD/{id}', [EducationController::class, 'destroyFiliereD'])->name('filiere.destroyD');
+Route::post('/filiereD', [EducationController::class, 'storeFiliereD'])->name('filiere.storeD');
+Route::get('/filiereM', [EducationController::class, 'indexFiliereM'])->name('filiere.indexM');
+Route::post('/filiereM', [EducationController::class, 'storeFiliereM'])->name('filiere.storeM');
+Route::delete('/filiereM/{id}', [EducationController::class, 'destroyFiliereM'])->name('filiere.destroyM');
 
 
 

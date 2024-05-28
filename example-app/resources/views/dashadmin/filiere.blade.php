@@ -24,7 +24,7 @@
                           <i class="bi bi-plus-lg">ajouter</i>
                       </button>
                     </div>
-                    <table class="table datatable">
+                    <table class="table table-striped">
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -45,15 +45,30 @@
                           <td>{{ $filiere->departement && $filiere->departement->etablissement ? $filiere->departement->etablissement->nom :'N/A' }}</td>
                           <td>{{ $filiere->departement && $filiere->departement->etablissement && $filiere->departement->etablissement->institution? $filiere->departement->etablissement->institution->nom :'N/A' }}</td>
                           <td>
-                            <button type="button" class="btn btn-sm transparent-button mr-2 editButton"
+                            <button type="button" class="btn btn-lg transparent-button mr-2 showButton"
                             data-id="{{ $filiere->id }}"
                             data-nom="{{ $filiere->nom }}"
                             data-dep-id="{{ $filiere->departement ? $filiere->departement->id : null }}"
-                            data-dep-nom="{{ $filiere->departement ? $filiere->departement->nom : 'N/A' }}">
-                            <i class="bi bi-pencil-fill text-warning"></i> Modifier
+                            data-dep-nom="{{ $filiere->departement ? $filiere->departement->nom : 'N/A' }}"
+                            data-eta-nom="{{ $filiere->departement && $filiere->departement->etablissement ? $filiere->departement->etablissement->nom :'N/A' }}"
+                            data-ins-nom="{{ $filiere->departement && $filiere->departement->etablissement && $filiere->departement->etablissement->institution ? $filiere->departement->etablissement->institution->nom :'N/A' }}"
+                            data-date-habilitation="{{ $filiere->date_habilitation }}"
+                            data-date-accreditation="{{ $filiere->date_accreditation }}"
+                            data-date-fin-accreditation="{{ $filiere->date_fin_accreditation }}">
+                            <i class="bi bi-eye-fill text-primary"></i> 
+                            </button>
+                            <button type="button" class="btn btn-lg transparent-button mr-2 editButton"
+                            data-id="{{ $filiere->id }}"
+                            data-nom="{{ $filiere->nom }}"
+                            data-dep-id="{{ $filiere->departement ? $filiere->departement->id : null }}"
+                            data-dep-nom="{{ $filiere->departement ? $filiere->departement->nom : 'N/A' }}"
+                            data-date-habilitation="{{ $filiere->date_habilitation }}"
+                            data-date-accreditation="{{ $filiere->date_accreditation }}"
+                            data-date-fin-accreditation="{{ $filiere->date_fin_accreditation }}">
+                            <i class="bi bi-pencil-fill text-warning"></i> 
                         </button>
-                            <button type="button" class="btn btn-sm transparent-button mr-2 deleteButton" data-toggle="modal" data-target="#confirmDeleteModal" data-filiere-id="{{$filiere->id}}">
-                                <i class="bi bi-trash-fill text-danger"></i> Supprimer
+                            <button type="button" class="btn btn-lg transparent-button mr-2 deleteButton" data-toggle="modal" data-target="#confirmDeleteModal" data-filiere-id="{{$filiere->id}}">
+                                <i class="bi bi-trash-fill text-danger"></i>
                             </button>
                           </td>
                         </tr>
@@ -99,6 +114,9 @@
         var nom = $(this).data('nom').replace(/'/g, "&apos;");
         var depId = $(this).data('dep-id');
         var depNom = $(this).data('dep-nom').replace(/'/g, "&apos;");
+        var dateHabilitation = $(this).data('date-habilitation');
+        var dateAccreditation = $(this).data('date-accreditation');
+        var dateFinAccreditation = $(this).data('date-fin-accreditation');
 
         var depList = "<select id='depSelect' name='departements' class='form-control'>";
           if (depId) {
@@ -110,7 +128,6 @@
         depList += `<option value='{{ $dep->id }}'>{{ $dep->nom }}</option>`;
         @endforeach
         depList += "</select>";
-       
 
         Swal.fire({
             title: 'Modifier Filiére',
@@ -123,8 +140,20 @@
                         <input type='text' class='form-control' id='nomInput' name='nom' value='${nom}'>
                     </div>
                     <div class='form-group'>
-                        <label for='etablissementSelect'>departement:</label>
+                        <label for='depSelect'>Département:</label>
                         ${depList}
+                    </div>
+                    <div class='form-group'>
+                        <label for='dateHabilitationInput'>Date d'habilitation:</label>
+                        <input type='date' class='form-control' id='dateHabilitationInput' name='date_habilitation' value='${dateHabilitation}'>
+                    </div>
+                    <div class='form-group'>
+                        <label for='dateAccreditationInput'>Date d'accréditation:</label>
+                        <input type='date' class='form-control' id='dateAccreditationInput' name='date_accreditation' value='${dateAccreditation}'>
+                    </div>
+                    <div class='form-group'>
+                        <label for='dateFinAccreditationInput'>Date de fin d'accréditation:</label>
+                        <input type='date' class='form-control' id='dateFinAccreditationInput' name='date_fin_accreditation' value='${dateFinAccreditation}'>
                     </div>
                 </form>
             `,
@@ -133,10 +162,20 @@
             confirmButtonText: 'Modifier',
             cancelButtonText: 'Annuler',
             preConfirm: () => {
-                document.getElementById('editForm').submit();
+                var dateAcc = new Date(document.getElementById('dateAccreditationInput').value);
+                var dateFinAcc = new Date(document.getElementById('dateFinAccreditationInput').value);
+                var validDates = dateAcc.setFullYear(dateAcc.getFullYear() + 4) <= dateFinAcc;
+                
+                if (!validDates) {
+                    Swal.showValidationMessage('La date de fin d\'accréditation doit être supérieure à la date d\'accréditation de 4 ans');
+                    return false;
+                } else {
+                    document.getElementById('editForm').submit();
+                }
             }
         });
     });
+
     $(document).ready(function () {
         $('.deleteButton').on('click', function () {
             var filiereId = $(this).data('filiere-id');
@@ -145,6 +184,7 @@
             $('#confirmDeleteModal').modal('show');
         });
     });
+
   $('#addDepartementBtn').on('click', function () {
     var depList = "<select id='depSelect' name='departements' class='form-control'>";
     @foreach($departements as $dep)
@@ -162,8 +202,20 @@
                     <input type='text' class='form-control' id='nomInput' name='nom' required>
                 </div>
                 <div class='form-group'>
-                    <label for='depSelect'>Departement:</label>
+                    <label for='depSelect'>Département:</label>
                     ${depList}
+                </div>
+                <div class='form-group'>
+                    <label for='dateHabilitationInput'>Date d'habilitation:</label>
+                    <input type='date' class='form-control' id='dateHabilitationInput' name='date_habilitation'>
+                </div>
+                <div class='form-group'>
+                    <label for='dateAccreditationInput'>Date d'accréditation:</label>
+                    <input type='date' class='form-control' id='dateAccreditationInput' name='date_accreditation'>
+                </div>
+                <div class='form-group'>
+                    <label for='dateFinAccreditationInput'>Date de fin d'accréditation:</label>
+                    <input type='date' class='form-control' id='dateFinAccreditationInput' name='date_fin_accreditation'>
                 </div>
             </form>
         `,
@@ -172,17 +224,72 @@
         confirmButtonText: 'Ajouter',
         cancelButtonText: 'Annuler',
         preConfirm: () => {
-            document.getElementById('addForm').submit();
+            var dateAcc = new Date(document.getElementById('dateAccreditationInput').value);
+            var dateFinAcc = new Date(document.getElementById('dateFinAccreditationInput').value);
+            var validDates = dateAcc.setFullYear(dateAcc.getFullYear() + 4) <= dateFinAcc;
+
+            if (!validDates) {
+                Swal.showValidationMessage('La date de fin d\'accréditation doit être supérieure à la date d\'accréditation de 4 ans');
+                return false;
+            } else {
+                document.getElementById('addForm').submit();
+            }
         }
     });
 });
+$('.showButton').on('click', function () {
+    var nom = $(this).data('nom');
+    var depNom = $(this).data('dep-nom');
+    var etaNom = $(this).data('eta-nom');
+    var insNom = $(this).data('ins-nom');
+    var dateHabilitation = $(this).data('date-habilitation');
+    var dateAccreditation = $(this).data('date-accreditation');
+    var dateFinAccreditation = $(this).data('date-fin-accreditation');
+
+    Swal.fire({
+        title: 'Détails de la Filière',
+        html: `
+            <div class='form-group'>
+                <label>Nom:</label>
+                <p>${nom}</p>
+            </div>
+            <div class='form-group'>
+                <label>Département:</label>
+                <p>${depNom}</p>
+            </div>
+            <div class='form-group'>
+                <label>Établissement:</label>
+                <p>${etaNom}</p>
+            </div>
+            <div class='form-group'>
+                <label>Institution:</label>
+                <p>${insNom}</p>
+            </div>
+            <div class='form-group'>
+                <label>Date d'habilitation:</label>
+                <p>${dateHabilitation}</p>
+            </div>
+            <div class='form-group'>
+                <label>Date d'accréditation:</label>
+                <p>${dateAccreditation}</p>
+            </div>
+            <div class='form-group'>
+                <label>Date de fin d'accréditation:</label>
+                <p>${dateFinAccreditation}</p>
+            </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Fermer'
+    });
+});
+
 </script> 
 @if(session('success'))
     <script>
         Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "{{ session('success') }}", // Encadrez la session('success') dans des guillemets
+            title: "{{ session('success') }}",
             showConfirmButton: false,
             timer: 3000,
         });
@@ -194,7 +301,7 @@
         Swal.fire({
             position: "top-end",
             icon: "error",
-            title: "{{ session('error') }}", // Encadrez la session('error') dans des guillemets
+            title: "{{ session('error') }}", 
             showConfirmButton: false,
             timer: 70000
         });

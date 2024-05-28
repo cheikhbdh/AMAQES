@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->unsignedBigInteger('institution_id')->nullable();
-            $table->foreignId('filières_id')->default(1)->constrained('filières')->onDelete('cascade');
+        Schema::table('filières', function (Blueprint $table) {
+            $table->boolean('lessence')->default(1);
+            $table->boolean('master')->default(0);
+            $table->boolean('doctorat')->default(0);
 
         });
     }
@@ -24,8 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('filières', function (Blueprint $table) {
+         
         });
     }
 };
