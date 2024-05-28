@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('champs', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamp('name_verified_at')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->unsignedBigInteger('institution_id')->nullable();
+            $table->foreignId('filières_id')->default(1)->constrained('filières')->onDelete('cascade');
+
         });
     }
 
@@ -25,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('champs');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

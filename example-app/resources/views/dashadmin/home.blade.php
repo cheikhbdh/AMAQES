@@ -269,14 +269,14 @@
             </li>
 
             <li>
-              
-              <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-            </li>
-
-          </ul>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="dropdown-item d-flex align-items-center">
+                      <i class="bi bi-box-arrow-right"></i>
+                    <span><button type="submit" style="border: none; background: none; padding: 0; font: inherit; cursor: pointer;">Déconnexion</button></span>
+                   
+                  </a>
+                </form>  
         </li>
 
       </ul>
@@ -302,8 +302,8 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>Alerts</span>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Campagne</span>
             </a>
           </li>
           
@@ -315,7 +315,6 @@
           </li>
         </ul>
       </li><!-- End Components Nav -->
-
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Gestion de l'éducation</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -323,24 +322,41 @@
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
             <a href="{{route('institutions.index')}}">
-              <i class="bi bi-circle"></i><span>les institutions</span>
+              <i class="bi bi-circle"></i><span>Institutions</span>
             </a>
           </li>
           <li>
             <a href="{{route('etablissement.index')}}">
-              <i class="bi bi-circle"></i><span>les Établissements</span>
+              <i class="bi bi-circle"></i><span>Établissements</span>
             </a>
           </li>
           <li>
             <a href="{{route('departement.index')}}">
-              <i class="bi bi-circle"></i><span>les Départements</span>
+              <i class="bi bi-circle"></i><span> Départements</span>
             </a>
           </li>
-          <li>
-            <a href="{{route('filiere.index')}}">
-              <i class="bi bi-circle"></i><span>les Filières</span>
-            </a>
-          </li>
+            <li class="nav-item1">
+              <a href="#" data-bs-target="#filiere-nav" data-bs-toggle="collapse">
+                <i class="bi bi-circle"></i><span>Filières</span><i class="bi bi-chevron-down ms-auto"></i>
+              </a>
+              <ul id="filiere-nav" class="nav-content collapse" data-bs-parent="#components-nav"style="padding-left: 15px;">
+                <li>
+                  <a href="{{route('filiere.index')}}">
+                    <i class="bi bi-circle"></i><span>Licence</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{route('filiere.indexM')}}">
+                    <i class="bi bi-circle"></i><span>Master</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{route('filiere.indexD')}}">
+                    <i class="bi bi-circle"></i><span>Doctorat</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
         </ul>
       </li><!-- End Forms Nav -->
 
@@ -364,16 +380,19 @@
               <i class="bi bi-circle"></i><span>Users_In</span>
             </a>
           </li>
-          <li>
-            <a href="{{ route('evaluateur_ex.utilisateurs') }}">
-              <i class="bi bi-circle"></i><span>Users_Ex</span>
-            </a>
-          </li>
+        </li>
+        <li>
+          <a href="{{ route('evaluateur_ex.utilisateurs') }}">
+            <i class="bi bi-circle"></i><span>Users_Ex</span>
+          </a>
+        </li>
+        <!-- 
           <li>
             <a href="{{ route('admin') }}">
               <i class="bi bi-circle"></i><span>Admins</span>
             </a>
           </li>
+          -->
           <li>
             <a href="{{ route('champ') }}">
               <i class="bi bi-circle"></i><span>Champs</span>

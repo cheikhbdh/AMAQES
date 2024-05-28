@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('champs', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamp('name_verified_at')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::table('filières', function (Blueprint $table) {
+            $table->boolean('lessence')->default(1);
+            $table->boolean('master')->default(0);
+            $table->boolean('doctorat')->default(0);
+
         });
     }
 
@@ -25,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('champs');
+        Schema::table('filières', function (Blueprint $table) {
+         
+        });
     }
 };

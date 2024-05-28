@@ -23,7 +23,7 @@
           <div class="alert alert-success">{{ session('success') }}</div>
           @endif
           
-              <h5 class="card-title">Gestion des utilisateurs</h5>
+              <h5 class="card-title">Gestion des utilisateurs in</h5>
               <!-- Button to open the modal -->
               <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 
@@ -40,7 +40,7 @@
                               </ul>
                           </div>
                       @endif
-                      <form id="ajouterForm" action="{{ route('useradmin.ajouter') }}" method="POST">
+                      <form id="ajouterForm" action="{{ route('store_userEx') }}" method="POST">
                           @csrf
                           <label for="name">Nom:</label>
                           <input type="text" id="name" name="name" required>
@@ -56,7 +56,7 @@
                           <br><br>
                           <label for="role">Rôle:</label>
                           <select id="role" name="role" class="form-control" required>
-                              <option value="admin">admin</option>
+                            <option value="evaluateur_e">évaluateur_Ex</option>
                           </select>
                           <br><br>
                           <button type="submit" class="btn btn-success">Soumettre</button>
@@ -82,7 +82,7 @@
                         <button class="btn btn-info modifierBtn" data-id="{{ $user->id }}">Modifier</button>
                       </td>
                       <td>
-                        <form action="{{ route('utilisateur.supprimer', $user->id) }}" method="POST" class="supprimerForm">
+                        <form action="{{ route('destroy_userEx', $user->id) }}" method="POST" class="supprimerForm">
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -119,7 +119,7 @@
                 <br><br>
                 <label for="editRole">Rôle:</label>
                 <select id="editRole" name="role" class="form-control" required>
-                    <option value="admin">admin</option>
+                  <option value="evaluateur_e">évaluateur_Ex</option>
                 </select>
                 <br><br>
                 <button type="submit" class="btn btn-success">Modifier</button>
@@ -178,7 +178,7 @@
             document.getElementById('editName').value = name;
             document.getElementById('editEmail').value = email;
             document.getElementById('editRole').value = role;
-            document.getElementById('editForm').action = "/useradmin/" + userId + "/modifier"; // Set the action of the form with user ID
+            document.getElementById('editForm').action = "/userEx/" + userId + "/modifier"; // Set the action of the form with user ID
             editModal.style.display = "block";
         }
 

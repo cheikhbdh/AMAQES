@@ -147,7 +147,7 @@
         function openEditModal(champId, name) {
             document.getElementById('editChampId').value = champId;
             document.getElementById('editName').value = name;
-            document.getElementById('editForm').action = "/champ/" + champId + "/modifier"; // Set the action of the form with user ID
+            document.getElementById('editForm').action = "/champs/" + champId + "/modifier"; // Set the action of the form with user ID
             editModal.style.display = "block";
         }
 

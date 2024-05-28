@@ -4,12 +4,12 @@
 
     <div class="pagetitle">
         <div class="d-flex justify-content-between align-items-center">
-            <h1>les Établissements</h1>
+            <h1>Les Établissements</h1>
         </div>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
-                <li class="breadcrumb-item">les Établissements</li>
+                <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">Dashboard</a></li>
+                <li class="breadcrumb-item">Les Établissements</li>
             </ol>
         </nav>
     </div>
@@ -22,7 +22,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Tableau des établissements</h5>
                         <button type="button" class="btn btn-primary btn-sm" id="addEtablissementBtn">
-                            <i class="bi bi-plus-lg">ajouter</i>
+                            <i class="bi bi-plus-lg">Ajouter</i>
                         </button>
                     </div>
                     <table class="table table-striped">
@@ -82,7 +82,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <form action="{{ route('etablissement.destroy', $etablissement->id) }}" method="POST" id="deleteForm{{$etablissement->id}}">
+                <form action="{{ route('etablissement.destroy', 0) }}" method="POST" id="deleteForm">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -117,7 +117,7 @@
     </script>
 @endif
 <script>
-    // Afficher la boîte de dialogue Swal lorsque vous cliquez sur le bouton "Modifier"
+    // Edit button functionality
     $('.editButton').on('click', function () {
         var id = $(this).data('id');
         var nom = $(this).data('nom').replace(/'/g, "&apos;");
@@ -162,6 +162,7 @@
         });
     });
 
+    // Add button functionality
     $('#addEtablissementBtn').on('click', function () {
     var institutionsList = "<select id='institutionSelect' name='institution' class='form-control'>";
     @foreach($institutions as $inst)
@@ -193,6 +194,14 @@
             document.getElementById('addForm').submit();
         }
     });
+});
+
+// Set delete form action dynamically
+$('#confirmDeleteModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var etablissementId = button.data('etablissement-id');
+    var form = $('#deleteForm');
+    form.attr('action', form.attr('action').replace('0', etablissementId));
 });
 </script>
 

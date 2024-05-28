@@ -126,6 +126,7 @@
 
   const modifierBtns = document.querySelectorAll('.modifierBtn');
   const editModal = document.getElementById('editModal');
+  const supprimerForms = document.querySelectorAll('.supprimerForm');
   const closeModalBtn = editModal.querySelector('.close');
   const editForm = editModal.querySelector('form');
 
@@ -149,6 +150,16 @@
     document.getElementById('editForm').action = "/critere/" + critereId + "/modifier"; // Set the action of the form with critere ID
     editModal.style.display = "block";
   }
+
+   // Event listener for delete forms
+   supprimerForms.forEach((form) => {
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                if (confirm('Are you sure you want to delete this user?')) {
+                    form.submit();
+                }
+            });
+        });
 
   // Event listener for close button of edit form
   closeModalBtn.addEventListener('click', () => {
