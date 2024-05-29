@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('criteres', function (Blueprint $table) {
+        Schema::create('preuves', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->foreignId('champ_id')->constrained('champs')->onDelete('cascade');
+            $table->foreignId('critere_id')->constrained('criteres')->onDelete('cascade');
+            $table->string('description');
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('criteres');
+        Schema::dropIfExists('preuves');
     }
 };

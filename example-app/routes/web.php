@@ -64,13 +64,10 @@ Route::get('lang/{locale}', function ($locale) {
 
     Route::get('/users', [AuthController::class, 'user'])->name('user');
 
-    Route::get('/champs', function () {
-        return view('dashadmin.champ');
-    })->name('champ');  
-
     Route::get('/admins', function () {
         return view('dashadmin.admin');
     })->name('admin');
+    
 
     Route::get('/profile', function () {
         return view('dashadmin.profile');
@@ -84,17 +81,6 @@ Route::get('lang/{locale}', function ($locale) {
 Route::post('/utilisateurs/ajouter', [AuthController::class, 'ajouter_user'])->name('utilisateur.ajouter');
 Route::put('/utilisateurs/{id}/modifier', [AuthController::class, 'modifier_user'])->name('utilisateur.modifier');
 Route::delete('/utilisateurs/{id}/supprimer', [AuthController::class, 'supprimer_user'])->name('utilisateur.supprimer');
-
-
-Route::post('/champ/ajouter', [AuthController::class, 'ajouter_champ'])->name('champ.ajouter');
-#Route::get('/utilisateur/{id}/modifier', [AuthController::class, 'modifierForm'])->name('utilisateur.modifierForm');
-Route::put('/champs/{id}/modifier', [AuthController::class, 'modifier_champ'])->name('champ.modifier');
-Route::delete('/champ/{id}/supprimer', [AuthController::class, 'supprimer_champ'])->name('champ.supprimer');
-Route::get('/champs/{champId}/criteres', [AuthController::class, 'showCriteres'])->name('champs.criteres');
-
-Route::post('/critere/ajouter/{champ_id}', [AuthController::class, 'ajouter_critere'])->name('critere.ajouter');
-Route::put('/critere/{id}/modifier', [AuthController::class, 'modifier_critere'])->name('critere.modifier');
-Route::delete('/critere/{id}/supprimer', [AuthController::class, 'supprimer_critere'])->name('critere.supprimer');
 
 Route::post('/useradmin/ajouter', [AuthController::class, 'store_admin'])->name('useradmin.ajouter');
 Route::put('/useradmin/{id}/modifier', [AuthController::class, 'update_admin'])->name('useradmin.modifier');
@@ -153,6 +139,30 @@ Route::delete('/userEx/{id}/supprimer', [AuthController::class, 'destroy_userEx'
 Route::post('/userIn/ajouter', [AuthController::class, 'store_userIn'])->name('store_userIn');
 Route::put('/userIn/{id}/modifier', [AuthController::class, 'update_userIn'])->name('update_userIn');
 Route::delete('/userIn/{id}/supprimer', [AuthController::class, 'destroy_userIn'])->name('destroy_userIn');
+
+
+Route::post('/referentiels/ajouter', [AuthController::class, 'ajouter_referentiel'])->name('referentiel.ajouter');
+Route::put('/referentiels/{referentiel}/modifier', [AuthController::class, 'modifier_referentiel'])->name('referentiel.modifier');
+Route::delete('/referentiels/{referentiel}/supprimer', [AuthController::class, 'supprimer_referentiel'])->name('referentiel.supprimer');
+Route::get('/referentiel/{referentielId}/champs', [AuthController::class, 'showChamps'])->name('referents.champs');
+Route::get('/referents', [AuthController::class, 'referent'])->name('show.referent');
+
+
+Route::post('/referentiel/{referentielId}/champ/ajouter', [AuthController::class, 'ajouter_champ'])->name('champ.ajouter');
+Route::put('/champs/{id}/modifier', [AuthController::class, 'modifier_champ'])->name('champ.modifier');
+Route::delete('/champ/{id}/supprimer', [AuthController::class, 'supprimer_champ'])->name('champ.supprimer');
+Route::get('/champs/{referentielId}/{champId}/criteres', [AuthController::class, 'showCriteres'])->name('champs.criteres');
+
+
+Route::post('/critere/ajouter/{champ_id}', [AuthController::class, 'ajouter_critere'])->name('critere.ajouter');
+Route::put('/critere/{id}/modifier', [AuthController::class, 'modifier_critere'])->name('critere.modifier');
+Route::delete('/critere/{id}/supprimer', [AuthController::class, 'supprimer_critere'])->name('critere.supprimer');
+
+Route::get('/champs/{referentielId}/{champId}/{critereTd}/criteres', [AuthController::class, 'showPreuves'])->name('critere.preuves');
+Route::post('critere/{critereId}/preuves', [AuthController::class, 'store'])->name('preuves.store');
+Route::put('critere/{critereId}/preuves/{preuveId}', [AuthController::class, 'update'])->name('preuves.update');
+Route::delete('critere/{critereId}/preuves/{preuveId}', [AuthController::class, 'destroy'])->name('preuves.destroy');
+
 
 });
 

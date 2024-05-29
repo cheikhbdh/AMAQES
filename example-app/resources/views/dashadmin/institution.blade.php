@@ -127,7 +127,7 @@
 </div>
 
     
-@endsection
+
 
 <script>
     var addInstitutionBtn = document.getElementById('addInstitutionBtn');

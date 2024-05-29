@@ -84,28 +84,32 @@ public function sendInvitations(Request $request, $id)
     }
 
     public function update(Request $request, Invitation $invitation)
-    {
-        // Vérifier s'il existe déjà une campagne active
-        $existingActiveInvitation = Invitation::where('statue', true)->exists();
+{
+    // Vérifier s'il existe déjà une campagne active autre que celle que l'on est en train de modifier
+    $existingActiveInvitations = Invitation::where('statue', true)
+                                            ->where('id', '!=', $invitation->id)
+                                            ->exists();
 
-        // Si une campagne active existe déjà et que la nouvelle campagne est active, ajouter une erreur au système de messages de session
-        if ($existingActiveInvitation && $request->input('statue')) {
-            return redirect()->back()->withErrors(['error' => 'Une campagne active existe déjà.'])->withInput();
-        }
-
-        if ($request->input('date_debut') < date('Y-m-d')) {
-            return redirect()->back()->withErrors(['error' => 'La date de début doit être postérieure à la date actuelle.'])->withInput();
-        }
-
-        $request->validate([
-            'nom' => 'required',
-            'description' => 'required',
-            'date_debut' => 'required|date|before:date_fin',
-            'date_fin' => 'required|date',
-            'statue' => 'required|boolean',
-        ]);
-
-        $invitation->update($request->all());
-        return redirect()->route('invitations.index')->with('success', 'Invitation mise à jour avec succès.');
+    // Si une autre campagne active existe déjà et que la nouvelle campagne est active, ajouter une erreur au système de messages de session
+    if ($existingActiveInvitations && $request->input('statue')) {
+        return redirect()->back()->withErrors(['error' => 'Une autre campagne active existe déjà.'])->withInput();
     }
+
+    // Vérifier que la date de fin est ultérieure à la date de début
+    if ($request->input('date_fin') <= $request->input('date_debut')) {
+        return redirect()->back()->withErrors(['error' => 'La date de fin doit être ultérieure à la date de début.'])->withInput();
+    }
+
+    $request->validate([
+        'nom' => 'required',
+        'description' => 'required',
+        'date_debut' => 'required|date',
+        'date_fin' => 'required|date',
+        'statue' => 'required|boolean',
+    ]);
+
+    $invitation->update($request->all());
+    return redirect()->route('invitations.index')->with('success', 'Invitation mise à jour avec succès.');
+}
+
 }

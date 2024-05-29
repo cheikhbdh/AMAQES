@@ -6,6 +6,7 @@ use App\Http\Requests\Requestlogin;
 use App\Models\User;
 use App\Models\Champ;
 use App\Models\Critere;
+use App\Models\Referentiel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Filière;
+use App\Models\Preuve;
 
 class AuthController extends Controller
 {
@@ -44,7 +46,7 @@ class AuthController extends Controller
             // Stocker le nom et l'email dans la session
             $request->session()->put('user_name', $user->name);
             $request->session()->put('user_email', $user->email);
-
+    
             if ($user->role === 'admin') {
                 return redirect()->intended(route('dashadmin'));
             } elseif ($user->role === 'evaluateur_i') {
@@ -293,119 +295,6 @@ public function update_profil(Request $request)
             }
         }
 
-
-    public function ajouter_champ(Request $request)
-    {
-        // Validate data
-        $request->validate([
-            'name' => 'required|string|max:255|unique:champs',
-        ]);
-
-        // Create a new field
-        $champ = Champ::create([
-            'name' => $request->name,
-        ]);
-
-        return redirect()->route('champ');
-    }
-
-    public function modifier_champ(Request $request, $champId)
-    {
-        // Retrieve field by ID
-        $champ = Champ::find($champId);
-
-        // Check if field exists
-        if (!$champ) {
-            return redirect()->back()->with('error', 'Champ introuvable');
-        }
-
-        // Validate data
-        $request->validate([
-            'name' => 'required|string|max:255|unique:champs,name,' . $champ->id,
-        ]);
-
-        try {
-            // Update field attributes
-            $champ->name = $request->name;
-            $champ->save();
-
-            return redirect()->back()->with('success', 'Champ modifié avec succès');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Erreur: ' . $e->getMessage());
-        }
-    }
-
-    public function supprimer_champ($id)
-    {
-        // Delete field
-        $champ = Champ::find($id);
-        if ($champ) {
-            $champ->delete();
-            return redirect()->back()->with('success', 'Champ supprimé avec succès');
-        } else {
-            return redirect()->back()->with('error', 'Champ introuvable');
-        }
-    }
-
-    public function showCriteres($champId)
-    {
-        $champ = Champ::with('criteres')->findOrFail($champId);
-        return view('dashadmin.critere', compact('champ'));
-    }
-
-
-    public function ajouter_critere(Request $request)
-    {
-        // Validate form data
-        $request->validate([
-            'name' => 'required',
-            'preuve' => 'required',  // Use 'preuve' to match the form field name
-        ]);
-
-        // Create a new criterion
-        Critere::create([
-            'nom' => $request->name,
-            'preves_critere' => $request->preuve,
-            'champ_id' => $request->champ_id, // Ensure the associated field ID is passed
-        ]);
-
-        // Redirect with success message
-        return redirect()->back()->with('success', 'Critère ajouté avec succès.');
-    }
-
-    public function modifier_critere(Request $request, $id)
-    {
-        // Validate form data
-        $request->validate([
-            'name' => 'required',
-            'preuve' => 'required',
-        ]);
-
-        // Find the criterion to modify
-        $critere = Critere::findOrFail($id);
-
-        // Update the criterion data
-        $critere->update([
-            'nom' => $request->name,
-            'preves_critere' => $request->preuve,
-        ]);
-
-        // Redirect with success message
-        return redirect()->back()->with('success', 'Critère modifié avec succès.');
-    }
-
-    public function supprimer_critere($id)
-    {
-        // Find the criterion to delete
-        $critere = Critere::findOrFail($id);
-
-        // Delete the criterion
-        $critere->delete();
-
-        // Redirect with success message
-        return redirect()->back()->with('success', 'Critère supprimé avec succès.');
-    }
-
     public function adminIndex()
     {
 
@@ -574,27 +463,197 @@ public function update_profil(Request $request)
     
             return $next($request);
         }
-    
-        public function getInvitations()
+
+    public function referent()
     {
-        // Récupérer les invitations dont la date de fin est inférieure à la date actuelle
-        $invitations = Invitation::where('date_fin', '<', Carbon::now())->get();
+        $referentiels = Referentiel::all();
+        return view('dashadmin.referentiel', compact('referentiels'));
+    }
 
-        // Initialiser un tableau pour stocker les notifications
-        $notifications = [];
+    public function ajouter_referentiel(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:referentiels',
+        ]);
 
-        // Parcourir les invitations et créer des notifications
-        foreach ($invitations as $invitation) {
-            $timeAgo = Carbon::parse($invitation->date_fin)->diffForHumans();
-            $notifications[] = [
-                'nom_de_campagne' => $invitation->nom,
-                'time_ago' => $timeAgo
-            ];
+        Referentiel::create(['name' => $request->name]);
+
+        return redirect()->route('show.referent')->with('success', 'Référentiel ajouté avec succès');
+    }
+
+    public function modifier_referentiel(Request $request, $referentielId)
+    {
+        $referentiel = Referentiel::findOrFail($referentielId);
+
+        $request->validate([
+            'name' => 'required|string|max:255|unique:referentiels,name,' . $referentiel->id,
+        ]);
+
+        $referentiel->name = $request->name;
+        $referentiel->save();
+
+        return redirect()->route('show.referent')->with('success', 'Référentiel modifié avec succès');
+    }
+
+    public function supprimer_referentiel($id)
+    {
+        $referentiel = Referentiel::findOrFail($id);
+        $referentiel->delete();
+
+        return redirect()->route('show.referent')->with('success', 'Référentiel supprimé avec succès');
+    }
+
+    public function showChamps($referentielId)
+    {
+        $referentiel = Referentiel::with('champs')->findOrFail($referentielId);
+        return view('dashadmin.champ', compact('referentiel'));
+    }
+
+    public function ajouter_champ(Request $request, $referentielId)
+    {
+        // Validate data
+        $request->validate([
+            'name' => 'required|string|max:255|unique:champs',
+        ]);
+
+        // Create a new field
+        $champ = Champ::create([
+            'name' => $request->name,
+            'referentiel_id' => $referentielId,
+        ]);
+
+        return redirect()->route('referents.champs', ['referentielId' => $referentielId]);
+    }
+
+    public function modifier_champ(Request $request, $champId)
+    {
+        // Retrieve field by ID
+        $champ = Champ::find($champId);
+
+        // Check if field exists
+        if (!$champ) {
+            return redirect()->back()->with('error', 'Champ introuvable');
         }
 
-        // Renvoyer la vue home avec les données de notification
-        return view('dashadmin.home', ['notifications' => $notifications]);
+        // Validate data
+        $request->validate([
+            'name' => 'required|string|max:255|unique:champs,name,' . $champ->id,
+        ]);
+
+        try {
+            // Update field attributes
+            $champ->name = $request->name;
+            $champ->save();
+
+            return redirect()->back()->with('success', 'Champ modifié avec succès');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erreur: ' . $e->getMessage());
+        }
     }
+
+    public function supprimer_champ($id)
+    {
+        // Delete field
+        $champ = Champ::find($id);
+        if ($champ) {
+            $champ->delete();
+            return redirect()->back()->with('success', 'Champ supprimé avec succès');
+        } else {
+            return redirect()->back()->with('error', 'Champ introuvable');
+        }
+    }
+
+    public function showCriteres($referentielId,$champId)
+    {
+        $referentiel = Referentiel::with('champs')->findOrFail($referentielId);
+        $champ = Champ::with('criteres')->findOrFail($champId);
+        return view('dashadmin.critere', compact('champ','referentiel'));
+    }
+
+    public function showPreuves($referentielId, $champId, $critereId)
+{
+    $referentiel = Referentiel::with('champs')->findOrFail($referentielId);
+    $champ = Champ::with('criteres')->findOrFail($champId);
+    $criteres = Critere::findOrFail($critereId);
+    return view('dashadmin.preuve', compact('referentiel', 'champ', 'criteres'));
 }
+
+public function ajouter_critere(Request $request, $champId)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    Critere::create([
+        'nom' => $request->name,
+        'champ_id' => $champId,
+    ]);
+
+    return redirect()->back()->with('success', 'Critère ajouté avec succès.');
+}
+
+public function modifier_critere(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
+
+    $critere = Critere::findOrFail($id);
+    $critere->update([
+        'nom' => $request->name,
+    ]);
+
+    return redirect()->back()->with('success', 'Critère modifié avec succès.');
+}
+
+public function supprimer_critere($id)
+{
+    $critere = Critere::findOrFail($id);
+    $critere->delete();
+
+    return redirect()->back()->with('success', 'Critère supprimé avec succès.');
+}
+
+
+public function store(Request $request, $critereId)
+{
+    $request->validate([
+        'element' => 'required|string|max:255',
+    ]);
+
+    Preuve::create([
+        'critere_id' => $critereId,
+        'description' => $request->element,
+    ]);
+
+    return redirect()->back()->with('success', 'Preuve ajouté avec succès.');
+}
+
+public function update(Request $request, $critereId, $preuveId)
+{
+    $request->validate([
+        'description' => 'required|string|max:255',
+    ]);
+
+    $preuve = Preuve::findOrFail($preuveId);
+    $preuve->update([
+        'description' => $request->description,
+    ]);
+
+    return redirect()->back()->with('success', 'Preuve modifiée avec succès.');
+}
+
+
+public function destroy($critereId, $preuveId)
+{
+    $preuve = Preuve::findOrFail($preuveId);
+    $preuve->delete();
+
+    return redirect()->back()->with('success', 'success', 'Preuve supprimée avec succès.');
+}
+
+
+}
+
 
 

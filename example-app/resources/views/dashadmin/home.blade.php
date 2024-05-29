@@ -81,31 +81,6 @@
       
       <div class="divider"></div>
       
-      <li>
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-bell"></i>
-              <span class="badge bg-primary badge-number">{{ $notification ? 1 : 0 }}</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-              @if ($notification)
-                  <li class="notification-item">
-                      <i class="bi bi-exclamation-circle text-warning"></i>
-                      <div>
-                          <h4>Invitations</h4>
-                          <p>La date d'évaluation de la campagne {{ $notification['nom_de_campagne'] }} est terminée.</p>
-                          <p>Combien de temps pour affichage de cette notification : {{ $notification['time_ago'] }}.</p>
-                      </div>
-                  </li>
-              @else
-                  <li class="notification-item">
-                      <i class="bi bi-exclamation-circle text-warning"></i>
-                      <div>
-                          <h4>Pas de notifications</h4>
-                      </div>
-                  </li>
-              @endif
-          </ul>
-      </li>
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
@@ -347,7 +322,7 @@
           </li>
           -->
           <li>
-            <a href="{{ route('champ') }}">
+            <a href="{{ route('show.referent') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Champs') }}</span>
             </a>
           </li>

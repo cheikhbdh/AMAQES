@@ -72,7 +72,7 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Role</div>
-                  <div class="col-lg-9 col-md-8">{{ session('user_role') }}</div>
+                  <div class="col-lg-9 col-md-8">Admin</div>
                 </div>
 
                 <div class="row">

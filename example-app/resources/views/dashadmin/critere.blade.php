@@ -8,12 +8,13 @@
 <main id="main" class="main">
   <nav>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('champ') }}">Les champs</a></li>
-        <li class="breadcrumb-item">les critères</li>
+      <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('show.referent') }}">Les référentiels</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('referents.champs', $referentiel->id) }}">Les champs</a></li>
+      <li class="breadcrumb-item">Les critères</li>
     </ol>
   </nav>
-  <h1>Critères pour le champ : {{ $champ->name }}</h1>
+  <h2>Critères pour le champ : {{ $champ->name }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -22,16 +23,13 @@
             @if(session('error'))
               <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-  
             @if(session('success'))
               <div class="alert alert-success">{{ session('success') }}</div>
             @endif
   
             <h5 class="card-title">Gestion des critères</h5>
-            <!-- Button to open the modal -->
             <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
   
-            <!-- Modal for the form -->
             <div id="formModal" class="modal">
               <div class="modal-content">
                 <span class="close">&times;</span>
@@ -46,28 +44,29 @@
                 @endif
                 <form id="ajouterForm" action="{{ route('critere.ajouter', ['champ_id' => $champ->id]) }}" method="POST">
                   @csrf
-                  <input type="hidden" name="champ_id" value="{{ $champ->id }}"> <!-- Champ_id caché -->
+                  <input type="hidden" name="champ_id" value="{{ $champ->id }}">
                   <label for="name">Nom:</label>
                   <input type="text" id="name" name="name" required>
-                  <br><br>
-                  <label for="preuve">Preuves du critère:</label>
-                  <input type="text" id="preuve" name="preuve" required>
                   <br><br>
                   <button type="submit" class="btn btn-success">Soumettre</button>
                 </form>
               </div>
             </div>
             <table class="table data-table">
-              <tr>
-                <th>Nom</th>
-                <th>Preuves du critère</th>
-                <th>Actions</th>
-              </tr>
+              <thead>
+                <tr>
+                  <th>Action</th>
+                  <th>Nom</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
               <tbody>
                 @foreach($champ->criteres as $critere)
                 <tr>
+                  <td>
+                    <a href="{{ route('critere.preuves', ['referentielId' => $referentiel->id, 'champId' => $champ->id,  'critereTd' => $critere->id,]) }}" class="btn btn-info">View</a>
+                  </td>
                   <td>{{ $critere->nom }}</td>
-                  <td>{{ $critere->preves_critere }}</td>
                   <td>
                     <button class="btn btn-info modifierBtn" data-id="{{ $critere->id }}">Modifier</button>
                   </td>
@@ -82,103 +81,82 @@
                 @endforeach
               </tbody>
             </table>
-            <!-- End Table with stripped rows -->
           </div>
         </div>
       </div>
     </div>
   </section>
   
-  <!-- Modal for the edit form -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <form id="editForm" method="POST">
-      @csrf
-      @method('PUT') <!-- Utilisez la méthode PUT pour la modification -->
-      <input type="hidden" id="editCritereId" name="critereId">
-      <label for="editName">Nom:</label>
-      <input type="text" id="editName" name="name" required>
-      <br><br>
-      <label for="editPreuve">Preuves du critère:</label>
-      <input type="text" id="editPreuve" name="preuve" required>
-      <br><br>
-      <button type="submit" class="btn btn-success">Modifier</button>
-    </form>
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form id="editForm" method="POST">
+        @csrf
+        @method('PUT')
+        <input type="hidden" id="editCritereId" name="critereId">
+        <label for="editName">Nom:</label>
+        <input type="text" id="editName" name="name" required>
+        <br><br>
+        <button type="submit" class="btn btn-success">Modifier</button>
+      </form>
+    </div>
   </div>
-</div>
 
-</main><!-- End #main -->
-  
+</main>
+
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
-  const modal = document.getElementById("formModal");
-  const ajouterBtn = document.getElementById("ajouterBtn");
-  const span = document.getElementsByClassName("close")[0];
+    const ajouterBtn = document.getElementById("ajouterBtn");
+    const formModal = document.getElementById("formModal");
+    const editModal = document.getElementById('editModal');
+    const span = document.getElementsByClassName("close");
 
-  ajouterBtn.onclick = function() {
-    modal.style.display = "block";
-  }
-
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
-
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
+    ajouterBtn.onclick = function() {
+      formModal.style.display = "block";
     }
-  }
 
-  const modifierBtns = document.querySelectorAll('.modifierBtn');
-  const editModal = document.getElementById('editModal');
-  const supprimerForms = document.querySelectorAll('.supprimerForm');
-  const closeModalBtn = editModal.querySelector('.close');
-  const editForm = editModal.querySelector('form');
+    Array.from(span).forEach((closeBtn) => {
+      closeBtn.onclick = function() {
+        formModal.style.display = "none";
+        editModal.style.display = "none";
+      }
+    });
 
-  // Event listener for edit buttons
-  modifierBtns.forEach((button) => {
-    button.addEventListener('click', () => {
-      const critereId = button.getAttribute('data-id');
-      const row = button.closest('tr');
-      const name = row.cells[0].innerText;
-      const preves_critere = row.cells[1].innerText;
+    window.onclick = function(event) {
+      if (event.target == formModal) {
+        formModal.style.display = "none";
+      }
+      if (event.target == editModal) {
+        editModal.style.display = "none";
+      }
+    }
 
-      openEditModal(critereId, name, preves_critere);
+    const modifierBtns = document.querySelectorAll('.modifierBtn');
+    modifierBtns.forEach((button) => {
+      button.addEventListener('click', () => {
+        const critereId = button.getAttribute('data-id');
+        const row = button.closest('tr');
+        const name = row.cells[1].innerText;
+        openEditModal(critereId, name);
+      });
+    });
+
+    function openEditModal(critereId, name) {
+      document.getElementById('editCritereId').value = critereId;
+      document.getElementById('editName').value = name;
+      document.getElementById('editForm').action = "/critere/" + critereId + "/modifier";
+      editModal.style.display = "block";
+    }
+
+    const supprimerForms = document.querySelectorAll('.supprimerForm');
+    supprimerForms.forEach((form) => {
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (confirm('Are you sure you want to delete this critere?')) {
+          form.submit();
+        }
+      });
     });
   });
-
-  // Function to open the edit modal
-  function openEditModal(critereId, name, preves_critere) {
-    document.getElementById('editCritereId').value = critereId;
-    document.getElementById('editName').value = name;
-    document.getElementById('editPreuve').value = preves_critere;
-    document.getElementById('editForm').action = "/critere/" + critereId + "/modifier"; // Set the action of the form with critere ID
-    editModal.style.display = "block";
-  }
-
-   // Event listener for delete forms
-   supprimerForms.forEach((form) => {
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-                if (confirm('Are you sure you want to delete this user?')) {
-                    form.submit();
-                }
-            });
-        });
-
-  // Event listener for close button of edit form
-  closeModalBtn.addEventListener('click', () => {
-    editModal.style.display = "none";
-  });
-
-  // Event listener for closing edit form when clicking outside of it
-  window.addEventListener('click', (event) => {
-    if (event.target === editModal) {
-      editModal.style.display = "none";
-    }
-  });
-});
 </script>
-
 @endsection
