@@ -71,34 +71,41 @@
         </li><!-- End Search Icon-->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ __('messages.Langue') }}
+              {{ __('messages.Langue') }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'fr']) }}">Français</a></li>
               <li><a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'ar']) }}">العربية</a></li>
           </ul>
       </li>
-      <!-- Insérer un espace ici -->
+      
       <div class="divider"></div>
-      <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-        <i class="bi bi-bell"></i>
-        <span class="badge bg-primary badge-number">{{ count($notifications ?? []) }}</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-        @foreach($notifications as $notification)
-            <li class="notification-item">
-                <i class="bi bi-exclamation-circle text-warning"></i>
-                <div>
-                    <h4>Invitations</h4>
-                    <p>La date d'évaluation de la campagne {{ $notification['nom_de_campagne'] }} est terminée.</p>
-                    <p>Combien de temps pour affichage de cette notification : {{ $notification['time_ago'] }}.</p>
-                </div>
-            </li>
-        @endforeach
-    </ul><!-- End Notification Dropdown Items -->
-
-    </li><!-- End Notification Nav -->
-
+      
+      <li>
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+              <i class="bi bi-bell"></i>
+              <span class="badge bg-primary badge-number">{{ $notification ? 1 : 0 }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+              @if ($notification)
+                  <li class="notification-item">
+                      <i class="bi bi-exclamation-circle text-warning"></i>
+                      <div>
+                          <h4>Invitations</h4>
+                          <p>La date d'évaluation de la campagne {{ $notification['nom_de_campagne'] }} est terminée.</p>
+                          <p>Combien de temps pour affichage de cette notification : {{ $notification['time_ago'] }}.</p>
+                      </div>
+                  </li>
+              @else
+                  <li class="notification-item">
+                      <i class="bi bi-exclamation-circle text-warning"></i>
+                      <div>
+                          <h4>Pas de notifications</h4>
+                      </div>
+                  </li>
+              @endif
+          </ul>
+      </li>
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
