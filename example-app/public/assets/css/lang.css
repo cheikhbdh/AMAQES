@@ -1,44 +1,70 @@
-/* Styles généraux pour le mode RTL */
-body[dir="rtl"] {
-    direction: rtl;
-}
-
-/* Déplacer la sidebar à droite */
-body[dir="rtl"] .sidebar {
-    left: auto;
-    right: 0;
-}
-
-/* Ajuster le margin de .main pour le mode RTL */
-body[dir="rtl"] .main {
-    margin-left: 0;
-    margin-right: var(--sidebar-width);
-}
-
-/* Déplacer le header à gauche pour le mode RTL */
-body[dir="rtl"] .header {
+/* Styles pour la barre latérale */
+.sidebar {
+    width: 250px;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    position: fixed;
+    top: 0;
+    bottom: 0;
     left: 0;
-    right: auto;
+    background: #333;
+    overflow: auto;
+    z-index: 1000;
+    opacity: 1;
 }
 
-/* Autres ajustements pour le header en mode RTL */
-body[dir="rtl"] .header .logo {
-    margin-left: auto;
+html[dir="rtl"] .sidebar {
+    right: 0;
+    left: auto;
+}
+
+/* Masquer la barre latérale */
+.sidebar.hidden {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+html[dir="rtl"] .sidebar.hidden {
+    transform: translateX(100%);
+}
+
+/* Styles pour le contenu principal */
+.main {
+    margin-left: 250px; /* Ajoutez une marge à gauche pour laisser de l'espace pour la barre latérale */
+    transition: margin-left 0.5s ease, margin-right 0.5s ease;
+}
+
+html[dir="rtl"] .main {
+    margin-left: 0;
+    margin-right: 250px;
+}
+
+.main.expanded {
+    margin-left: 0; /* Ajustez la marge à gauche lorsque la barre latérale est masquée */
+}
+
+html[dir="rtl"] .main.expanded {
     margin-right: 0;
 }
 
-body[dir="rtl"] .header .search-bar {
-    margin-right: auto;
-    margin-left: 0;
+/* Styles pour la barre supérieure */
+.header-nav {
+    display: flex;
+    justify-content: flex-start; /* Alignez les éléments à gauche */
+    margin-left: 10px; /* Ajoutez de l'espace à gauche */
 }
 
-body[dir="rtl"] .header .nav-item {
-    margin-right: auto;
-    margin-left: 0;
+.notification-icon,
+.message-icon {
+    margin-right: 10px; /* Ajoutez de l'espace entre les icônes */
 }
 
-/* .divider styles */
-.divider {
-    width: 10px; /* Réglez la largeur de l'espace selon vos besoins */
-    display: inline-block; /* Permet à l'élément de prendre seulement autant d'espace que nécessaire */
+html[dir="rtl"] .notification-icon,
+html[dir="rtl"] .message-icon {
+    margin-left: 10px; /* Ajoutez de l'espace entre les icônes pour la disposition RTL */
+}
+
+/* Styles pour l'icône de la barre latérale */
+.sidebar-icon {
+    cursor: pointer;
+    margin-left: 10px; /* Ajoutez de l'espace à gauche pour l'icône de la barre latérale */
 }

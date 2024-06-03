@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\InvitationController;
-
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\Mail;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 // Login Routes
 Route::get('/', function () {
     return view('authentification.pages-login');
@@ -26,25 +27,38 @@ Route::get('/', function () {
 Route::post('/', [AuthController::class, 'login'])->name('login.post');
 
 // Logout Route
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 // Registration Routes
 Route::get('/register', function () {
     return view('authentification.register');
 })->name('register');
 
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-// Middleware for authenticated users
+
+
 Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
     Route::get('/dash', function () {
         return view('layout.liste');
     })->name('dash');
+
+    Route::get('setlocale/{locale}', function ($locale) {
+        if (array_key_exists($locale, config('app.locales'))) {
+            Session::put('locale', $locale);
+        }
+        return redirect()->back();
+    })->name('setlocale');    
+    
+     
+    
 });
+
 
 // Middleware for admin users
 Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
-
+   
     Route::get('/dashboard', function () {
         return view('dashadmin.dashboard');
     })->name('dashadmin');
@@ -53,13 +67,6 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
 Route::put('/profil/update', [AuthController::class, 'update_profil'])->name('profil.update');
 // web.php
 Route::put('/profile/update-password', [AuthController::class, 'updatePassword'])->name('profile.update-password');
-
-Route::get('lang/{locale}', function ($locale) {
-    if (in_array($locale, ['fr', 'ar'])) {
-        session(['locale' => $locale]);
-    }
-    return redirect()->back();
-})->name('setlocale');
 
 
     Route::get('/users', [AuthController::class, 'user'])->name('user');
@@ -95,8 +102,8 @@ Route::put('/invitations/{invitation}', [InvitationController::class, 'update'])
 Route::get('invitations/{invitation}/invite', [InvitationController::class, 'invite'])->name('invitations.invite');
 Route::post('invitations/{invitation}/send', [InvitationController::class, 'sendInvitations'])->name('invitations.sendInvitations');
 
+Route::delete('/invitations/{id}', [InvitationController::class, 'destroy'])->name('invitations.destroy');
 
-Route::get('/notifications/invitations', [AuthController::class, 'getInvitations'])->name('notifications.invitations');
 
 
 
@@ -104,6 +111,9 @@ Route::get('/institutions', [EducationController::class, 'indexInstitutions'])->
 Route::post('/institutions', [EducationController::class, 'storeInstitution'])->name('institutions.store');
 Route::put('/institutions/{id}', [EducationController::class, 'updateInstitution'])->name('institutions.update');
 Route::delete('/institutions/{id}', [EducationController::class, 'destroyInstitution'])->name('institutions.destroy');
+
+
+
 
 Route::get('/etablissement', [EducationController::class, 'indexEtablissement'])->name('etablissement.index');
 Route::put('/etablissement/{id}', [EducationController::class, 'updateEtablissement'])->name('etablissement.update');
@@ -137,31 +147,47 @@ Route::delete('/userEx/{id}/supprimer', [AuthController::class, 'destroy_userEx'
 
 
 Route::post('/userIn/ajouter', [AuthController::class, 'store_userIn'])->name('store_userIn');
-Route::put('/userIn/{id}/modifier', [AuthController::class, 'update_userIn'])->name('update_userIn');
+Route::put('/userEx/{id}/modifier', [AuthController::class, 'update_userEx'])->name('update_userEx');
 Route::delete('/userIn/{id}/supprimer', [AuthController::class, 'destroy_userIn'])->name('destroy_userIn');
 
 
-Route::post('/referentiels/ajouter', [AuthController::class, 'ajouter_referentiel'])->name('referentiel.ajouter');
-Route::put('/referentiels/{referentiel}/modifier', [AuthController::class, 'modifier_referentiel'])->name('referentiel.modifier');
-Route::delete('/referentiels/{referentiel}/supprimer', [AuthController::class, 'supprimer_referentiel'])->name('referentiel.supprimer');
-Route::get('/referentiel/{referentielId}/champs', [AuthController::class, 'showChamps'])->name('referents.champs');
-Route::get('/referents', [AuthController::class, 'referent'])->name('show.referent');
+Route::post('/referentiels/ajouter', [InvitationController::class, 'ajouter_referentiel'])->name('referentiel.ajouter');
+Route::put('/referentiels/{referentiel}/modifier', [InvitationController::class, 'modifier_referentiel'])->name('referentiel.modifier');
+Route::delete('/referentiels/{referentiel}/supprimer', [InvitationController::class, 'supprimer_referentiel'])->name('referentiel.supprimer');
+Route::get('/referentiel/{referentielId}/champs', [InvitationController::class, 'showChamps'])->name('referents.champs');
+Route::get('/referents', [InvitationController::class, 'referent'])->name('show.referent');
 
 
-Route::post('/referentiel/{referentielId}/champ/ajouter', [AuthController::class, 'ajouter_champ'])->name('champ.ajouter');
-Route::put('/champs/{id}/modifier', [AuthController::class, 'modifier_champ'])->name('champ.modifier');
-Route::delete('/champ/{id}/supprimer', [AuthController::class, 'supprimer_champ'])->name('champ.supprimer');
-Route::get('/champs/{referentielId}/{champId}/criteres', [AuthController::class, 'showCriteres'])->name('champs.criteres');
+Route::post('/referentiel/{referentielId}/champ/ajouter', [InvitationController::class, 'ajouter_champ'])->name('champ.ajouter');
+Route::put('/champs/{id}/modifier', [InvitationController::class, 'modifier_champ'])->name('champ.modifier');
+Route::delete('/champ/{id}/supprimer', [InvitationController::class, 'supprimer_champ'])->name('champ.supprimer');
+Route::get('/champs/{referentielId}/{champId}/criteres', [InvitationController::class, 'showCriteres'])->name('champs.criteres');
 
 
-Route::post('/critere/ajouter/{champ_id}', [AuthController::class, 'ajouter_critere'])->name('critere.ajouter');
-Route::put('/critere/{id}/modifier', [AuthController::class, 'modifier_critere'])->name('critere.modifier');
-Route::delete('/critere/{id}/supprimer', [AuthController::class, 'supprimer_critere'])->name('critere.supprimer');
+Route::post('/critere/ajouter/{champ_id}', [InvitationController::class, 'ajouter_critere'])->name('critere.ajouter');
+Route::put('/critere/{id}/modifier', [InvitationController::class, 'modifier_critere'])->name('critere.modifier');
+Route::delete('/critere/{id}/supprimer', [InvitationController::class, 'supprimer_critere'])->name('critere.supprimer');
 
-Route::get('/champs/{referentielId}/{champId}/{critereTd}/criteres', [AuthController::class, 'showPreuves'])->name('critere.preuves');
-Route::post('critere/{critereId}/preuves', [AuthController::class, 'store'])->name('preuves.store');
-Route::put('critere/{critereId}/preuves/{preuveId}', [AuthController::class, 'update'])->name('preuves.update');
-Route::delete('critere/{critereId}/preuves/{preuveId}', [AuthController::class, 'destroy'])->name('preuves.destroy');
+Route::get('/champs/{referentielId}/{champId}/{critereTd}/criteres', [InvitationController::class, 'showPreuves'])->name('critere.preuves');
+Route::post('critere/{critereId}/preuves', [InvitationController::class, 'store_preuve'])->name('preuves.store');
+Route::put('critere/{critereId}/preuves/{preuveId}', [InvitationController::class, 'update_preuve'])->name('preuves.update');
+Route::delete('critere/{critereId}/preuves/{preuveId}', [InvitationController::class, 'destroy_preuve'])->name('preuves.destroy');
+
+
+Route::get('setlocale/{locale}', function ($locale) {
+    if (array_key_exists($locale, config('app.locales'))) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('setlocale');
+
+
+
+Route::get('/notifications', [NotificationController::class, 'index']);
+Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+Route::get('/notifications/passees', [NotificationController::class, 'pastNotifications'])->name('notifications.passees');
+//Route::get('/check-campaign-end-date', [InvitationController::class, 'checkEndDate']);
+
 
 
 });

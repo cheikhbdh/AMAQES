@@ -120,7 +120,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
+                </form>                
             </div>
         </div>
     </div>
@@ -139,11 +139,12 @@
 
     $(document).ready(function () {
         $('.deleteButton').on('click', function () {
-            var institutionId = $(this).data('institution-id');
-            var form = $('#confirmDeleteModal').find('.delete-form');
-            form.attr('action', '/institutions/' + institutionId);
-            $('#confirmDeleteModal').modal('show');
-        });
+    var institutionId = $(this).data('institution-id');
+    var form = $('#confirmDeleteModal').find('.delete-form');
+    form.attr('action', '/institutions/' + institutionId); // Assurez-vous que le chemin est correct
+    $('#confirmDeleteModal').modal('show');
+});
+
     });
 </script>
 

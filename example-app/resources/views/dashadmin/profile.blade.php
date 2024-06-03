@@ -22,12 +22,6 @@
             <img src="assets/img/amaqes2.png" alt="Profile" style="width: 150px; height: 100px;">
               <h2>{{ session('user_name') }}</h2>
               <h3>Admin</h3>
-              <div class="social-links mt-2">
-                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-              </div>
             </div>
           </div>
 
@@ -46,10 +40,6 @@
 
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Modifier Profil</button>
-                </li>
-
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Paramétres</button>
                 </li>
 
                 <li class="nav-item">
@@ -123,8 +113,6 @@
                     <div class="col-md-8 col-lg-9">
                       <select id="role" name="role" class="form-control" required>
                         <option value="admin" {{ session('user_role') == 'admin' ? 'selected' : '' }}>admin</option>
-                        <option value="evaluateur_i" {{ session('user_role') == 'evaluateur_i' ? 'selected' : '' }}>évaluateur_In</option>
-                        <option value="evaluateur_e" {{ session('user_role') == 'evaluateur_e' ? 'selected' : '' }}>évaluateur_Ex</option>
                       </select>
                     </div>
                   </div>
@@ -140,48 +128,6 @@
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                   </div>
                 </form><!-- End Profile Edit Form -->
-
-                </div>
-
-                <div class="tab-pane fade pt-3" id="profile-settings">
-
-                  <!-- Settings Form -->
-                  <form>
-
-                    <div class="row mb-3">
-                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                      <div class="col-md-8 col-lg-9">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                          <label class="form-check-label" for="changesMade">
-                            Changes made to your account
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                          <label class="form-check-label" for="newProducts">
-                            Information on new products and services
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="proOffers">
-                          <label class="form-check-label" for="proOffers">
-                            Marketing and promo offers
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                          <label class="form-check-label" for="securityNotify">
-                            Security alerts
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Enregistrer</button>
-                    </div>
-                  </form><!-- End settings Form -->
 
                 </div>
 
