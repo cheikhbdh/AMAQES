@@ -30,29 +30,23 @@
             <li><a href="#testimonials" id="profile-link" class="nn">account</a></li>
         </ul>
         <div class="logo">
-            <img src="{{ asset('assets/images/amaqes.png') }}" alt="Logo" height="30">
+            <img src="{{ asset('assets/img/amaqes2.png') }}" alt="Logo" height="30">
             <h3 style="display: inline-block; margin-left: 0px;">Autorité Mauritanienne d'Assurance <br>Qualité L'enseignemt Superieur</h3>
         </div>
         <div class="profile-dropdown">
             <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>          
-            <a href="{{route('logout')}}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
         </div>
     </div>
 </nav>
 @yield('content')
-<footer id="footer" class="footer">
-    <div class="copyright">
-      Tous Droit Réservés &copy; 2024 <a href="https://amaqes.mr//"><strong><span>AMAQES</span></strong></a>. 
+<footer class="footer">
+    <div class="container">
+        <p>Restraunt &copy; all rights reserved</p>
+        <p>Developed by Dr/Abououbeidette</p>
     </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Developper par <a href="http://supnum.mr/"><strong><span>SupNum</span></strong></a>
-    </div>
-  </footer><!-- End Footer -->
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\Homecontroller;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -40,6 +41,8 @@ Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
     Route::get('/dash', function () {
         return view('layout.liste');
     })->name('dash');
+    Route::get('/indexevaluation', [Homecontroller::class, 'indexevaluation'])->name('indexevaluation');
+    Route::post('/evaluate', [Homecontroller::class, 'evaluate'])->name('evaluate');
 });
 
 // Middleware for admin users

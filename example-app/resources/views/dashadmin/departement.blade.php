@@ -60,7 +60,7 @@
                           </td>
                         </tr>
                         
-                        <!-- Modal for confirmation of delete -->
+
                         <div class="modal fade" id="confirmDeleteModal{{$departement->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel{{$departement->id}}" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">

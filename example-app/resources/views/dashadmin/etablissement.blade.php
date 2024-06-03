@@ -54,11 +54,34 @@
                             data-institution-nom="{{ $etablissement->institution ? $etablissement->institution->nom : 'N/A' }}">
                             <i class="bi bi-pencil-fill text-warning"></i> Modifier
                         </button>
-                            <button type="button" class="btn btn-sm transparent-button mr-2 deleteButton" data-toggle="modal" data-target="#confirmDeleteModal" data-etablissement-id="{{$etablissement->id}}">
+                            <button type="button" class="btn btn-sm transparent-button mr-2 deleteButton" data-toggle="modal" data-target="#confirmDeleteModal{{$etablissement->id}}" >
                                 <i class="bi bi-trash-fill text-danger"></i> Supprimer
                             </button>
                           </td>
                         </tr>
+                        <div class="modal fade" id="confirmDeleteModal{{$etablissement->id }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel{{$etablissement->id }}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmDeleteModalLabel{{$etablissement->id }}">Confirmation de suppression</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Êtes-vous sûr de vouloir supprimer ce département ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <form action="{{ route('etablissement.destroy', $etablissement->id ) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @endforeach
                       </tbody>
                     </table>
@@ -68,29 +91,7 @@
         </div>
     </section>
 </main>
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Êtes-vous sûr de vouloir supprimer cet établissement ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <form action="{{ route('etablissement.destroy', 0) }}" method="POST" id="deleteForm">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @if(session('success'))
@@ -112,7 +113,7 @@
             icon: "error",
             title: "{{ session('error') }}",
             showConfirmButton: false,
-            timer: 3000
+            timer:70000
         });
     </script>
 @endif
@@ -196,13 +197,7 @@
     });
 });
 
-// Set delete form action dynamically
-$('#confirmDeleteModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    var etablissementId = button.data('etablissement-id');
-    var form = $('#deleteForm');
-    form.attr('action', form.attr('action').replace('0', etablissementId));
-});
+
 </script>
 
 @endsection
