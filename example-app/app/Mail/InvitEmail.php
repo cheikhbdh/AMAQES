@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Invitation;
+use Carbon\Carbon;
 
 class InvitEmail extends Mailable
 {
@@ -14,32 +15,18 @@ class InvitEmail extends Mailable
 
     public $invitation;
     public $subject;
+    public $currentDateTime;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(Invitation $invitation, $subject)
     {
         $this->invitation = $invitation;
         $this->subject = $subject;
+        $this->currentDateTime = Carbon::now()->format('d/m/Y H:i');
     }
 
-    /**
-     * Build the message.
-     */
     public function build()
     {
         return $this->subject($this->subject)
                     ->view('dashadmin.mail');
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }

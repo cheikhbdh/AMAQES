@@ -5,6 +5,16 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.documentElement.dir === 'rtl') {
+      document.getElementById('sidebar').classList.add('sidebar-right');
+  }
+});
+document.querySelector('.toggle-sidebar-btn').addEventListener('click', function() {
+  document.querySelector('#sidebar').classList.toggle('sidebar-active');
+});
+
+
 
 (function() {
   "use strict";

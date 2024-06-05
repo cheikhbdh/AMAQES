@@ -7,12 +7,17 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <main id="main" class="main">
-  <nav>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
-        <li class="breadcrumb-item">les admins</li>
-    </ol>
-</nav>
+  <div class="pagetitle">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Les admins</h1>
+    </div>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+            <li class="breadcrumb-item">les admins</li>
+        </ol>
+    </nav>
+</div>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -37,7 +42,7 @@
           </div>
       @endif
           
-              <h5 class="card-title">Gestion des admins</h5>
+              <h6 class="card-title">Les admins</h6>
               <!-- Button to open the modal -->
               <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 

@@ -1,7 +1,6 @@
 @extends('dashadmin.home')
 @section('content')
 <main id="main" class="main">
-
     <div class="pagetitle">
       <h1>Data Tables</h1>
       <nav>

@@ -1,18 +1,21 @@
 @extends('dashadmin.home')
-
 @section('content')
 <head>
   <link rel="stylesheet" href="{{ asset('assets/css/ajout.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/edit.css') }}">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <main id="main" class="main">
-  <nav>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
-        <li class="breadcrumb-item">les évaluateur_externe</li>
-    </ol>
-</nav>
+  <div class="pagetitle">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Les évaluateur_externe</h1>
+    </div>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+            <li class="breadcrumb-item">les évaluateur_externe</li>
+        </ol>
+    </nav>
+</div>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -28,7 +31,7 @@
           <div class="alert alert-success">{{ session('success') }}</div>
           @endif
           
-              <h5 class="card-title">Gestion des évaluateur_externe</h5>
+              <h6 class="card-title">Les évaluateur_externe</h6>
               <!-- Button to open the modal -->
               <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 
@@ -68,7 +71,7 @@
                       </form>
                   </div>
               </div>
-              <table class="table datatable"  id="tabledatabase">
+              <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>Nom</th>
@@ -109,9 +112,9 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form id="editForm" action="" method="POST">
-                @csrf
-                @method('PUT') <!-- Utilisez la méthode PUT pour la modification -->
+            <form id="editForm"  method="POST">
+              @csrf
+              @method('PUT')
                 <input type="hidden" id="editUserId" name="userId">
                 <label for="editName">Nom:</label>
                 <input type="text" id="editName" name="name" required>
@@ -213,6 +216,5 @@
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 @endsection

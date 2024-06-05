@@ -1,57 +1,49 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <link rel="stylesheet" href="{{ asset('assets/css/lang.css') }}">
-  <title>{{ __('messages.Home') }}</title>  
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  @stack('styles')
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lang.css') }}">
+    <title>{{ __('messages.Home') }}</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    @stack('styles')
 
-  <!-- Favicons -->
-  <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-  <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    <!-- Template Main CSS File -->
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 </head>
-
 <body>
 
   <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
+  <header id="header" class="header fixed-top d-flex align-items-center {{ app()->getLocale() == 'ar' ? 'arabic-layout' : '' }}">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="#" class="logo d-flex align-items-center">
         <img src="{{ asset('assets/img/amaqes2.png') }}" alt="Logo" width="20%">
         <span class="d-none d-lg-block" style="font-size: 12px;">{{ __('messages.logo1') }}<br>{{ __('messages.logo2') }}</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
+      <i id="toggleSidebar" class="bi bi-list toggle-sidebar-btn sidebar-icon"></i>
     </div><!-- End Logo -->
 
     <div class="search-bar">
@@ -69,18 +61,126 @@
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ __('messages.Langue') }}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'fr']) }}">Français</a></li>
-              <li><a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'ar']) }}">العربية</a></li>
-          </ul>
-      </li>
+        
+
       
       <div class="divider"></div>
+      <li class="nav-item dropdown">
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" id="notificationIcon">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number" id="notificationCount">0</span>
+        </a>
       
+        <!-- Dropdown menu for notifications -->
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="notificationMenu">
+            <li class="dropdown-header">
+                Vous avez <span id="notificationTotal">0</span> nouvelles notifications
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <div id="notificationItems">
+                <!-- Notifications will be appended here by JavaScript -->
+            </div>
+            <li class="dropdown-footer">
+                <a id="showPastNotifications" href="{{ route('notifications.passees') }}">Afficher toutes les notifications</a>
+            </li>      
+        </ul>
+    </li>
+        
+    <script>
+        // Fonction pour marquer les notifications comme lues
+        function markNotificationsAsRead() {
+            fetch('{{ route('notifications.read') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Mettre à jour le compteur de notifications à 0
+                    updateNotificationCount(0);
+                }
+            })
+            .catch(error => console.error('Error marking notifications as read:', error));
+        }
+    
+        // Fonction pour récupérer et afficher les notifications passées
+        function fetchPastNotifications() {
+            fetch('{{ route('notifications.passees') }}', {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(notifications => {
+                let notificationCount = notifications.length;
+    
+                // Mettre à jour le compteur de notifications avec le nombre de notifications passées
+                updateNotificationCount(notificationCount);
+    
+                let notificationItems = document.getElementById('notificationItems');
+                notificationItems.innerHTML = '';
+    
+                // Afficher chaque notification passée dans le menu
+                if (notificationCount > 0) {
+                    notifications.forEach(notification => {
+                        let item = `
+                            <li class="notification-item">
+                                <i class="bi bi-exclamation-circle text-warning"></i>
+                                <div>
+                                    <h4>${notification.title}</h4>
+                                    <p>${notification.message}</p>
+                                    <p>${new Date(notification.created_at).toLocaleString()}</p>
+                                </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        `;
+                        notificationItems.innerHTML += item;
+                    });
+                } else {
+                    // Afficher un message si aucune notification passée n'est disponible
+                    let noNotificationsItem = `
+                        <li class="notification-item">
+                            <div>
+                                <p>Pas de notifications passées</p>
+                            </div>
+                        </li>
+                    `;
+                    notificationItems.innerHTML += noNotificationsItem;
+                }
+            })
+            .catch(error => console.error('Error fetching past notifications:', error));
+        }
+    
+        // Écouter le clic sur l'icône de notification
+        document.getElementById('notificationIcon').addEventListener('click', function () {
+            // Marquer les notifications comme lues
+            markNotificationsAsRead();
+            // Récupérer et afficher les notifications passées
+            fetchPastNotifications();
+        });
+    
+        // Fonction pour mettre à jour le compteur de notifications
+        function updateNotificationCount(count) {
+            document.getElementById('notificationCount').innerText = count;
+            document.getElementById('notificationTotal').innerText = count;
+        }
+    
+        // Appeler la fonction pour vérifier la date de fin de la campagne active au chargement de la page
+        checkCampaignEndDate();
+    </script>
+    
+    
+    
+
         <li class="nav-item dropdown">
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
@@ -178,27 +278,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="get">
                     @csrf
                     <a class="dropdown-item d-flex align-items-center">
                       <i class="bi bi-box-arrow-right"></i>
@@ -214,7 +294,7 @@
   </header>
 
   <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar {{ app()->getLocale() == 'ar' ? 'sidebar-right' : '' }}">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -231,15 +311,13 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>{{ __('messages.Alerts') }}</span>
+            <a href="{{ route('show.referent') }}">
+              <i class="bi bi-circle"></i><span>{{ __('messages.référentiels') }}</span>
             </a>
           </li>
-          
-         
           <li>
             <a href="{{route('invitations.index')}}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.invitations') }}</span>
+              <i class="bi bi-circle"></i><span>{{ __('messages.campagnes') }}</span>
             </a>
           </li>
         </ul>
@@ -293,11 +371,11 @@
           <i class="bi bi-layout-text-window-reverse"></i><span>{{ __('messages.Gestions') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          {{-- <li>
             <a href="{{ route('user') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Les utilisateurs') }}</span>
             </a>
-          </li>
+          </li> --}}
           <li>
             <a href="{{ route('admin.utilisateurs') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Les admins') }}</span>
@@ -321,110 +399,42 @@
             </a>
           </li>
           -->
-          <li>
-            <a href="{{ route('show.referent') }}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.Champs') }}</span>
-            </a>
-          </li>
+          
         </ul>
       </li><!-- End Tables Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Charts Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="icons-bootstrap.html">
-              <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-remix.html">
-              <i class="bi bi-circle"></i><span>Remix Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-boxicons.html">
-              <i class="bi bi-circle"></i><span>Boxicons</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Icons Nav -->
-
+      
       <li class="nav-heading">{{ __('messages.Pages') }}</li>
-
+      
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ route('profile') }}">
           <i class="bi bi-person"></i>
           <span>{{ __('messages.Profile') }}</span>
         </a>
       </li><!-- End Profile Page Nav -->
-
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-question-circle"></i>
-          <span>{{ __('messages.F.A.Q') }}</span>
+        <a class="nav-link collapsed" data-bs-target="#langue-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-translate"></i><span>{{ __('messages.Langue') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-      </li><!-- End F.A.Q Page Nav -->
-
+        <ul id="langue-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('setlocale', ['locale' => 'fr']) }}">
+              <i class="bi bi-circle"></i><span>Français</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('setlocale', ['locale' => 'ar']) }}">
+              <i class="bi bi-circle"></i><span>العربية</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Langue Nav -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#">
           <i class="bi bi-envelope"></i>
           <span>{{ __('messages.Contact') }}</span>
         </a>
       </li><!-- End Contact Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-card-list"></i>
-          <span>{{ __('messages.Register') }}</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>{{ __('messages.Login') }}</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-dash-circle"></i>
-          <span>{{ __('messages.Error 404') }}</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-file-earmark"></i>
-          <span>{{ __('messages.Blank') }}</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
 
     </ul>
 
@@ -469,6 +479,25 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+  <style>
+    /* Styles pour la mise en page arabe */
+    .arabic-layout {
+      direction: rtl; /* Inverser la direction du texte */
+    }
+  
+    /* Ajoutez d'autres styles CSS pour ajuster la mise en page en arabe si nécessaire */
+  </style>
+  <script>
+    document.getElementById('toggleSidebar').addEventListener('click', function() {
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        
+        sidebar.classList.toggle('hidden');
+        main.classList.toggle('expanded');
+    });
+    </script>
+      
+
 </body>
 
 </html>
