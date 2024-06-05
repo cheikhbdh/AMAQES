@@ -42,7 +42,7 @@ class InvitationController extends Controller
 
     public function index()
     {
-        // $this->checkAndDisableExpiredInvitations(); // Vérifier et désactiver les campagnes expirées
+        $this->checkAndDisableExpiredInvitations(); // Vérifier et désactiver les campagnes expirées
 
         $invitations = Invitation::all();
         return view('dashadmin.invit', compact('invitations'));
@@ -87,7 +87,7 @@ class InvitationController extends Controller
 
     public function store(Request $request)
     {
-       // $this->checkAndDisableExpiredInvitations(); // Vérifier et désactiver les campagnes expirées
+        $this->checkAndDisableExpiredInvitations();// Vérifier et désactiver les campagnes expirées
 
         $existingActiveInvitation = Invitation::where('statue', true)->exists();
 
@@ -117,7 +117,7 @@ class InvitationController extends Controller
 
     public function update(Request $request, Invitation $invitation)
     {
-        //$this->checkAndDisableExpiredInvitations(); // Vérifier et désactiver les campagnes expirées
+        $this->checkAndDisableExpiredInvitations(); // Vérifier et désactiver les campagnes expirées
 
         $existingActiveInvitations = Invitation::where('statue', true)
                                                 ->where('id', '!=', $invitation->id)
