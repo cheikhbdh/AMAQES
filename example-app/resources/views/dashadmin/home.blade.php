@@ -372,11 +372,6 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{ route('user') }}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.Les utilisateurs') }}</span>
-            </a>
-          </li>
-          <li>
             <a href="{{ route('admin.utilisateurs') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Les admins') }}</span>
             </a>

@@ -87,7 +87,7 @@
                       <td>{{ $user->email }}</td>
                       <td>{{ $user->role }}</td>
                       <td>
-                        <button class="btn btn-info modifierBtn" data-id="{{ $user->id }}">Modifier</button>
+                        <button class="btn btn-warning modifierBtn" data-id="{{ $user->id }}">Modifier</button>
                       </td>
                       <td>
                         <form action="{{ route('destroy_userEx', $user->id) }}" method="POST" class="supprimerForm">

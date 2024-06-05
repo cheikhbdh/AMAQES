@@ -73,7 +73,8 @@
                       </form>
                   </div>
               </div>
-              <table class="table datatable"  id="tabledatabase">
+
+              <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>Nom</th>
@@ -89,7 +90,7 @@
                       <td>{{ $user->email }}</td>
                       <td>{{ $user->role }}</td>
                       <td>
-                        <button class="btn btn-info modifierBtn" data-id="{{ $user->id }}">Modifier</button>
+                        <button class="btn btn-warning modifierBtn" data-id="{{ $user->id }}">Modifier</button>
                       </td>
                       <td>
                         <form action="{{ route('utilisateur.supprimer', $user->id) }}" method="POST" class="supprimerForm">

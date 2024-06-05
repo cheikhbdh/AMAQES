@@ -14,7 +14,7 @@
       <li class="breadcrumb-item">Les critères</li>
     </ol>
   </nav>
-  <h2>Critères pour le champ : {{ $champ->name }}</h2>
+  <h2>Critères de champ : {{ $champ->name }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -64,11 +64,11 @@
                 @foreach($champ->criteres as $critere)
                 <tr>
                   <td>
-                    <a href="{{ route('critere.preuves', ['referentielId' => $referentiel->id, 'champId' => $champ->id,  'critereTd' => $critere->id,]) }}" class="btn btn-info">View</a>
+                    <a href="{{ route('critere.preuves', ['referentielId' => $referentiel->id, 'champId' => $champ->id,  'critereTd' => $critere->id,]) }}" class="btn btn-success">Vue</a>
                   </td>
                   <td>{{ $critere->nom }}</td>
                   <td>
-                    <button class="btn btn-info modifierBtn" data-id="{{ $critere->id }}">Modifier</button>
+                    <button class="btn btn-warning modifierBtn" data-id="{{ $critere->id }}">Modifier</button>
                   </td>
                   <td>
                     <form action="{{ route('critere.supprimer', $critere->id) }}" method="POST" class="supprimerForm">

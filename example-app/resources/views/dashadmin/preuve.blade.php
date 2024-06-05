@@ -15,7 +15,7 @@
             <li class="breadcrumb-item">Les éléments de preuves</li>
         </ol>
     </nav>
-    <h2>Eléments de preuves pour le critère : {{ $criteres->nom }}</h2>
+    <h2>Eléments de preuves de critère : {{ $criteres->nom }}</h2>
     <section class="section">
         <div class="row">
           <div class="col-lg-12">
@@ -68,7 +68,7 @@
                                             <td>{{ $preuve->description }}</td>
                                             <td>
                                                <!-- Bouton pour ouvrir le modal de modification -->
-            <button class="btn btn-primary modifierBtn" data-id="{{ $preuve->id }}" data-description="{{ $preuve->description }}">Modifier</button>
+            <button class="btn btn-warning modifierBtn" data-id="{{ $preuve->id }}" data-description="{{ $preuve->description }}">Modifier</button>
             <!-- Formulaire de suppression -->
                                             </td>
                                         <td>

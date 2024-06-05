@@ -13,7 +13,6 @@
         
     </ol>
 </nav>
-
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -66,11 +65,11 @@
                 @foreach($referentiels as $referentiel)
                   <tr>
                     <td>
-                        <a href="{{ route('referents.champs', $referentiel->id) }}" class="btn btn-info">View</a>
+                        <a href="{{ route('referents.champs', $referentiel->id) }}" class="btn btn-success">Vue</a>
                     </td>
                     <td>{{ $referentiel->name }}</td>
                     <td>
-                      <button class="btn btn-info modifierBtn" data-id="{{ $referentiel->id }}" data-name="{{ $referentiel->name }}">Modifier</button>
+                      <button class="btn btn-warning modifierBtn" data-id="{{ $referentiel->id }}" data-name="{{ $referentiel->name }}">Modifier</button>
                       <form action="{{ route('referentiel.supprimer', $referentiel->id) }}" method="POST" class="d-inline supprimerForm">
                         @csrf
                         @method('DELETE')

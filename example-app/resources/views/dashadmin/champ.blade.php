@@ -13,7 +13,7 @@
         <li class="breadcrumb-item">les champs</li>
     </ol>
   </nav>
-  <h2>Champs pour le référentiel : {{ $referentiel->name }}</h2>
+  <h2>Champs de référentiel : {{ $referentiel->name }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -64,11 +64,11 @@
                 @foreach($referentiel->champs as $champ)
     <tr>
         <td>
-            <a href="{{ route('champs.criteres', ['referentielId' => $referentiel->id,'champId' => $champ->id]) }}" class="btn btn-info">View</a>
+            <a href="{{ route('champs.criteres', ['referentielId' => $referentiel->id,'champId' => $champ->id]) }}" class="btn btn-success">Vue</a>
         </td>
         <td>{{ $champ->name }}</td>
         <td>
-            <button class="btn btn-info modifierBtn" data-id="{{ $champ->id }}">Modifier</button>
+            <button class="btn btn-warning modifierBtn" data-id="{{ $champ->id }}">Modifier</button>
         </td>
         <td>
             <form action="{{ route('champ.supprimer', $champ->id) }}" method="POST" class="supprimerForm">
