@@ -316,6 +316,11 @@
             </a>
           </li>
           <li>
+            <a href="{{ route('show.referent') }}">
+              <i class="bi bi-circle"></i><span>{{ __('messages.champs') }}</span>
+            </a>
+          </li>
+          <li>
             <a href="{{route('invitations.index')}}">
               <i class="bi bi-circle"></i><span>{{ __('messages.campagnes') }}</span>
             </a>
@@ -392,13 +397,7 @@
             <i class="bi bi-circle"></i><span>{{ __('messages.Les évaluateur_externe') }}</span>
           </a>
         </li>
-        <!-- 
-          <li>
-            <a href="">
-              <i class="bi bi-circle"></i><span>Admins</span>
-            </a>
-          </li>
-          -->
+
           
         </ul>
       </li><!-- End Tables Nav -->
@@ -411,6 +410,23 @@
           <span>{{ __('messages.Profile') }}</span>
         </a>
       </li><!-- End Profile Page Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#langue-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-translate"></i><span>resultat</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="langue-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('resultat.EVIN') }}">
+              <i class="bi bi-circle"></i><span>Evaluation interne</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('setlocale', ['locale' => 'ar']) }}">
+              <i class="bi bi-circle"></i><span>Evaluation externe</span>
+            </a>
+          </li>
+        </ul>
+      </li>
       
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#langue-nav" data-bs-toggle="collapse" href="#">

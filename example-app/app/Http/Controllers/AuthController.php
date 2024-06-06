@@ -299,8 +299,6 @@ public function update_profil(Request $request)
     {
 
    $currentUserId = Auth::id();
-    
-    // Récupérer les utilisateurs en excluant l'utilisateur connecté et en filtrant par rôle 'admin'
     $users = User::where('id', '!=', $currentUserId)
                       ->where('role', 'admin')
                       ->get();

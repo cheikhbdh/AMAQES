@@ -15,7 +15,7 @@
             <li class="breadcrumb-item">Les éléments de preuves</li>
         </ol>
     </nav>
-    <h2>Eléments de preuves pour le critère : {{ $criteres->nom }}</h2>
+    <h2>Eléments de preuves pour le critère : {{ $criteres->id }}</h2>
     <section class="section">
         <div class="row">
           <div class="col-lg-12">
