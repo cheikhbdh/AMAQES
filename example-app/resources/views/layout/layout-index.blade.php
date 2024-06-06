@@ -36,7 +36,7 @@
         <div class="profile-dropdown">
             <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
             <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            <a href="{{route('logout')}}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
         </div>
     </div>
 </nav>

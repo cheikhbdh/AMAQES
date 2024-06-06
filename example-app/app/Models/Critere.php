@@ -23,4 +23,8 @@ class Critere extends Model
     {
         return $this->hasMany(Preuve::class);
     }
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluationinterne::class, 'idcritere');
+    }
 }

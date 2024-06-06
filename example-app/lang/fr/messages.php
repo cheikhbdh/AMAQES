@@ -26,6 +26,7 @@ return [
     'Les évaluateur_interne' => 'Les évaluateurs internes',
     'Les évaluateur_externe' => 'Les évaluateurs externes',
     'référentiels' => 'Référentiels',
+    'champs' => 'champs',
     'Charts' => 'Graphiques',
     'Chart.js' => 'Chart.js',
     'ApexCharts' => 'ApexCharts',

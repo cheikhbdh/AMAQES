@@ -128,37 +128,42 @@
 <body>
     <main id="main" class="main">
         <div class="custom-container">
-            <div class="progress-bar" id="progress-bar">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <div class="row" id="champs-non-evaluer-container">
-                <h3 class="display-4">Champs Non Évalués</h3>
-                @foreach($champsNonEvaluer as $champ)
-                    <div class="col-md-4">
-                        <div class="champ-box champ-box-hover" id="champ-{{ $champ->id }}" data-champ-id="{{ $champ->id }}">
-                            <h4>{{ $champ->name }}</h4>
-                            <button class="btn btn-secondary btn-evaluer">Évaluer</button>
+            @if($hasActiveInvitation)
+                <div class="progress-bar" id="progress-bar">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="row" id="champs-non-evaluer-container">
+                    <h3 class="display-4"> Évaluation en cours:</h3>
+                    @foreach($champsNonEvaluer as $champ)
+                        <div class="col-md-4">
+                            <div class="champ-box champ-box-hover" id="champ-{{ $champ->id }}" data-champ-id="{{ $champ->id }}">
+                                <h4>{{ $champ->name }}</h4>
+                                <button class="btn btn-secondary btn-evaluer">Évaluer</button>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-                <div id="snackbar"></div>
-            </div>
+                    @endforeach
+                    <div id="snackbar"></div>
+                </div>
 
-            <div id="evaluation-section" class="hidden-section">
-                <h2 class="mb-4" id="evaluation-title"></h2>
-                <form action="{{ route('evaluate') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div id="criteres-container" class="list-group"></div>
-                    <button type="submit" class="btn btn-primary">Soumettre</button>
-                    <button type="button" class="btn btn-secondary" id="btn-retour">Retour</button>
-                </form>
-            </div>
+                <div id="evaluation-section" class="hidden-section">
+                    <h2 class="mb-4" id="evaluation-title"></h2>
+                    <form action="{{ route('evaluate') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div id="criteres-container" class="list-group"></div>
+                        <button type="submit" class="btn btn-primary">Soumettre</button>
+                        <button type="button" class="btn btn-secondary" id="btn-retour">Retour</button>
+                    </form>
+                </div>
+            @else
+            <div class="alert alert-info text-center">
+                <h4>Vous n'avez aucune invitation active pour évaluer des champs.</h4>
+              </div>
+            @endif
         </div>
-
     </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>

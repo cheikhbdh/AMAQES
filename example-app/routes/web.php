@@ -70,7 +70,7 @@ Route::middleware(['auth', 'redirectIfAdmin'])->group(function () {
 Route::put('/profil/update', [AuthController::class, 'update_profil'])->name('profil.update');
 // web.php
 Route::put('/profile/update-password', [AuthController::class, 'updatePassword'])->name('profile.update-password');
-
+Route::get('/resultat', [Homecontroller::class, 'evaluation_interne'])->name('resultat.EVIN');
 
     Route::get('/users', [AuthController::class, 'user'])->name('user');
 
