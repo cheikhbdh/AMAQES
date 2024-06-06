@@ -43,7 +43,7 @@
                                             <button type="button" class="btn btn-sm transparent-button mr-2" data-toggle="modal" data-target="#editInstitutionModal{{$institution->id}}">
                                                 <i class="bi bi-pencil-fill text-warning"></i> Modifier
                                             </button>
-                                            <button type="button" class="btn btn-sm transparent-button mr-2 deleteButton" data-toggle="modal" data-target="#confirmDeleteModal" data-institution-id="{{$institution->id}}">
+                                            <button type="button" class="btn btn-sm transparent-button mr-2 deleteButton" data-toggle="modal" data-target="#confirmDeleteModal{{$institution->id}}" >
                                                 <i class="bi bi-trash-fill text-danger"></i> Supprimer
                                             </button>
                                         </div>
@@ -67,6 +67,29 @@
                                                         <input type="text" class="form-control" id="nom{{$institution->id}}" name="nom" value="{{ $institution->nom }}" required>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="confirmDeleteModal{{$institution->id}}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel{{$institution->id}}" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmDeleteModalLabel{{$institution->id}}">Confirmation de suppression</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Êtes-vous sûr de vouloir supprimer ce institution ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                                <form action="{{ route('institutions.destroy', $institution->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Supprimer</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -101,7 +124,7 @@
         </div>
     </div>
 </div>
-
+{{-- 
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -124,7 +147,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
     
 
@@ -137,15 +160,14 @@
         $(addInstitutionModal).modal('show');
     });
 
-    $(document).ready(function () {
-        $('.deleteButton').on('click', function () {
-    var institutionId = $(this).data('institution-id');
-    var form = $('#confirmDeleteModal').find('.delete-form');
-    form.attr('action', '/institutions/' + institutionId); // Assurez-vous que le chemin est correct
-    $('#confirmDeleteModal').modal('show');
-});
-
-    });
+    // $(document).ready(function () {
+    //     $('.deleteButton').on('click', function () {
+    //         var institutionId = $(this).data('institution-id');
+    //         var form = $('#confirmDeleteModal').find('.delete-form');
+    //         form.attr('action', '/institutions/' + institutionId);
+    //         $('#confirmDeleteModal').modal('show');
+    //     });
+    // });
 </script>
 
 @if(session('success'))

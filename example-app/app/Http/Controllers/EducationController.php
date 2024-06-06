@@ -114,7 +114,7 @@ public function destroyEtablissement($id)
             $etablissement->delete();
             return redirect()->route('etablissement.index')->with('success', 'L\'Établissement a été supprimée avec succès.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de l\'Établissement. Veuillez réessayer.');
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de l\'Établissement. Veuillez réessayer.'.$e->getMessage());
         }
     }
     public function indexDepartement()

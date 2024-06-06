@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\InvitationController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationController;use App\Http\Controllers\Homecontroller;
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -53,6 +54,8 @@ Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
     
      
     
+    Route::get('/indexevaluation', [Homecontroller::class, 'indexevaluation'])->name('indexevaluation');
+    Route::post('/evaluate', [Homecontroller::class, 'evaluate'])->name('evaluate');
 });
 
 
@@ -85,9 +88,6 @@ Route::put('/profile/update-password', [AuthController::class, 'updatePassword']
 
 
 
-Route::post('/utilisateurs/ajouter', [AuthController::class, 'ajouter_user'])->name('utilisateur.ajouter');
-Route::put('/utilisateurs/{id}/modifier', [AuthController::class, 'modifier_user'])->name('utilisateur.modifier');
-Route::delete('/utilisateurs/{id}/supprimer', [AuthController::class, 'supprimer_user'])->name('utilisateur.supprimer');
 
 Route::post('/useradmin/ajouter', [AuthController::class, 'store_admin'])->name('useradmin.ajouter');
 Route::put('/useradmin/{id}/modifier', [AuthController::class, 'update_admin'])->name('useradmin.modifier');
