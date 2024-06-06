@@ -222,17 +222,12 @@ public function update_profil(Request $request)
         }
 
     public function adminIndex()
-{
-    // Récupérer l'ID de l'utilisateur actuellement connecté
-    $currentUserId = Auth::id();
-    
-    // Récupérer tous les utilisateurs avec le rôle 'admin' sauf ceux ayant l'email spécifique ou l'ID de l'utilisateur connecté actuellement
-    $users = User::where('role', 'admin')
-                 ->where(function ($query) use ($currentUserId) {
-                     $query->where('email', '!=', 'amaqes@gmail.com')
-                           ->Where('id', '!=', $currentUserId);
-                 })
-                 ->get();
+    {
+
+   $currentUserId = Auth::id();
+    $users = User::where('id', '!=', $currentUserId)
+                      ->where('role', 'admin')
+                      ->get();
 
     return view('dashadmin.admin_users', compact('users'));
 }

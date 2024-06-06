@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('references', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->foreignId('champ_id')->constrained('champs')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('champs', function (Blueprint $table) {
+            //
+            $table->string('signature');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('references');
+        Schema::table('champs', function (Blueprint $table) {
+            //
+        });
     }
 };

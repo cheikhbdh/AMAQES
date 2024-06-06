@@ -9,17 +9,16 @@ class Champ extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'referentiel_id'];
+    protected $fillable = ['name', 'referentiel_id','signature'];
 
     public function referentiel()
     {
         return $this->belongsTo(Referentiel::class);
     }
 
-    // Add this method to define the relationship with Critere
-    public function criteres()
+    public function references()
     {
-        return $this->hasMany(Critere::class);
+        return $this->hasMany(Reference::class);
     }
 }
 
