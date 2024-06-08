@@ -9,20 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('referentiels', function (Blueprint $table) {
+        Schema::create('criteres', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // Unique constraint as per your controller validation
+            $table->string('nom');
+            $table->foreignId('champ_id')->constrained('champs')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('referentiels');
+        Schema::dropIfExists('criteres');
     }
 };
