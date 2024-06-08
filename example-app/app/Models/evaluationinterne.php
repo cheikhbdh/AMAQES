@@ -10,3 +10,4 @@ class evaluationinterne extends Model
     use HasFactory;
     protected $fillable = ['idcritere', 'idpreuve','idfiliere', 'score', 'commentaire'];
 }
+
