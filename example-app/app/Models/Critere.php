@@ -9,15 +9,22 @@ class Critere extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'reference_id','signature'];
+    protected $fillable = [
+        'nom',
+        'champ_id',
+    ];
 
-    public function reference()
+    public function champ()
     {
-        return $this->belongsTo(Reference::class);
+        return $this->belongsTo(Champ::class);
     }
 
     public function preuves()
     {
         return $this->hasMany(Preuve::class);
+    }
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluationinterne::class, 'idcritere');
     }
 }

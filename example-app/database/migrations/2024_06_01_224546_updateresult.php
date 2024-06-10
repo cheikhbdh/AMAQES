@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('criteres', function (Blueprint $table) {
-            //
-            $table->string('signature');
+        Schema::table('evaluationinternes', function (Blueprint $table) {
+            $table->unsignedBigInteger('idfiliere')->default(0);
+            $table->foreign('idfiliere')->references('id')->on('filières')->onDelete('cascade');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('criteres', function (Blueprint $table) {
+        Schema::table('evaluationinternes', function (Blueprint $table) {
             //
         });
     }

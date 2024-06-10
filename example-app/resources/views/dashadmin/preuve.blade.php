@@ -11,12 +11,11 @@
             <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="{{ route('show.referent') }}">Les référentiels</a></li>
             <li class="breadcrumb-item"><a href="{{ route('referents.champs', $referentiel->id) }}">Les champs</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('champs.references', ['referentielId' => $referentiel->id , 'champId' => $champ->id]) }}">Les references</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('references.criteres', ['referentielId' => $referentiel->id , 'champId' => $champ->id, 'referenceId'=> $reference->id ]) }}">Les criteres</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('champs.criteres', ['champId' => $champ->id, 'referentielId' => $referentiel->id]) }}">Les critères</a></li>
             <li class="breadcrumb-item">Les éléments de preuves</li>
         </ol>
     </nav>
-    <h2>Eléments de preuves pour le critère : {{ $critere->signature }}</h2>
+    <h2>Eléments de preuves pour le critère : {{ $criteres->id }}</h2>
     <section class="section">
         <div class="row">
           <div class="col-lg-12">
@@ -46,9 +45,9 @@
                     </ul>
                   </div>
                 @endif
-                <form id="ajouterForm" action="{{ route('preuves.store', $critere->id) }}" method="POST">
+                <form id="ajouterForm" action="{{ route('preuves.store', $criteres->id) }}" method="POST">
                   @csrf
-                  <input type="hidden" name="critereId" value="{{ $critere->id }}">
+                  <input type="hidden" name="critereId" value="{{ $criteres->id }}">
                   <label for="element">Elément de preuve:</label>
                   <input type="text" id="element" name="element" required>
                   <br><br>
@@ -64,16 +63,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($critere->preuves as $preuve)
+                                    @foreach ($criteres->preuves as $preuve)
                                         <tr>
                                             <td>{{ $preuve->description }}</td>
                                             <td>
                                                <!-- Bouton pour ouvrir le modal de modification -->
-            <button class="btn btn-warning modifierBtn" data-id="{{ $preuve->id }}" data-description="{{ $preuve->description }}">Modifier</button>
+            <button class="btn btn-primary modifierBtn" data-id="{{ $preuve->id }}" data-description="{{ $preuve->description }}">Modifier</button>
             <!-- Formulaire de suppression -->
                                             </td>
                                         <td>
-                                                <form action="{{ route('preuves.destroy', ['preuveId' => $preuve->id]) }}" method="POST" class="supprimerForm">
+                                                <form action="{{ route('preuves.destroy', ['critereId' => $criteres->id, 'preuveId' => $preuve->id]) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -157,18 +156,8 @@
             document.getElementById('editPreuveId').value = preuveId;
             document.getElementById('editDescription').value = description;
             // Définir l'action du formulaire de modification avec l'ID correct
-            document.getElementById('editForm').action = `/preuve/${preuveId}/modifier`;
+            document.getElementById('editForm').action = `/critere/${{{ $criteres->id }}}/preuves/${preuveId}`;
         });
-    });
-
-    const supprimerForms = document.querySelectorAll('.supprimerForm');
-    supprimerForms.forEach((form) => {
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (confirm('Are you sure you want to delete this critere?')) {
-          form.submit();
-        }
-      });
     });
 });
 </script>

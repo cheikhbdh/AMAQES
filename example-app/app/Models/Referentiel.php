@@ -10,7 +10,9 @@ class Referentiel extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','signature'];
+    protected $fillable = [
+        'name',
+    ];
 
     public function champs(): HasMany
     {

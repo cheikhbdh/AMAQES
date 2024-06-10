@@ -376,14 +376,11 @@
           <i class="bi bi-layout-text-window-reverse"></i><span>{{ __('messages.Gestions') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-<<<<<<< HEAD
-=======
           {{-- <li>
             <a href="{{ route('user') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Les utilisateurs') }}</span>
             </a>
           </li> --}}
->>>>>>> f360d2683b0b046b473da2beff32757b6070e283
           <li>
             <a href="{{ route('admin.utilisateurs') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Les admins') }}</span>

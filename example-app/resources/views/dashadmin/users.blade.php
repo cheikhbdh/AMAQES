@@ -7,17 +7,12 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
 <main id="main" class="main">
-  <div class="pagetitle">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1>Les admins</h1>
-    </div>
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
-            <li class="breadcrumb-item">les admins</li>
-        </ol>
-    </nav>
-</div>
+  <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>
+        <li class="breadcrumb-item">les utilisateurs</li>
+    </ol>
+</nav>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -32,17 +27,8 @@
           @if(session('success'))
           <div class="alert alert-success">{{ session('success') }}</div>
           @endif
-          @if ($errors->any())
-          <div class="alert alert-danger">
-              <ul>
-                  @foreach ($errors->all() as $error)
-                      <li>{{ $error }}</li>
-                  @endforeach
-              </ul>
-          </div>
-      @endif
           
-              <h6 class="card-title">Les admins</h6>
+              <h5 class="card-title">Gestion des utilisateurs</h5>
               <!-- Button to open the modal -->
               <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 
@@ -50,7 +36,16 @@
               <div id="formModal" class="modal">
                   <div class="modal-content">
                       <span class="close">&times;</span>
-                      <form id="ajouterForm" action="{{ route('useradmin.ajouter') }}" method="POST">
+                      @if ($errors->any())
+                          <div class="alert alert-danger">
+                              <ul>
+                                  @foreach ($errors->all() as $error)
+                                      <li>{{ $error }}</li>
+                                  @endforeach
+                              </ul>
+                          </div>
+                      @endif
+                      <form id="ajouterForm" action="{{ route('utilisateur.ajouter') }}" method="POST">
                           @csrf
                           <label for="name">Nom:</label>
                           <input type="text" id="name" name="name" required>
@@ -66,6 +61,8 @@
                           <br><br>
                           <label for="role">Rôle:</label>
                           <select id="role" name="role" class="form-control" required>
+                              <option value="evaluateur_i">évaluateur_In</option>
+                              <option value="evaluateur_e">évaluateur_Ex</option>
                               <option value="admin">admin</option>
                           </select>
                           <br><br>
@@ -83,16 +80,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($users as $user)
+                  @foreach($utilisateurs as $utilisateur)
                     <tr>
-                      <td>{{ $user->name }}</td>
-                      <td>{{ $user->email }}</td>
-                      <td>{{ $user->role }}</td>
+                      <td>{{ $utilisateur->name }}</td>
+                      <td>{{ $utilisateur->email }}</td>
+                      <td>{{ $utilisateur->role }}</td>
                       <td>
-                        <button class="btn btn-info modifierBtn" data-id="{{ $user->id }}">Modifier</button>
+                        <button class="btn btn-info modifierBtn" data-id="{{ $utilisateur->id }}">Modifier</button>
                       </td>
                       <td>
-                        <form action="{{ route('utilisateur.supprimer', $user->id) }}" method="POST" class="supprimerForm">
+                        <form action="{{ route('utilisateur.supprimer', $utilisateur->id) }}" method="POST" class="supprimerForm">
                           @csrf
                           @method('DELETE')
                           <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -129,6 +126,8 @@
                 <br><br>
                 <label for="editRole">Rôle:</label>
                 <select id="editRole" name="role" class="form-control" required>
+                    <option value="evaluateur_i">évaluateur_In</option>
+                    <option value="evaluateur_e">évaluateur_Ex</option>
                     <option value="admin">admin</option>
                 </select>
                 <br><br>
@@ -188,7 +187,7 @@
             document.getElementById('editName').value = name;
             document.getElementById('editEmail').value = email;
             document.getElementById('editRole').value = role;
-            document.getElementById('editForm').action = "/useradmin/" + userId + "/modifier"; // Set the action of the form with user ID
+            document.getElementById('editForm').action = "/utilisateurs/" + userId + "/modifier"; // Set the action of the form with user ID
             editModal.style.display = "block";
         }
 

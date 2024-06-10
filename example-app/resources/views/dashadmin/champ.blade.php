@@ -13,7 +13,7 @@
         <li class="breadcrumb-item">les champs</li>
     </ol>
   </nav>
-  <h2>Champs de référentiel : {{ $referentiel->signature }}</h2>
+  <h2>Champs pour le référentiel : {{ $referentiel->name }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -32,62 +32,55 @@
             <!-- Button to open the modal -->
             <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
 
-           <!-- Modal for the form -->
-<div id="formModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul>
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-    <form id="ajouterForm" action="{{ route('champ.ajouter', ['referentielId' => $referentiel->id]) }}" method="POST">
-      @csrf
-      <label for="name">Description:</label>
-      <input type="text" id="name" name="name" required>
-      <br><br>
-      <label for="signature">Signature:</label>
-      <input type="text" id="signature" name="signature" required>
-      <br><br>
-      <button type="submit" class="btn btn-success">Soumettre</button>
-    </form>
-  </div>
-</div>
-<table class="table data-table">
-  <thead>
+            <!-- Modal for the form -->
+            <div id="formModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                @if ($errors->any())
+                  <div class="alert alert-danger">
+                    <ul>
+                      @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                      @endforeach
+                    </ul>
+                  </div>
+                @endif
+                <form id="ajouterForm" action="{{ route('champ.ajouter', ['referentielId' => $referentiel->id]) }}" method="POST">
+                  @csrf
+                  <label for="name">Nom:</label>
+                  <input type="text" id="name" name="name" required>
+                  <br><br>
+                  <button type="submit" class="btn btn-success">Soumettre</button>
+                </form>
+              </div>
+            </div>
+            <table class="table data-table">
+              <tr>
+                <th>Les critères</th>
+                <th>Nom</th>
+                <th style="text-align: center">Action</th>
+              </tr>
+              <tbody>
+                @foreach($referentiel->champs as $champ)
     <tr>
-      <th>Les critères</th>
-      <th>Description</th>
-      <th>Signature</th>
-      <th style="text-align: center">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach($referentiel->champs as $champ)
-      <tr>
         <td>
-          <a href="{{ route('champs.references', ['referentielId' => $referentiel->id, 'champId' => $champ->id]) }}" class="btn btn-success">Vue</a>
+            <a href="{{ route('champs.criteres', ['referentielId' => $referentiel->id,'champId' => $champ->id]) }}" class="btn btn-info">View</a>
         </td>
         <td>{{ $champ->name }}</td>
-        <td>{{ $champ->signature }}</td>
         <td>
-          <button class="btn btn-warning modifierBtn" data-id="{{ $champ->id }}" data-name="{{ $champ->name }}" data-signature="{{ $champ->signature }}">Modifier</button>
+            <button class="btn btn-info modifierBtn" data-id="{{ $champ->id }}">Modifier</button>
         </td>
         <td>
-          <form action="{{ route('champ.supprimer', $champ->id) }}" method="POST" class="supprimerForm">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-          </form>
+            <form action="{{ route('champ.supprimer', $champ->id) }}" method="POST" class="supprimerForm">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
         </td>
-      </tr>
-    @endforeach
-  </tbody>
-</table>
+    </tr>
+@endforeach
+              </tbody>
+            </table>
             <!-- End Table with stripped rows -->
           </div>
         </div>
@@ -96,24 +89,20 @@
   </section>
 
   <!-- Modal for the edit form -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <form id="editForm" action="" method="POST">
-      @csrf
-      @method('PUT')
-      <input type="hidden" id="editChampId" name="champId">
-      <label for="editName">Description:</label>
-      <input type="text" id="editName" name="name" required>
-      <br><br>
-      <label for="editSignature">Signature:</label>
-      <input type="text" id="editSignature" name="signature" required>
-      <br><br>
-      <button type="submit" class="btn btn-success">Modifier</button>
-    </form>
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form id="editForm" action="" method="POST">
+        @csrf
+        @method('PUT') <!-- Utilisez la méthode PUT pour la modification -->
+        <input type="hidden" id="editChampId" name="champId">
+        <label for="editName">Nom:</label>
+        <input type="text" id="editName" name="name" required>
+        <br><br>
+        <button type="submit" class="btn btn-success">Modifier</button>
+      </form>
+    </div>
   </div>
-</div>
-
 </main><!-- End #main -->
 
 <script>
@@ -144,33 +133,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const closeModalBtn = editModal.querySelector('.close');
     const editForm = editModal.querySelector('form');
 
+    // Event listener for edit buttons
     modifierBtns.forEach((button) => {
         button.addEventListener('click', () => {
             const champId = button.getAttribute('data-id');
-            const name = button.getAttribute('data-name');
-            const signature = button.getAttribute('data-signature');
+            const row = button.closest('tr');
+            const name = row.cells[1].innerText;
 
-            openEditModal(champId, name, signature);
+            // Call the function to open the edit form with selected user data
+            openEditModal(champId, name);
         });
     });
 
-    function openEditModal(champId, name, signature) {
+    // Function to open the edit modal
+    function openEditModal(champId, name) {
         document.getElementById('editChampId').value = champId;
         document.getElementById('editName').value = name;
-        document.getElementById('editSignature').value = signature;
-        document.getElementById('editForm').action = "/champs/" + champId + "/modifier";
+        document.getElementById('editForm').action = "/champs/" + champId + "/modifier"; // Set the action of the form with user ID
         editModal.style.display = "block";
     }
-
-    closeModalBtn.addEventListener('click', () => {
-        editModal.style.display = "none";
-    });
-
-    window.addEventListener('click', (event) => {
-        if (event.target === editModal) {
-            editModal.style.display = "none";
-        }
-    });
 
     // Event listener for delete forms
     supprimerForms.forEach((form) => {
@@ -180,6 +161,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 form.submit();
             }
         });
+    });
+
+    // Event listener for close button of edit form
+    closeModalBtn.addEventListener('click', () => {
+        editModal.style.display = "none";
+    });
+
+    // Event listener for closing edit form when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === editModal) {
+            editModal.style.display = "none";
+        }
     });
 });
 </script>

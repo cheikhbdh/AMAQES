@@ -30,7 +30,15 @@
           @if(session('success'))
           <div class="alert alert-success">{{ session('success') }}</div>
           @endif
-          <span class="close">&times;</span>
+          
+              <h6 class="card-title">Les évaluateur_externe</h6>
+              <!-- Button to open the modal -->
+              <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
+
+              <!-- Modal for the form -->
+              <div id="formModal" class="modal">
+                  <div class="modal-content">
+                      <span class="close">&times;</span>
                       @if ($errors->any())
                           <div class="alert alert-danger">
                               <ul>
@@ -40,14 +48,6 @@
                               </ul>
                           </div>
                       @endif
-          
-              <h6 class="card-title">Les évaluateur_externe</h6>
-              <!-- Button to open the modal -->
-              <button id="ajouterBtn" class="btn btn-primary mb-3">Ajouter</button>
-
-              <!-- Modal for the form -->
-              <div id="formModal" class="modal">
-                  <div class="modal-content">
                       <form id="ajouterForm" action="{{ route('store_userEx') }}" method="POST">
                           @csrf
                           <label for="name">Nom:</label>
@@ -87,7 +87,7 @@
                       <td>{{ $user->email }}</td>
                       <td>{{ $user->role }}</td>
                       <td>
-                        <button class="btn btn-warning modifierBtn" data-id="{{ $user->id }}">Modifier</button>
+                        <button class="btn btn-info modifierBtn" data-id="{{ $user->id }}">Modifier</button>
                       </td>
                       <td>
                         <form action="{{ route('destroy_userEx', $user->id) }}" method="POST" class="supprimerForm">
