@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('institution_id')->nullable();
-            $table->foreignId('filières_id')->default(1)->constrained('filières')->onDelete('cascade');
+            $table->unsignedBigInteger('filières_id')->default(0)->constrained('filières')->onDelete('cascade');
 
         });
     }

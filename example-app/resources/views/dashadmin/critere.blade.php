@@ -11,10 +11,11 @@
       <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">Dashboard</a></li>
       <li class="breadcrumb-item"><a href="{{ route('show.referent') }}">Les référentiels</a></li>
       <li class="breadcrumb-item"><a href="{{ route('referents.champs', $referentiel->id) }}">Les champs</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('champs.references', ['referentielId' => $referentiel->id, 'champId' => $champ->id]) }}">les references</a></li>
       <li class="breadcrumb-item">Les critères</li>
     </ol>
   </nav>
-  <h2>Critères pour le champ : {{ $champ->name }}</h2>
+  <h2>Critères de reference : {{ $reference->signature }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -42,33 +43,38 @@
                     </ul>
                   </div>
                 @endif
-                <form id="ajouterForm" action="{{ route('critere.ajouter', ['champ_id' => $champ->id]) }}" method="POST">
+                <form id="ajouterForm" action="{{ route('critere.ajouter', ['reference_id' => $reference->id]) }}" method="POST">
                   @csrf
-                  <input type="hidden" name="champ_id" value="{{ $champ->id }}">
-                  <label for="name">Nom:</label>
+                  <input type="hidden" name="champ_id" value="{{ $reference->id }}">
+                  <label for="name">Description:</label>
                   <input type="text" id="name" name="name" required>
                   <br><br>
+                  <label for="signature">Signature:</label>
+                  <input type="text" id="signature" name="signature" required>
+                  <br><br>
                   <button type="submit" class="btn btn-success">Soumettre</button>
-                </form>
+                </form>                
               </div>
             </div>
             <table class="table data-table">
               <thead>
                 <tr>
-                  <th>Action</th>
-                  <th>Nom</th>
+                  <th>Les preuves</th>
+                  <th>Description</th>
+                  <th>Signature</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach($champ->criteres as $critere)
+                @foreach($reference->criteres as $critere)
                 <tr>
                   <td>
-                    <a href="{{ route('critere.preuves', ['referentielId' => $referentiel->id, 'champId' => $champ->id,  'critereTd' => $critere->id,]) }}" class="btn btn-info">View</a>
+                    <a href="{{ route('critere.preuves', ['referentielId' => $referentiel->id, 'champId' => $champ->id, 'referenceId' => $reference->id,'critereTd' => $critere->id,]) }}" class="btn btn-success">Vue</a>
                   </td>
-                  <td>{{ $critere->nom }}</td>
+                   <td>{{ $critere->nom }}</td>
+                  <td>{{ $critere->signature }}</td>
                   <td>
-                    <button class="btn btn-info modifierBtn" data-id="{{ $critere->id }}">Modifier</button>
+                    <button class="btn btn-warning modifierBtn" data-id="{{ $critere->id }}">Modifier</button>
                   </td>
                   <td>
                     <form action="{{ route('critere.supprimer', $critere->id) }}" method="POST" class="supprimerForm">
@@ -94,11 +100,14 @@
         @csrf
         @method('PUT')
         <input type="hidden" id="editCritereId" name="critereId">
-        <label for="editName">Nom:</label>
+        <label for="editName">Description:</label>
         <input type="text" id="editName" name="name" required>
         <br><br>
+        <label for="editSignature">Signature:</label>
+        <input type="text" id="editSignature" name="signature" required>
+        <br><br>
         <button type="submit" class="btn btn-success">Modifier</button>
-      </form>
+      </form>      
     </div>
   </div>
 
@@ -106,57 +115,60 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
-    const ajouterBtn = document.getElementById("ajouterBtn");
-    const formModal = document.getElementById("formModal");
-    const editModal = document.getElementById('editModal');
-    const span = document.getElementsByClassName("close");
+  const ajouterBtn = document.getElementById("ajouterBtn");
+  const formModal = document.getElementById("formModal");
+  const editModal = document.getElementById('editModal');
+  const span = document.getElementsByClassName("close");
 
-    ajouterBtn.onclick = function() {
-      formModal.style.display = "block";
+  ajouterBtn.onclick = function() {
+    formModal.style.display = "block";
+  }
+
+  Array.from(span).forEach((closeBtn) => {
+    closeBtn.onclick = function() {
+      formModal.style.display = "none";
+      editModal.style.display = "none";
     }
+  });
 
-    Array.from(span).forEach((closeBtn) => {
-      closeBtn.onclick = function() {
-        formModal.style.display = "none";
-        editModal.style.display = "none";
-      }
-    });
-
-    window.onclick = function(event) {
-      if (event.target == formModal) {
-        formModal.style.display = "none";
-      }
-      if (event.target == editModal) {
-        editModal.style.display = "none";
-      }
+  window.onclick = function(event) {
+    if (event.target == formModal) {
+      formModal.style.display = "none";
     }
-
-    const modifierBtns = document.querySelectorAll('.modifierBtn');
-    modifierBtns.forEach((button) => {
-      button.addEventListener('click', () => {
-        const critereId = button.getAttribute('data-id');
-        const row = button.closest('tr');
-        const name = row.cells[1].innerText;
-        openEditModal(critereId, name);
-      });
-    });
-
-    function openEditModal(critereId, name) {
-      document.getElementById('editCritereId').value = critereId;
-      document.getElementById('editName').value = name;
-      document.getElementById('editForm').action = "/critere/" + critereId + "/modifier";
-      editModal.style.display = "block";
+    if (event.target == editModal) {
+      editModal.style.display = "none";
     }
+  }
 
-    const supprimerForms = document.querySelectorAll('.supprimerForm');
-    supprimerForms.forEach((form) => {
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (confirm('Are you sure you want to delete this critere?')) {
-          form.submit();
-        }
-      });
+  const modifierBtns = document.querySelectorAll('.modifierBtn');
+  modifierBtns.forEach((button) => {
+    button.addEventListener('click', () => {
+      const critereId = button.getAttribute('data-id');
+      const row = button.closest('tr');
+      const name = row.cells[2].innerText; // Index 2 pour le nom
+      const signature = row.cells[1].innerText; // Index 1 pour la signature
+      openEditModal(critereId, name, signature);
     });
   });
+
+  function openEditModal(critereId, name, signature) {
+    document.getElementById('editCritereId').value = critereId;
+    document.getElementById('editName').value = name;
+    document.getElementById('editSignature').value = signature;
+    document.getElementById('editForm').action = "/critere/" + critereId + "/modifier";
+    editModal.style.display = "block";
+  }
+
+  const supprimerForms = document.querySelectorAll('.supprimerForm');
+  supprimerForms.forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (confirm('Are you sure you want to delete this critere?')) {
+        form.submit();
+      }
+    });
+  });
+});
+
 </script>
 @endsection

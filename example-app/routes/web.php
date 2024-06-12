@@ -88,9 +88,6 @@ Route::get('/resultat', [Homecontroller::class, 'evaluation_interne'])->name('re
 
 
 
-Route::post('/utilisateurs/ajouter', [AuthController::class, 'ajouter_user'])->name('utilisateur.ajouter');
-Route::put('/utilisateurs/{id}/modifier', [AuthController::class, 'modifier_user'])->name('utilisateur.modifier');
-Route::delete('/utilisateurs/{id}/supprimer', [AuthController::class, 'supprimer_user'])->name('utilisateur.supprimer');
 
 Route::post('/useradmin/ajouter', [AuthController::class, 'store_admin'])->name('useradmin.ajouter');
 Route::put('/useradmin/{id}/modifier', [AuthController::class, 'update_admin'])->name('useradmin.modifier');
@@ -164,17 +161,23 @@ Route::get('/referents', [InvitationController::class, 'referent'])->name('show.
 Route::post('/referentiel/{referentielId}/champ/ajouter', [InvitationController::class, 'ajouter_champ'])->name('champ.ajouter');
 Route::put('/champs/{id}/modifier', [InvitationController::class, 'modifier_champ'])->name('champ.modifier');
 Route::delete('/champ/{id}/supprimer', [InvitationController::class, 'supprimer_champ'])->name('champ.supprimer');
-Route::get('/champs/{referentielId}/{champId}/criteres', [InvitationController::class, 'showCriteres'])->name('champs.criteres');
 
 
-Route::post('/critere/ajouter/{champ_id}', [InvitationController::class, 'ajouter_critere'])->name('critere.ajouter');
+Route::get('/references/{referentielId}/{champId}/references', [InvitationController::class, 'showReferences'])->name('champs.references');
+Route::post('/reference/ajouter/{champ_id}', [InvitationController::class, 'ajouter_reference'])->name('reference.ajouter');
+Route::put('/reference/{id}/modifier', [InvitationController::class, 'modifier_reference'])->name('reference.modifier');
+Route::delete('/references/{id}/supprimer', [InvitationController::class, 'supprimer_reference'])->name('reference.supprimer');
+
+Route::get('/references/{referentielId}/{champId}/{referenceId}/criteres', [InvitationController::class, 'showCriteres'])->name('references.criteres');
+Route::post('/critere/ajouter/{reference_id}', [InvitationController::class, 'ajouter_critere'])->name('critere.ajouter');
 Route::put('/critere/{id}/modifier', [InvitationController::class, 'modifier_critere'])->name('critere.modifier');
 Route::delete('/critere/{id}/supprimer', [InvitationController::class, 'supprimer_critere'])->name('critere.supprimer');
 
-Route::get('/champs/{referentielId}/{champId}/{critereTd}/criteres', [InvitationController::class, 'showPreuves'])->name('critere.preuves');
-Route::post('critere/{critereId}/preuves', [InvitationController::class, 'store_preuve'])->name('preuves.store');
-Route::put('critere/{critereId}/preuves/{preuveId}', [InvitationController::class, 'update_preuve'])->name('preuves.update');
-Route::delete('critere/{critereId}/preuves/{preuveId}', [InvitationController::class, 'destroy_preuve'])->name('preuves.destroy');
+Route::get('/champs/{referentielId}/{champId}/{referenceId}/{critereTd}/criteres', [InvitationController::class, 'showPreuves'])->name('critere.preuves');
+
+Route::post('critere/{critereId}/preuves', [InvitationController::class, 'ajouter_preuve'])->name('preuves.store');
+Route::put('preuve/{preuveId}/modifier', [InvitationController::class, 'modifier_preuve'])->name('preuves.update');
+Route::delete('preuve/{preuveId}/supprimer', [InvitationController::class, 'supprimer_preuve'])->name('preuves.destroy');
 
 
 Route::get('setlocale/{locale}', function ($locale) {
