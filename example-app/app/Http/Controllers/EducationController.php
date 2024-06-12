@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Institution;
-use App\Models\Etablissement;
+use App\Models\institution;
+use App\Models\etablissement;
 use App\Models\département;
 use App\Models\Filière;
 class EducationController extends Controller
 {
     public function indexInstitutions()
     {
-        $institutions = Institution::all();
+        $institutions = institution::all();
         return view('dashadmin.institution', compact('institutions'));
     }
     public function storeInstitution(Request $request)
@@ -22,7 +22,7 @@ class EducationController extends Controller
     ]);
 
     // Créer une nouvelle instance d'institution
-    $institution = new Institution();
+    $institution = new institution();
     $institution->nom = $request->nom;
     $institution->save();
 
@@ -38,7 +38,7 @@ public function updateInstitution(Request $request, $id)
 
     try {
         // Recherche de l'institution à mettre à jour dans la base de données
-        $institution = Institution::findOrFail($id);
+        $institution = institution::findOrFail($id);
         
         // Mise à jour des informations de l'institution
         $institution->nom = $request->nom;
@@ -55,7 +55,7 @@ public function updateInstitution(Request $request, $id)
 public function destroyInstitution($id)
     {
         try {
-            $institution = Institution::findOrFail($id);
+            $institution = institution::findOrFail($id);
             $institution->delete();
             return redirect()->route('institutions.index')->with('success', 'L\'institution a été supprimée avec succès.');
         } catch (\Exception $e) {
@@ -64,8 +64,8 @@ public function destroyInstitution($id)
     }
     public function indexEtablissement()
     {
-        $etablissements = Etablissement::with('Institution:id,nom')->get();
-        $institutions = Institution::all();
+        $etablissements = etablissement::with('Institution:id,nom')->get();
+        $institutions = institution::all();
         return view('dashadmin.etablissement', compact('etablissements', 'institutions'));
     }
     public function updateEtablissement(Request $request, $id)
@@ -78,7 +78,7 @@ public function destroyInstitution($id)
     
         try {
             // Récupérer l'établissement à mettre à jour
-            $etablissement = Etablissement::findOrFail($id);
+            $etablissement = etablissement::findOrFail($id);
             
             // Mettre à jour les champs de l'établissement
             $etablissement->nom = $request->nom;
@@ -100,7 +100,7 @@ public function destroyInstitution($id)
             'nom' => 'required|string|max:255',
             'institution' => 'nullable|exists:institutions,id',
         ]);
-        $etablissement = new Etablissement();
+        $etablissement = new etablissement();
         $etablissement->nom = $validated['nom'];
         $etablissement->institution_id = $validated['institution']; 
         $etablissement->save();
@@ -110,7 +110,7 @@ public function destroyInstitution($id)
 public function destroyEtablissement($id)
     {
         try {
-            $etablissement = Etablissement::findOrFail($id);
+            $etablissement = etablissement::findOrFail($id);
             $etablissement->delete();
             return redirect()->route('etablissement.index')->with('success', 'L\'Établissement a été supprimée avec succès.');
         } catch (\Exception $e) {
@@ -119,8 +119,8 @@ public function destroyEtablissement($id)
     }
     public function indexDepartement()
     {
-        $departements = Département::with('etablissement.institution')->get();
-        $etablissements = Etablissement::all();
+        $departements = département::with('etablissement.institution')->get();
+        $etablissements = etablissement::all();
         return view('dashadmin.departement', compact('departements','etablissements'));
     }
     public function updateDepartement(Request $request, $id)
@@ -133,7 +133,7 @@ public function destroyEtablissement($id)
     
         try {
             // Récupérer l'établissement à mettre à jour
-            $département = Département::findOrFail($id);
+            $département = département::findOrFail($id);
             
             // Mettre à jour les champs de l'établissement
             $département->nom = $request->nom;
@@ -155,7 +155,7 @@ public function destroyEtablissement($id)
             'nom' => 'required|string|max:255',
             'etablissement' => 'nullable|exists:etablissements,id',
         ]);
-        $etablissement = new Département();
+        $etablissement = new département();
         $etablissement->nom = $validated['nom'];
         $etablissement->etablissements_id = $validated['etablissement']; 
         $etablissement->save();
@@ -165,7 +165,7 @@ public function destroyEtablissement($id)
 public function destroyDepartement($id)
     {
         try {
-            $departement = Département::findOrFail($id);
+            $departement = département::findOrFail($id);
             $departement->delete();
             return redirect()->route('departement.index')->with('success', 'L\'Établissement a été supprimée avec succès.');
         } catch (\Exception $e) {
