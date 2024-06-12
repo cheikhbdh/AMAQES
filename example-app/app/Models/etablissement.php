@@ -10,7 +10,7 @@ class etablissement extends Model
     use HasFactory;
     public function institution()
     {
-        return $this->belongsTo(Institution::class, 'institution_id');
+        return $this->belongsTo(institution::class, 'institution_id');
     }
     
 }
