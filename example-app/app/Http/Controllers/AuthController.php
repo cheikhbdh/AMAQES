@@ -225,6 +225,7 @@ public function update_profil(Request $request)
     {
 
    $currentUserId = Auth::id();
+
     $users = User::where('id', '!=', $currentUserId)
                       ->where('role', 'admin')
                       ->get();
