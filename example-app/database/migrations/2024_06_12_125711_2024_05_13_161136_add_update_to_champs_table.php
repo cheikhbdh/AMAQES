@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('fichier', function (Blueprint $table) {
-            $table->unsignedBigInteger('idfiliere')->default(0);
-            $table->foreign('idfiliere')->references('id')->on('filières')->onDelete('cascade');
+        Schema::table('champs', function (Blueprint $table) {
+            $table->text('name')->change();
         });
     }
 
@@ -22,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('fichies', function (Blueprint $table) {
-            //
+        Schema::table('champs', function (Blueprint $table) {
+            $table->string('name', 500)->change();
         });
     }
 };

@@ -13,7 +13,7 @@
         <li class="breadcrumb-item">les champs</li>
     </ol>
   </nav>
-  <h2>Champs de référentiel : {{ $referentiel->signature }}</h2>
+  <h2>Champs du référentiel : {{ $referentiel->signature }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -50,7 +50,7 @@
       <label for="name">Description:</label>
       <input type="text" id="name" name="name" required>
       <br><br>
-      <label for="signature">Signature:</label>
+      <label for="signature">Acronyme:</label>
       <input type="text" id="signature" name="signature" required>
       <br><br>
       <button type="submit" class="btn btn-success">Soumettre</button>
@@ -60,9 +60,9 @@
 <table class="table data-table">
   <thead>
     <tr>
-      <th>Les critères</th>
+      <th>Les réferences</th>
       <th>Description</th>
-      <th>Signature</th>
+      <th>Acronyme</th>
       <th style="text-align: center">Action</th>
     </tr>
   </thead>
@@ -106,7 +106,7 @@
       <label for="editName">Description:</label>
       <input type="text" id="editName" name="name" required>
       <br><br>
-      <label for="editSignature">Signature:</label>
+      <label for="editSignature">Acronyme:</label>
       <input type="text" id="editSignature" name="signature" required>
       <br><br>
       <button type="submit" class="btn btn-success">Modifier</button>
