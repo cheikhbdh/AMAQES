@@ -15,7 +15,7 @@
       <li class="breadcrumb-item">Les critères</li>
     </ol>
   </nav>
-  <h2>Critères de reference : {{ $reference->signature }}</h2>
+  <h2>Critères du reference : {{ $reference->signature }}</h2>
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
@@ -49,7 +49,7 @@
                   <label for="name">Description:</label>
                   <input type="text" id="name" name="name" required>
                   <br><br>
-                  <label for="signature">Signature:</label>
+                  <label for="signature">Acronyme:</label>
                   <input type="text" id="signature" name="signature" required>
                   <br><br>
                   <button type="submit" class="btn btn-success">Soumettre</button>
@@ -61,7 +61,7 @@
                 <tr>
                   <th>Les preuves</th>
                   <th>Description</th>
-                  <th>Signature</th>
+                  <th>Acronyme</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -103,7 +103,7 @@
         <label for="editName">Description:</label>
         <input type="text" id="editName" name="name" required>
         <br><br>
-        <label for="editSignature">Signature:</label>
+        <label for="editSignature">Acronyme:</label>
         <input type="text" id="editSignature" name="signature" required>
         <br><br>
         <button type="submit" class="btn btn-success">Modifier</button>
@@ -145,8 +145,8 @@
     button.addEventListener('click', () => {
       const critereId = button.getAttribute('data-id');
       const row = button.closest('tr');
-      const name = row.cells[2].innerText; // Index 2 pour le nom
-      const signature = row.cells[1].innerText; // Index 1 pour la signature
+      const name = row.cells[1].innerText; // Index 2 pour le nom
+      const signature = row.cells[2].innerText; // Index 1 pour la signature
       openEditModal(critereId, name, signature);
     });
   });

@@ -13,10 +13,10 @@
             <li class="breadcrumb-item"><a href="{{ route('referents.champs', $referentiel->id) }}">Les champs</a></li>
             <li class="breadcrumb-item"><a href="{{ route('champs.references', ['referentielId' => $referentiel->id , 'champId' => $champ->id]) }}">Les references</a></li>
             <li class="breadcrumb-item"><a href="{{ route('references.criteres', ['referentielId' => $referentiel->id , 'champId' => $champ->id, 'referenceId'=> $reference->id ]) }}">Les criteres</a></li>
-            <li class="breadcrumb-item">Les éléments de preuves</li>
+            <li class="breadcrumb-item">Les éléments du preuves</li>
         </ol>
     </nav>
-    <h2>Eléments de preuves pour le critère : {{ $critere->signature }}</h2>
+    <h2>Eléments du preuves pour le critère : {{ $critere->signature }}</h2>
     <section class="section">
         <div class="row">
           <div class="col-lg-12">

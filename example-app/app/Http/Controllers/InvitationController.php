@@ -158,7 +158,7 @@ class InvitationController extends Controller
     public function ajouter_referentiel(Request $request)
 {
     $request->validate([
-        'name' => 'required|string|max:255|unique:referentiels',
+        'name' => 'required|string|max:255:referentiels',
         'signature' => 'required|string|max:255',
     ]);
 
@@ -206,7 +206,7 @@ public function modifier_referentiel(Request $request, $referentielId)
 {
     // Validate data
     $request->validate([
-        'name' => 'required|string|max:255|unique:champs',
+        'name' => 'required|string|max:1000',
         'signature' => 'required|string|max:255',
     ]);
 
@@ -233,7 +233,7 @@ public function modifier_champ(Request $request, $champId)
 
     // Validate data
     $request->validate([
-        'name' => 'required|string|max:255|unique:champs,name,' . $champ->id,
+        'name' => 'required|string|max:1000' . $champ->id,
         'signature' => 'required|string|max:255',
     ]);
 
@@ -275,7 +275,7 @@ public function modifier_champ(Request $request, $champId)
     public function ajouter_critere(Request $request, $referenceId)
 {
     $request->validate([
-        'name' => 'required|string|max:255|unique:criteres,nom',
+        'name' => 'required|string|max:1000',
         'signature' => 'required|string|max:255',
     ]);
 
@@ -295,8 +295,8 @@ public function modifier_critere(Request $request, $critereId)
     $critere = Critere::findOrFail($critereId);
 
     $request->validate([
-        'name' => 'required|string|max:255|unique:criteres,nom,' . $critere->id,
-        'signature' => 'required|string|max:255',
+        'name' => 'required|string|max:1000',
+       'signature' => 'required|string|max:255',
     ]);
 
     $critere->update([
@@ -331,7 +331,7 @@ public function showPreuves($referentielId, $champId, $referenceId, $critereId)
 public function ajouter_preuve(Request $request, $critereId)
 {
     $request->validate([
-        'element' => 'required|string|max:255',
+        'element' => 'required|string|max:1000',
     ]);
 
     Preuve::create([
@@ -347,7 +347,7 @@ public function modifier_preuve(Request $request, $preuveId)
     $preuve = Preuve::findOrFail($preuveId);
 
     $request->validate([
-        'description' => 'required|string|max:255',
+        'description' => 'required|string|max:1000',
     ]);
 
     $preuve->update(['description' => $request->description]);
@@ -378,7 +378,7 @@ public function ajouter_reference(Request $request, $champId)
 {
     // Validate the request
     $request->validate([
-        'name' => 'required|string|max:255',
+        'name' => 'required|string|max:1000',
         'signature' => 'required|string|max:255',
     ]);
 
@@ -402,13 +402,13 @@ public function modifier_reference(Request $request, $id)
     $reference = Reference::findOrFail($id);
 
     $request->validate([
-        'name' => 'required|string|max:255|unique:references,nom,' . $reference->id,
+        'name' => 'required|string|max:1000', // Correction ici
         'signature' => 'required|string|max:255',
     ]);
 
     $reference->update([
         'nom' => $request->name,
-        'signature' => $request->signature
+        'signature' => $request->signature,
     ]);
 
     return redirect()->back()->with('success', 'Reference modifiée avec succès');

@@ -49,7 +49,7 @@
       <label for="name">Description:</label>
       <input type="text" id="name" name="name" required>
       <br><br>
-      <label for="signature">Signature:</label>
+      <label for="signature">Acronyme:</label>
       <input type="text" id="signature" name="signature" required>
       <br><br>
       <button type="submit" class="btn btn-success">Soumettre</button>
@@ -61,7 +61,7 @@
                 <tr>
                   <th>Les champs</th>
                   <th>Description</th>
-                  <th>Signature</th>
+                  <th>Acronyme</th>
                   <th style="text-align: center">Action</th>
                 </tr>
               </thead>
@@ -103,7 +103,7 @@
       <label for="editName">Description:</label>
       <input type="text" id="editName" name="name" required>
       <br><br>
-      <label for="editSignature">Signature:</label>
+      <label for="editSignature">Acronyme:</label>
       <input type="text" id="editSignature" name="signature" required>
       <br><br>
       <button type="submit" class="btn btn-success">Modifier</button>
