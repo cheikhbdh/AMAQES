@@ -3,6 +3,7 @@
 @section('content')
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Évaluation des Champs et Critères</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -11,6 +12,16 @@
           margin: auto;
           padding: 20px;
         }
+
+
+  .critere-list {
+    margin-left: 20px; 
+  }
+  .reference-arrow {
+        margin-right: 5px;
+        font-size: 20px;
+        vertical-align: middle; /* Ajout de cette propriété */
+    }
         .champ-box {
           background-size: cover;
           border: 1px solid #ddd;
@@ -61,6 +72,10 @@
           justify-content: space-between;
           margin-top: 5px;
         }
+        .reference-arrow {
+    margin-right: 5px; 
+    font-size: 20px; 
+    }
         .hidden {
           display: none;
         }
@@ -85,10 +100,35 @@
         .champ-box-hover:hover::before {
           opacity: 1;
         }
+        .hidden-section {
+    display: none;
+}
+
+  #statistics-container {
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+  }
+
+  .statistic {
+      position: relative;
+      height: 400px;
+  }
+
+  .statistic-details {
+      margin-top: 20px;
+  }
+
+  .statistic-details h4 {
+      margin: 5px 0;
+  }
+
         .progress-bar {
-        ```css
           display: flex;
-          flex-direction: row; /* Disposer les éléments en ligne */
+          flex-direction: row;
           height: 20px;
           width: 100%;
           background-color: #ddd;
@@ -98,7 +138,7 @@
         }
         
         .progress-bar div {
-          flex: 1; /* Chaque segment occupe une part égale de la largeur */
+          flex: 1;
           transition: background-color 0.3s;
         }
         
@@ -123,6 +163,11 @@
         .snackbar.show {
           visibility: visible;
         }
+        #download-stats, #go-home {
+       margin-top: 20px;
+       margin-right: 10px;
+       }
+
         </style>
 </head>
 <body>
@@ -138,26 +183,41 @@
                 </div>
                 <div class="row" id="champs-non-evaluer-container">
                     <h3 class="display-4"> Évaluation en cours:</h3>
-                    @foreach($champsNonEvaluer as $champ)
+                    
+                    @if($champNonEvaluer)
                         <div class="col-md-4">
-                            <div class="champ-box champ-box-hover" id="champ-{{ $champ->id }}" data-champ-id="{{ $champ->id }}">
-                                <h4>{{ $champ->name }}</h4>
+                            <div class="champ-box champ-box-hover" id="champ-{{ $champNonEvaluer->id }}" data-champ-id="{{ $champNonEvaluer->id }}">
+                                <h4>{{ $champNonEvaluer->name }}</h4>
                                 <button class="btn btn-secondary btn-evaluer">Évaluer</button>
                             </div>
                         </div>
-                    @endforeach
+                    @endif
                     <div id="snackbar"></div>
                 </div>
-
+                <div id="statistics-container" class="hidden-section">
+                  <h3 style="color: 	#bf00ff;">Statistiques d'évaluation</h3>
+                  <div class="statistic">
+                      <canvas id="evaluationChart" width="400" height="400"></canvas>
+                  </div>
+                  <div class="statistic-details">
+                      <h3>Taux de Conformité  aux critéres du <span style="color: blue;">{{ $champNonEvaluer->name }} </span>est de: <span id="taux-conformite"></span>%</h3>
+                  </div>
+                  <button id="download-stats" class="btn btn-primary mt-3">Télécharger les Statistiques</button>
+                    <button id="go-home" class="btn btn-secondary mt-3">Retour à l'accueil</button>
+              </div>
+              
                 <div id="evaluation-section" class="hidden-section">
-                    <h2 class="mb-4" id="evaluation-title"></h2>
-                    <form action="{{ route('evaluate') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div id="criteres-container" class="list-group"></div>
-                        <button type="submit" class="btn btn-primary">Soumettre</button>
-                        <button type="button" class="btn btn-secondary" id="btn-retour">Retour</button>
-                    </form>
-                </div>
+                  <h2 class="mb-4 text-center" id="evaluation-title"></h2>
+                  <span id="error-${preuve.id}" class="text-danger"></span>
+                  <form action="{{ route('evaluate') }}" method="POST" enctype="multipart/form-data">
+                      @csrf
+                      <input type="hidden" name="idchamps" value="{{ $champNonEvaluer->id }}">
+                      <div id="references-container" class="list-group"></div>
+                     
+                      <button type="submit" class="btn btn-primary">Soumettre</button>
+                      <button type="button" class="btn btn-secondary" id="btn-retour">Retour</button>
+                  </form>
+              </div>
             @else
             <div class="alert alert-info text-center">
                 <h4>Vous n'avez aucune invitation active pour évaluer des champs.</h4>
@@ -165,51 +225,69 @@
             @endif
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
-    const champsNonEvaluer = @json($champsNonEvaluer);
+    const champsNonEvaluer = @json($champNonEvaluer);
+    const chnev = @json($CHNEV);
     const totalChamps = 5;
-    let evaluatedChamps = 5 - champsNonEvaluer.length;
+    let evaluatedChamps = 5 - chnev.length;
 
     document.querySelectorAll('.champ-box').forEach(box => {
         box.addEventListener('click', () => {
             let champId = box.getAttribute('data-champ-id');
-            let champ = champsNonEvaluer.find(c => c.id == champId);
+            let champ = champsNonEvaluer;
 
-            document.getElementById('evaluation-title').innerText = 'Évaluer Champ: ' + champ.name;
-            let criteresContainer = document.getElementById('criteres-container');
-            criteresContainer.innerHTML = '';
-            champ.criteres.forEach((critere, index) => {
-                let critereBox = document.createElement('div');
-                critereBox.className = 'critere-box';
-                critereBox.innerHTML = `
-                    <h5>Critère ${index + 1}: ${critere.nom}</h5>
-                    <div class="preuves">
-                        ${critere.preuves.map(preuve => `
-                            <div class="d-flex flex-column align-items-start">
-                                <p class="flex-grow-1">${preuve.description}</p>
-                                <div class="preuve-options">
-                                    <label class="mx-2">
-                                        <input type="radio" name="evaluations[${preuve.id}][value]" value="oui" data-preuve-id="${preuve.id}" required>
-                                        Oui
-                                    </label>
-                                    <label class="mx-2">
-                                        <input type="radio" name="evaluations[${preuve.id}][value]" value="non" data-preuve-id="${preuve.id}" required> Non
-                                    </label>
-                                    <label class="mx-2">
-                                        <input type="radio" name="evaluations[${preuve.id}][value]" value="na" data-preuve-id="${preuve.id}" required> N/A
-                                    </label>
+            document.getElementById('evaluation-title').innerText = champ.name;
+            document.getElementById('champs-non-evaluer-container').classList.add('hidden');
+            document.getElementById('evaluation-section').classList.remove('hidden-section');
+
+            let referencesContainer = document.getElementById('references-container');
+            referencesContainer.innerHTML = '';
+
+            champ.references.forEach(reference => {
+                let referenceBox = document.createElement('div');
+                referenceBox.className = 'reference-box';
+                referenceBox.innerHTML = `
+                    <div class="reference-box" style="display: inline-block;">
+                        <span class="reference-arrow">&#10148;</span>${reference.signature} : ${reference.nom}
+                    </div>
+                    <div class="criteres-container critere-list">
+                        ${reference.criteres.map(critere => `
+                            <div class="critere-box">
+                                <h5 style="color: blue;">${critere.signature} : ${critere.nom}</h5>
+                                <div class="preuves">
+                                    ${critere.preuves.map(preuve => `
+                                        <div class="d-flex flex-column align-items-start">
+                                            <p class="flex-grow-1">${preuve.description}</p>
+                                            <div class="preuve-options">
+                                                <label class="mx-2">
+                                                    <input type="radio" name="evaluations[${preuve.id}][value]" value="oui" data-preuve-id="${preuve.id}" required>
+                                                    Oui
+                                                </label>
+                                                <label class="mx-2">
+                                                    <input type="radio" name="evaluations[${preuve.id}][value]" value="non" data-preuve-id="${preuve.id}" required> Non
+                                                </label>
+                                                <label class="mx-2">
+                                                    <input type="radio" name="evaluations[${preuve.id}][value]" value="na" data-preuve-id="${preuve.id}" required> N/A
+                                                </label>
+                                            </div>
+                                            <input type="file" name="file-${preuve.id}" class="hidden mt-2" id="file-${preuve.id}" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                            <textarea name="evaluations[${preuve.id}][commentaire]" class="form-control hidden mt-2" id="comment-${preuve.id}" placeholder="Ajouter un commentaire"></textarea>
+                                            <input type="hidden" name="evaluations[${preuve.id}][idcritere]" value="${critere.id}">
+                                            <input type="hidden" name="evaluations[${preuve.id}][idpreuve]" value="${preuve.id}">
+                                            <span id="error-${preuve.id}" class="text-danger"></span>
+                                        </div>
+                                    `).join('')}
                                 </div>
-                                <input type="file" name="file-${preuve.id}" class="hidden mt-2" id="file-${preuve.id}" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                                <textarea name="evaluations[${preuve.id}][commentaire]" class="form-control hidden mt-2" id="comment-${preuve.id}" placeholder="Ajouter un commentaire"></textarea>
-                                <input type="hidden" name="evaluations[${preuve.id}][idcritere]" value="${critere.id}">
-                                <input type="hidden" name="evaluations[${preuve.id}][idpreuve]" value="${preuve.id}">
                             </div>
                         `).join('')}
                     </div>
                 `;
-                criteresContainer.appendChild(critereBox);
+                referencesContainer.appendChild(referenceBox);
             });
 
             document.getElementById('champs-non-evaluer-container').classList.add('hidden');
@@ -218,7 +296,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
 
-    document.getElementById('criteres-container').addEventListener('change', function(event) {
+    document.getElementById('references-container').addEventListener('change', function(event) {
         if (event.target.matches('input[type="radio"]')) {
             let preuveId = event.target.getAttribute('data-preuve-id');
             let fileInput = document.getElementById(`file-${preuveId}`);
@@ -243,6 +321,95 @@ document.addEventListener('DOMContentLoaded', (event) => {
         updateProgressBar();
     });
 
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const preuves = document.querySelectorAll('input[type="radio"][name^="evaluations"]');
+        let allPreuvesFilled = true;
+        const evaluations = {
+            oui: 0,
+            non: 0,
+            na: 0,
+            total: 0
+        };
+
+        preuves.forEach((preuve) => {
+            if (preuve.checked) {
+                evaluations.total++;
+                const preuveId = preuve.getAttribute('data-preuve-id');
+                const fileTypeInput = document.getElementById(`file-${preuveId}`);
+                const commentInput = document.getElementById(`comment-${preuveId}`);
+                const errorSpan = document.getElementById(`error-${preuveId}`);
+
+                if (preuve.value === 'na' && commentInput.value === '') {
+                    allPreuvesFilled = false;
+                    errorSpan.innerText = `Vous devez ajouter un commentaire pour la preuve .`;
+                    return;
+                }
+                if (preuve.value === 'oui' && fileTypeInput.value === '') {
+                    allPreuvesFilled = false;
+                    errorSpan.innerText = `Vous devez sélectionner un fichier pour la preuve .`;
+                    return;
+                }
+
+                // Incrementing the counts for statistics
+                evaluations[preuve.value] += 1;
+
+                // Reset error message if conditions are met
+                errorSpan.innerText = ''; 
+            }
+        });
+
+        if (allPreuvesFilled) {
+            form.submit();
+   
+        }
+  
+    });
+
+    function displayStatistics(evaluations) {
+        const ouiPercentage = (evaluations.oui / evaluations.total) * 100;
+        const nonPercentage = (evaluations.non / evaluations.total) * 100;
+        const naPercentage = (evaluations.na / evaluations.total) * 100;
+        const tauxConformite = (evaluations.oui / evaluations.total) * 100;
+
+        document.getElementById('taux-conformite').innerText = tauxConformite.toFixed(2);
+
+        document.getElementById('statistics-container').classList.remove('hidden-section');
+
+        const ctx = document.getElementById('evaluationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Oui', 'Non', 'NA'],
+                datasets: [{
+                    data: [ouiPercentage, nonPercentage, naPercentage],
+                    backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+    document.getElementById('download-stats').addEventListener('click', () => {
+        const statisticsContainer = document.getElementById('statistics-container');
+        html2canvas(statisticsContainer).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'statistiques.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    });
+
+    document.getElementById('go-home').addEventListener('click', () => {
+        window.location.href = '/indexevaluation'; // Assurez-vous que '/' est l'URL correcte pour la page d'accueil de votre application
+    });
+
+
     function updateSnackbar() {
         const percentage = (evaluatedChamps / totalChamps) * 100;
         const snackbar = document.getElementById('snackbar');
@@ -265,6 +432,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     updateProgressBar();
 });
+
 </script>
+  
 </body>
 @endsection

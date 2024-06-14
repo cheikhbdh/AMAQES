@@ -41,9 +41,9 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 
 Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
-    Route::get('/dash', function () {
-        return view('layout.liste');
-    })->name('dash');
+    // Route::get('/dash', function () {
+    //     return view('layout.liste');
+    // })->name('dash');
 
     Route::get('setlocale/{locale}', function ($locale) {
         if (array_key_exists($locale, config('app.locales'))) {
@@ -51,8 +51,12 @@ Route::middleware(['auth', 'redirectIfnotEVL_I'])->group(function () {
         }
         return redirect()->back();
     })->name('setlocale');    
+    Route::get('/get-scores', [HomeController::class, 'getScores'])->name('get-scores');
+    Route::get('/scores_champ', function () {
+        return view('layout.scorechamp');
+    });
     
-     
+
     
     Route::get('/indexevaluation', [Homecontroller::class, 'indexevaluation'])->name('indexevaluation');
     Route::post('/evaluate', [Homecontroller::class, 'evaluate'])->name('evaluate');

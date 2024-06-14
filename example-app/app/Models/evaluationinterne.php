@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class evaluationinterne extends Model
 {
     use HasFactory;
-    protected $fillable = ['idcritere', 'idpreuve','idfiliere', 'score', 'commentaire'];
+    protected $fillable = ['idcritere', 'idchamps','idpreuve','idfiliere', 'score', 'commentaire'];
 }
 
