@@ -96,7 +96,6 @@ public function updatePassword(Request $request)
 
         // Mettre à jour le mot de passe
         $user->password = Hash::make($request->input('new_password'));
-        $user->save();
 
         return redirect()->back()->with('success', 'Mot de passe mis à jour avec succès.');
     }
@@ -116,7 +115,6 @@ public function update_profil(Request $request)
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->role = $request->input('role');
-        $user->save();
 
         // Mettre à jour les données de session
         session([
