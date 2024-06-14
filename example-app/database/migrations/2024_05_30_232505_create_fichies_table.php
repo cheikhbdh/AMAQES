@@ -12,12 +12,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fichier', function (Blueprint $table) {
+        Schema::create('evaluationinterne', function (Blueprint $table) {
             $table->id();
-            $table->string('fichier');
+            $table->unsignedBigInteger('idcritere');
             $table->unsignedBigInteger('idpreuve');
+            $table->integer('score')->comment('0, 1, or -1');
+            $table->text('commentaire')->nullable();
             $table->timestamps();
-
+            $table->unsignedBigInteger('idfiliere')->default(0);
+            $table->foreign('idfiliere')->references('id')->on('filières')->onDelete('cascade');
+            $table->foreign('idcritere')->references('id')->on('criteres')->onDelete('cascade');
             $table->foreign('idpreuve')->references('id')->on('preuves')->onDelete('cascade');
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fichier');
+        Schema::dropIfExists('evaluationinterne');
     }
 };

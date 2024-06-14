@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nom'); // Ajoutez une colonne pour le nom de l'établissement
             $table->unsignedBigInteger('départements_id')->nullable(); 
-            $table->boolean('lessence')->default(1);
-            $table->boolean('master')->default(0);
-            $table->boolean('doctorat')->default(0);
             $table->timestamps();
             
             // Déclaration de la contrainte de clé étrangère

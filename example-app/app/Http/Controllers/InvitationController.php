@@ -158,7 +158,7 @@ class InvitationController extends Controller
     public function ajouter_referentiel(Request $request)
 {
     $request->validate([
-        'name' => 'required|string|max:255:referentiels',
+        'name' => 'required|string|max:255:',
         'signature' => 'required|string|max:255',
     ]);
 

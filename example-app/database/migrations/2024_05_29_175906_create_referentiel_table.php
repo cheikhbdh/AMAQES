@@ -9,9 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('criteres', function (Blueprint $table) {
+        Schema::create('references', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
             $table->foreignId('champ_id')->constrained('champs')->onDelete('cascade');
@@ -19,8 +19,11 @@ return new class extends Migration
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('criteres');
+        Schema::dropIfExists('references');
     }
 };
