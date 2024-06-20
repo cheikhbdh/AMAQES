@@ -8,24 +8,24 @@ use Illuminate\Support\Facades\Log;
 
 class CheckInvitations extends Command
 {
-    protected $signature = 'invitations:check';
-    protected $description = 'Check for finished invitations and create notifications';
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $signature = 'invitations:check-expired';
+    protected $description = 'Check and disable expired invitations';
 
     public function handle()
     {
-        $invitations = Invitation::where('statue', true)->get();
-        Log::info('Running invitations:check command. Total active invitations: ' . $invitations->count());
+        $currentDate = Carbon::now()->toDateString();
+        $expiredInvitations = Invitation::where('statue', true)
+            ->whereDate('date_fin', '<', $currentDate)
+            ->get();
 
-        foreach ($invitations as $invitation) {
-            Log::info("Processing invitation: {$invitation->nom}");
-            $invitation->createNotification();
+        if ($expiredInvitations->isNotEmpty()) {
+            $expiredInvitations->each(function ($invitation) {
+                $invitation->update(['statue' => false]);
+            });
+
+            User::where('invitation', 1)->update(['invitation' => 0]);
         }
 
-        return Command::SUCCESS;
+        $this->info('Expired invitations checked and updated successfully.');
     }
 }

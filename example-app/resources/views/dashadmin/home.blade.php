@@ -46,12 +46,7 @@
       <i id="toggleSidebar" class="bi bi-list toggle-sidebar-btn sidebar-icon"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
+    
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -62,190 +57,26 @@
           </a>
         </li><!-- End Search Icon-->
         
-
-      
-      <div class="divider"></div>
-      <li class="nav-item dropdown">
-        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" id="notificationIcon">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number" id="notificationCount">0</span>
-        </a>
-      
-        <!-- Dropdown menu for notifications -->
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="notificationMenu">
-            <li class="dropdown-header">
-                Vous avez <span id="notificationTotal">0</span> nouvelles notifications
-            </li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <div id="notificationItems">
-                <!-- Notifications will be appended here by JavaScript -->
-            </div>
-            <li class="dropdown-footer">
-                <a id="showPastNotifications" href="{{ route('notifications.passees') }}">Afficher toutes les notifications</a>
-            </li>      
-        </ul>
-    </li>
-        
-    <script>
-        // Fonction pour marquer les notifications comme lues
-        function markNotificationsAsRead() {
-            fetch('{{ route('notifications.read') }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Mettre à jour le compteur de notifications à 0
-                    updateNotificationCount(0);
-                }
-            })
-            .catch(error => console.error('Error marking notifications as read:', error));
-        }
-    
-        // Fonction pour récupérer et afficher les notifications passées
-        function fetchPastNotifications() {
-            fetch('{{ route('notifications.passees') }}', {
-                method: 'GET',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                }
-            })
-            .then(response => response.json())
-            .then(notifications => {
-                let notificationCount = notifications.length;
-    
-                // Mettre à jour le compteur de notifications avec le nombre de notifications passées
-                updateNotificationCount(notificationCount);
-    
-                let notificationItems = document.getElementById('notificationItems');
-                notificationItems.innerHTML = '';
-    
-                // Afficher chaque notification passée dans le menu
-                if (notificationCount > 0) {
-                    notifications.forEach(notification => {
-                        let item = `
-                            <li class="notification-item">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
-                                <div>
-                                    <h4>${notification.title}</h4>
-                                    <p>${notification.message}</p>
-                                    <p>${new Date(notification.created_at).toLocaleString()}</p>
-                                </div>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        `;
-                        notificationItems.innerHTML += item;
-                    });
-                } else {
-                    // Afficher un message si aucune notification passée n'est disponible
-                    let noNotificationsItem = `
-                        <li class="notification-item">
-                            <div>
-                                <p>Pas de notifications passées</p>
-                            </div>
-                        </li>
-                    `;
-                    notificationItems.innerHTML += noNotificationsItem;
-                }
-            })
-            .catch(error => console.error('Error fetching past notifications:', error));
-        }
-    
-        // Écouter le clic sur l'icône de notification
-        document.getElementById('notificationIcon').addEventListener('click', function () {
-            // Marquer les notifications comme lues
-            markNotificationsAsRead();
-            // Récupérer et afficher les notifications passées
-            fetchPastNotifications();
-        });
-    
-        // Fonction pour mettre à jour le compteur de notifications
-        function updateNotificationCount(count) {
-            document.getElementById('notificationCount').innerText = count;
-            document.getElementById('notificationTotal').innerText = count;
-        }
-    
-        // Appeler la fonction pour vérifier la date de fin de la campagne active au chargement de la page
-        checkCampaignEndDate();
-    </script>
-    
-    
-    
-
         <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="langue-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="bi bi-translate"></i><span>{{ __('messages.Langue') }}</span>
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="langue-dropdown">
+    <li>
+      <a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'fr']) }}">
+        <i></i><span>Français</span>
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="{{ route('setlocale', ['locale' => 'ar']) }}">
+        <i></i><span>العربية</span>
+      </a>
+    </li>
+  </ul>
+</li>
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="{{ asset('assets/img/messages-1.jpg') }}" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="{{ asset('assets/img/persone.png') }}" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="{{ asset('assets/img/messages-3.jpg') }}" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
+      
+     
 
         <li class="nav-item dropdown pe-3">
 
@@ -270,7 +101,7 @@
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{ route('profile') }}">
                 <i class="bi bi-person"></i>
-                <span>Mon Profile</span>
+                <span>Mon Profil</span>
               </a>
             </li>
             <li>
@@ -313,11 +144,6 @@
           <li>
             <a href="{{ route('show.referent') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.référentiels') }}</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('show.referent') }}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.champs') }}</span>
             </a>
           </li>
           <li>
@@ -376,14 +202,6 @@
           <i class="bi bi-layout-text-window-reverse"></i><span>{{ __('messages.Gestions') }}</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-<<<<<<< HEAD
-=======
-          {{-- <li>
-            <a href="{{ route('user') }}">
-              <i class="bi bi-circle"></i><span>{{ __('messages.Les utilisateurs') }}</span>
-            </a>
-          </li> --}}
->>>>>>> f360d2683b0b046b473da2beff32757b6070e283
           <li>
             <a href="{{ route('admin.utilisateurs') }}">
               <i class="bi bi-circle"></i><span>{{ __('messages.Les admins') }}</span>
@@ -413,48 +231,6 @@
           <span>{{ __('messages.Profile') }}</span>
         </a>
       </li><!-- End Profile Page Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#langue-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-translate"></i><span>resultat</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="langue-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ route('resultat.EVIN') }}">
-              <i class="bi bi-circle"></i><span>Evaluation interne</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('setlocale', ['locale' => 'ar']) }}">
-              <i class="bi bi-circle"></i><span>Evaluation externe</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#langue-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-translate"></i><span>{{ __('messages.Langue') }}</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="langue-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ route('setlocale', ['locale' => 'fr']) }}">
-              <i class="bi bi-circle"></i><span>Français</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('setlocale', ['locale' => 'ar']) }}">
-              <i class="bi bi-circle"></i><span>العربية</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Langue Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-envelope"></i>
-          <span>{{ __('messages.Contact') }}</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
-
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -475,7 +251,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Developper par <a href="http://supnum.mr/"><strong><span>SupNum</span></strong></a>
+      Développé par <a href="http://supnum.mr/"><strong><span>SupNum</span></strong></a>
     </div>
   </footer><!-- End Footer -->
 

@@ -42,12 +42,20 @@
     </div>
 </nav>
 @yield('content')
-<footer class="footer">
-    <div class="container">
-        <p>Restraunt &copy; all rights reserved</p>
-        <p>Developed by Dr/Abououbeidette</p>
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+      Tous Droit Réservés &copy; 2024 <a href="https://amaqes.mr//"><strong><span>AMAQES</span></strong></a>. 
     </div>
-</footer>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Développé par <a href="http://supnum.mr/"><strong><span>SupNum</span></strong></a>
+    </div>
+  </footer><!-- End Footer -->
+
 <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>

@@ -4,7 +4,7 @@
     <!-- resources/views/layouts/app.blade.php -->
 
     <div class="pagetitle">
-        <h1>Profile</h1>
+        <h1>Profil</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('dashadmin') }}">dashboard</a></li>

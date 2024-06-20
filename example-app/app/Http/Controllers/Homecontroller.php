@@ -1,15 +1,16 @@
 <?php
-
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Champ;
 use App\Models\User;
-use App\Models\evaluationinterne;
+use App\Models\EvaluationInterne;
 use App\Models\Invitation;
-use App\Models\fichies;
+use App\Models\Fichies;
 use Illuminate\Support\Facades\Storage;
-class Homecontroller extends Controller
+
+class HomeController extends Controller
 {
     public function indexevaluation()
     {
@@ -17,6 +18,11 @@ class Homecontroller extends Controller
         $idFiliere = $user->filières_id;
         $isUserInvited = $user->invitation == 1;
         $hasActiveInvitation = $isUserInvited && Invitation::where('statue', 1)->exists();
+
+        if (!$hasActiveInvitation) {
+            return view('layout.liste', ['CHNEV' => collect(), 'champNonEvaluer' => null, 'hasActiveInvitation' => $hasActiveInvitation]);
+        }
+
         $champs = Champ::with('references.criteres.preuves')->get();
         $champsEvaluer = $champs->filter(function($champ) use ($idFiliere) {
             foreach ($champ->references as $reference) {
@@ -30,16 +36,17 @@ class Homecontroller extends Controller
             }
             return false;
         });
+
         $CHNEV = $champs->diff($champsEvaluer);
         $champNonEvaluer = $CHNEV->first();
-    
-        return view('layout.liste', compact('CHNEV','champNonEvaluer', 'hasActiveInvitation'));
+        
+        return view('layout.liste', compact('CHNEV', 'champNonEvaluer', 'hasActiveInvitation'));
     }
     
     public function evaluate(Request $request)
     {
         $data = $request->all();
-    
+
         foreach ($data['evaluations'] as $evaluation) {
             $score = 0;
             if ($evaluation['value'] === 'oui') {
@@ -48,7 +55,7 @@ class Homecontroller extends Controller
                 $score = -1;
             }
             $user = Auth::user();
-            $result = evaluationinterne::create([
+            $result = EvaluationInterne::create([
                 'idcritere' => $evaluation['idcritere'],
                 'idpreuve' => $evaluation['idpreuve'],
                 'idfiliere' => $user->filières_id,
@@ -56,18 +63,18 @@ class Homecontroller extends Controller
                 'score' => $score,
                 'commentaire' => $evaluation['commentaire'] ?? null,
             ]);
-           
+
             if ($request->hasFile('file-' . $evaluation['idpreuve'])) {
                 $filePath = $request->file('file-' . $evaluation['idpreuve'])->store('preuves');
-    
-                fichies::create([
+
+                Fichies::create([
                     'fichier' => $filePath,
                     'idpreuve' => $evaluation['idpreuve'],
                     'idfiliere' => $user->filières_id,
                 ]);
             }
         }
-    
+
         return redirect('/scores_champ');
     }
     
@@ -75,24 +82,30 @@ class Homecontroller extends Controller
     {
         $user = auth()->user();
         $idFiliere = $user->filières_id;
-    
+
+        // Vérifier si l'utilisateur a une invitation active
+        $isUserInvited = $user->invitation == 1;
+        if (!$isUserInvited || !Invitation::where('statue', 1)->exists()) {
+            return response()->json(['message' => 'Vous n\'avez pas d\'invitation active pour évaluer des champs.'], 403);
+        }
+
         // Récupérer les champs évalués
         $champsEvaluer = EvaluationInterne::where('idfiliere', $idFiliere)
                                           ->groupBy('idchamps')
                                           ->pluck('idchamps');
-    
+
         $result = [];
-    
+
         // Vérifier s'il n'y a aucun champ évalué pour cet utilisateur
         if ($champsEvaluer->isEmpty()) {
             $message = "Vous n'avez pas encore évalué de champs.";
             return response()->json(['message' => $message], 200);
         }
-    
+
         foreach ($champsEvaluer as $idchamps) {
             $champ = Champ::with(['references.criteres'])->find($idchamps);
             $criteresScores = [];
-    
+
             foreach ($champ->references as $reference) {
                 foreach ($reference->criteres as $critere) {
                     $score = EvaluationInterne::where('idcritere', $critere->id)
@@ -105,7 +118,7 @@ class Homecontroller extends Controller
                     ];
                 }
             }
-    
+
             // Calcul du taux de conformité
             $totalEvaluations = EvaluationInterne::where('idchamps', $idchamps)
                                                  ->where('idfiliere', $idFiliere)
@@ -115,16 +128,14 @@ class Homecontroller extends Controller
                                                     ->where('score', 2)
                                                     ->count();
             $tauxConformite = ($totalEvaluations > 0) ? ($positiveEvaluations * 100 / $totalEvaluations) : 0;
-    
+
             $result[] = [
                 'champ' => $champ->name, // assuming 'nom' is the name of the champ
                 'criteres' => $criteresScores,
                 'tauxConformite' => $tauxConformite
             ];
         }
-    
+
         return response()->json($result, 200);
     }
-    
-
 }

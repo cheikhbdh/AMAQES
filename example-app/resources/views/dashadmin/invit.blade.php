@@ -39,7 +39,8 @@
                 <th>Description</th>
                 <th>Date de début</th>
                 <th>Date de fin</th>
-                <th>Statue</th>
+                <th>Date de création</th>
+                <th>Statu</th>
                 <th>Actions</th>
             </tr>
             @foreach ($invitations as $invitation)
@@ -48,6 +49,7 @@
                 <td>{{ $invitation->description }}</td>
                 <td>{{ date('Y-m-d', strtotime($invitation->date_debut)) }}</td>
                 <td>{{ date('Y-m-d', strtotime($invitation->date_fin)) }}</td>
+                <td>{{ date('Y-m-d', strtotime($invitation->created_at )) }}</td>
                 <td>{{ $invitation->statue ? 'Active' : 'Inactive' }}</td>
                 <td>
                     <button class="btn btn-info" data-toggle="modal" data-target="#showInvitationModal{{ $invitation->id }}">Afficher</button>
@@ -70,7 +72,7 @@
                             <p><strong>Description:</strong> {{ $invitation->description }}</p>
                             <p><strong>Date de début:</strong> {{ $invitation->date_debut }}</p>
                             <p><strong>Date de fin:</strong> {{ $invitation->date_fin }}</p>
-                            <p><strong>Statue:</strong> {{ $invitation->statue ? 'Active' : 'Inactive' }}</p>
+                            <p><strong>Statu:</strong> {{ $invitation->statue ? 'Active' : 'Inactive' }}</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -110,7 +112,7 @@
                                     <input type="date" name="date_fin" value="{{ $invitation->date_fin->format('Y-m-d') }}" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="statue">Statue:</label>
+                                    <label for="statue">Statu:</label>
                                     <select name="statue" class="form-control" required>
                                         <option value="1" {{ $invitation->statue ? 'selected' : '' }}>Active</option>
                                         <option value="0" {{ !$invitation->statue ? 'selected' : '' }}>Inactive</option>
@@ -158,7 +160,7 @@
                                 <input type="date" name="date_fin" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="statue">Statue:</label>
+                                <label for="statue">Statu:</label>
                                 <select name="statue" class="form-control" required>
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>

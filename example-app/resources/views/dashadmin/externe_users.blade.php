@@ -76,7 +76,6 @@
                   <tr>
                     <th>Nom</th>
                     <th>Email</th>
-                    <th>Rôle</th>
                     <th colspan="2">Action</th>
                   </tr>
                 </thead>
@@ -85,7 +84,6 @@
                     <tr>
                       <td>{{ $user->name }}</td>
                       <td>{{ $user->email }}</td>
-                      <td>{{ $user->role }}</td>
                       <td>
                         <button class="btn btn-warning modifierBtn" data-id="{{ $user->id }}">Modifier</button>
                       </td>

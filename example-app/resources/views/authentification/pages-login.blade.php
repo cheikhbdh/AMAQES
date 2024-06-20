@@ -98,7 +98,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Connecter</button>
+                      <button class="btn btn-primary w-100" type="submit">Se connecter</button>
                     </div>
                    
                   </form>

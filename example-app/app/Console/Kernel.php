@@ -10,6 +10,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('invitations:check')->hourly();
+        $schedule->command('invitations:check-expired')->daily();
     }
 
     protected function commands(): void
@@ -17,4 +18,6 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
         require base_path('routes/console.php');
     }
+   
+
 }
